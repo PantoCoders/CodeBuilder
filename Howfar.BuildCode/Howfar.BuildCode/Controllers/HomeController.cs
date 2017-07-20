@@ -15,14 +15,16 @@ namespace Howfar.BuildCode.Controllers
     public class HomeController : Controller
     {
         static List<Table> StaticDataList = new List<Table>();
+        static ConfigInfo StaticConfigInfo = new ConfigInfo();
         public ActionResult Index()
         {
             return View();
         }
 
-        public void SetData(List<Table> DataList,ConfigInfo ConfigInfo)
+        public void SetData(List<Table> DataList, ConfigInfo ConfigInfo)
         {
             StaticDataList = DataList != null ? DataList.Where(t => t.IsCheck == true).ToList() : StaticDataList;
+            StaticConfigInfo = ConfigInfo;
             List<Table> PKList = new List<Table>();
             if (StaticDataList != null)
             {
@@ -147,6 +149,7 @@ namespace Howfar.BuildCode.Controllers
         {
             Table Entity = new Table();
             ViewBag.NormalContent = strNormalEntity();
+            Entity.ConfigInfo = StaticConfigInfo;
             return View(Entity);
         }
         public string strNormalEntity()

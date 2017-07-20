@@ -7,7 +7,7 @@ namespace Howfar.BuildCode.Models
 {
     public class Table
     {
-        public static ConfigInfo ConfigInfo { get; set; }
+        public ConfigInfo ConfigInfo { get; set; }
         public List<Table> EntityList { get; set; }
         public string TableID { get; set; }
         public string TableName { get; set; }

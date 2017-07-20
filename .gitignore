@@ -23,6 +23,10 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+!/Howfar.BuildCode/Panto.Framework/bin/Debug/ClownFish.dll
+!/Howfar.BuildCode/Panto.Framework/bin/Debug/Newtonsoft.Json.dll
+!/Howfar.BuildCode/Panto.Framework/bin/Debug/Newtonsoft.Json.xml
+
 
 # Visual Studio 2015 cache/options directory
 .vs/
