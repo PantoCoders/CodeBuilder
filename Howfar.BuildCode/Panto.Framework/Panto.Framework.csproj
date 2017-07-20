@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6A70FE43-212D-4FF5-9BD7-9C9009ACCF62}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Panto.Framework</RootNamespace>
+    <AssemblyName>Panto.Framework</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ClownFish, Version=1.2.0.0, Culture=neutral, PublicKeyToken=6d8c6494249e7c4d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLLs\ClownFish.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BLL\BLLFactory.cs" />
+    <Compile Include="BLL\StandardBLL.cs" />
+    <Compile Include="BLL\UserInfoBLL.cs" />
+    <Compile Include="Entity\PermissionInfo.cs" />
+    <Compile Include="Entity\UserInfo.cs" />
+    <Compile Include="Exceptions\DataFieldNullException.cs" />
+    <Compile Include="Exceptions\InvalidRequestException.cs" />
+    <Compile Include="Exceptions\MyException.cs" />
+    <Compile Include="Exceptions\PermissionDeniedException.cs" />
+    <Compile Include="Exceptions\ValidateException.cs" />
+    <Compile Include="Extension\CommonExtensions.cs" />
+    <Compile Include="Extension\EntityExtensions.cs" />
+    <Compile Include="Extension\EnumExtensions.cs" />
+    <Compile Include="Extension\StringExtensions.cs" />
+    <Compile Include="Handlers\ShareFileHandler.cs" />
+    <Compile Include="Helper\AppSettingsHelper.cs" />
+    <Compile Include="Helper\ConfigHelper.cs" />
+    <Compile Include="Helper\ConnStringHelper.cs" />
+    <Compile Include="Helper\DllHelper.cs" />
+    <Compile Include="Helper\EnumHelper.cs" />
+    <Compile Include="Helper\FileHelper.cs" />
+    <Compile Include="Helper\HtmlHelper.cs" />
+    <Compile Include="Helper\HttpClientHelper.cs" />
+    <Compile Include="Helper\INIHelper.cs" />
+    <Compile Include="Helper\MailHelper.cs" />
+    <Compile Include="Helper\MyCDATA.cs" />
+    <Compile Include="Helper\NullHelper.cs" />
+    <Compile Include="Helper\PermissionHelper.cs" />
+    <Compile Include="Helper\RegexHelper.cs" />
+    <Compile Include="Helper\SecurityHelper.cs" />
+    <Compile Include="Helper\SortPageHelper.cs" />
+    <Compile Include="Helper\SqlHelper.cs" />
+    <Compile Include="Helper\WebAppHelper.cs" />
+    <Compile Include="Helper\WebSiteHelper.cs" />
+    <Compile Include="Login\UserManager.cs" />
+    <Compile Include="Modules\AppErrorModule.cs" />
+    <Compile Include="Modules\FormLoginModule.cs" />
+    <Compile Include="Modules\GzipModule.cs" />
+    <Compile Include="Modules\SecurityCheckModule.cs" />
+    <Compile Include="MVC\Action\ActionExecutor.cs" />
+    <Compile Include="MVC\Action\AjaxResult.cs" />
+    <Compile Include="MVC\Action\Http304Result.cs" />
+    <Compile Include="MVC\Action\Http404Result.cs" />
+    <Compile Include="MVC\Action\HttpCacheResult.cs" />
+    <Compile Include="MVC\Action\IActionResult.cs" />
+    <Compile Include="MVC\Action\JsonResult.cs" />
+    <Compile Include="MVC\Action\PageResult.cs" />
+    <Compile Include="MVC\Action\RedirectResult.cs" />
+    <Compile Include="MVC\Action\StreamResult.cs" />
+    <Compile Include="MVC\Action\UcResult.cs" />
+    <Compile Include="MVC\Action\XmlResult.cs" />
+    <Compile Include="MVC\Attribute\ActionAttribute.cs" />
+    <Compile Include="MVC\Attribute\AuthorizeAttribute.cs" />
+    <Compile Include="MVC\Attribute\ContextDataAttribute.cs" />
+    <Compile Include="MVC\Attribute\HttpValueIgnoreAttribute.cs" />
+    <Compile Include="MVC\Attribute\LogAttribute.cs" />
+    <Compile Include="MVC\Attribute\PageUrlAttribute.cs" />
+    <Compile Include="MVC\Attribute\SessionModeAttribute.cs" />
+    <Compile Include="MVC\Cache\CacheResult.cs" />
+    <Compile Include="MVC\Cache\ConfigManager.cs" />
+    <Compile Include="MVC\Cache\FileDependencyManager.cs" />
+    <Compile Include="MVC\Cache\OutputCacheAttribute.cs" />
+    <Compile Include="MVC\Cache\OutputCacheConfig.cs" />
+    <Compile Include="MVC\Cache\SetOutputCacheModule.cs" />
+    <Compile Include="MVC\Context\CookieHelper.cs" />
+    <Compile Include="MVC\Context\HttpContextHelper.cs" />
+    <Compile Include="MVC\Context\TestEnvironment.cs" />
+    <Compile Include="MVC\Exception\ExceptionHelper.cs" />
+    <Compile Include="MVC\Extension\HttpExtensions.cs" />
+    <Compile Include="MVC\OptimizeReflection\DynamicMethodEmit.cs" />
+    <Compile Include="MVC\OptimizeReflection\MethodWrapper.cs" />
+    <Compile Include="MVC\OptimizeReflection\PropertyWrapper.cs" />
+    <Compile Include="MVC\OptimizeReflection\ReflectionExtensions.cs" />
+    <Compile Include="MVC\Output\PageExecutor.cs" />
+    <Compile Include="MVC\Output\ResponseWriter.cs" />
+    <Compile Include="MVC\Output\UcExecutor.cs" />
+    <Compile Include="MVC\Pipeline\ActionHandler.cs" />
+    <Compile Include="MVC\Pipeline\AjaxHandlerFactory.cs" />
+    <Compile Include="MVC\Pipeline\BaseActionHandlerFactory.cs" />
+    <Compile Include="MVC\Pipeline\MvcPageHandlerFactory.cs" />
+    <Compile Include="MVC\Pipeline\ServiceHandlerFactory.cs" />
+    <Compile Include="MVC\Pipeline\UrlHelper.cs" />
+    <Compile Include="MVC\Reflection\ActionDescription.cs" />
+    <Compile Include="MVC\Reflection\BaseDescription.cs" />
+    <Compile Include="MVC\Reflection\ControllerActionPair.cs" />
+    <Compile Include="MVC\Reflection\ControllerDescription.cs" />
+    <Compile Include="MVC\Reflection\DataMember.cs" />
+    <Compile Include="MVC\Reflection\InvokeInfo.cs" />
+    <Compile Include="MVC\Reflection\ModelDescripton.cs" />
+    <Compile Include="MVC\Reflection\ModelHelper.cs" />
+    <Compile Include="MVC\Reflection\ReflectionExtensions2.cs" />
+    <Compile Include="MVC\Reflection\ReflectionHelper.cs" />
+    <Compile Include="MVC\Reflection\VoidType.cs" />
+    <Compile Include="MVC\Reflection\WebConfig.cs" />
+    <Compile Include="MVC\Serializer\ActionParametersProviderFactory.cs" />
+    <Compile Include="MVC\Serializer\FormDataProvider.cs" />
+    <Compile Include="MVC\Serializer\IActionParametersProvider.cs" />
+    <Compile Include="MVC\Serializer\JsonDataProvider.cs" />
+    <Compile Include="MVC\Serializer\XmlDataProvider.cs" />
+    <Compile Include="MVC\View\MyBaseMasterPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MVC\View\MyBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MVC\View\MyBaseUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MVC\View\MyPageView.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MVC\View\MyUserControlView.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MVC\View\ViewType.cs" />
+    <Compile Include="MVC\View\ViewTypeParserFilter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serializer\Json\JavaScriptDateTimeConverter.cs" />
+    <Compile Include="Serializer\Json\JsonExtensions.cs" />
+    <Compile Include="Serializer\Json\JsonHelper.cs" />
+    <Compile Include="Serializer\Xml\XmlExtensions.cs" />
+    <Compile Include="Serializer\Xml\XmlHelper.cs" />
+    <Compile Include="ViewDatas\EditViewData.cs" />
+    <Compile Include="ViewDatas\ListViewData.cs" />
+    <Compile Include="ViewDatas\PageListViewData.cs" />
+    <Compile Include="XmlCommand\EntitySqlInfo.cs" />
+    <Compile Include="XmlCommand\PagingInfo.cs" />
+    <Compile Include="XmlCommand\StandardPagingInfo.cs" />
+    <Compile Include="XmlCommand\StandardXmlCommand.cs" />
+    <Compile Include="XmlCommand\XmlCommand.cs" />
+    <Compile Include="XmlCommand\XmlCommandManager.cs" />
+    <Compile Include="XmlCommand\XmlCommandType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MVC\Module\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Panto.Map.Extensions\Panto.Map.Extensions.csproj">
+      <Project>{eaeab3a0-eec5-43ef-8840-f239a4ef9aeb}</Project>
+      <Name>Panto.Map.Extensions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

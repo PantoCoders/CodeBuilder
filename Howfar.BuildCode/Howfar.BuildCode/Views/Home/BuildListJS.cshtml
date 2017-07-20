@@ -1,0 +1,201 @@
+﻿@model Howfar.BuildCode.Models.Table
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Editor</title>
+    <style type="text/css" media="screen">
+        body {
+            overflow: hidden;
+        }
+
+        #editor {
+            margin: 0;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    </style>
+
+</head>
+<body>
+    <pre id="editor"><textarea>
+var TeacherLessonAttachList = {};
+
+$(function () {
+    //刷新表头和表格
+    $("#grid").initTableHeader(TeacherLessonAttachList.opt);
+    TeacherLessonAttachList.refreshTable();
+
+    //选择日期
+    $(".dateSearch").datetimepicker(
+        {
+            language: "zh-CN",
+            forceParse: false,
+            format: "yyyy-mm",
+            autoclose: true,
+            weekStart: 1,
+            startView: 3,
+            minView: 3,
+            todayBtn: true,
+            clearBtn: true
+        });
+    $(".datetimepicker-months table.table-condensed").css("width", "200px");
+
+    //按钮事件
+    $(document).on("click", "#btnQuery", function () {
+        TeacherLessonAttachList.search();
+    });
+
+    //编辑页面
+    $(document).on("click", "#grid tbody tr td:nth-child(2) a", function () {
+        var id = $($(this).parent().parent().children()[0]).find("input").attr("data-id");
+        TeacherLessonAttachList.edit(id);
+    });
+
+    //回车事件
+    document.onkeydown = function (e) {
+        var ev = document.all ? window.event : e;
+        if (ev.keyCode == 13) {
+            $("#btnQuery").focus();
+        }
+    }
+
+});
+
+
+(function (ns, undefind) {
+
+    ns.opt = {
+        name: "追加课时列表",
+        url: "/EducationalModule/TeacherLessonAttach/GetPageList",
+        tHeader: [
+@ViewBag.ListJSTitleContent
+        ],
+        data: {
+            combinSearchText: ns.getCondition(),
+            orderSeq: "AttachTime DESC",
+            pageNo: 1,
+            pageSize: 20
+        },
+        checkAll: { data_id: "TeacherLessonAttachID", flag: true }
+    }
+
+ns.refreshTable = function () {
+    $("#grid").drawTable(ns.opt);
+}
+
+ns.getSelectIDs = function () {
+    var ids = "";
+        $("#grid tbody").find("input[type=checkbox]:checked").each(function (i, e) {
+        ids += $(e).attr("data-id") + "','";
+    })
+        ids = ids.substr(0, ids.length - 3);
+    return ids;
+}
+
+ns.getCondition = function () {
+    var param = {
+            AttachTime: $.trim($('#ddlMonth').val()),
+            EmployeName: $.trim($('#txtEmployeeName').val())
+        };
+        return JSON.stringify(param);
+}
+
+ns.search = function () {
+    ns.opt.data.combinSearchText = ns.getCondition();
+    ns.opt.data.pageNo = 1;
+    ns.refreshTable();
+}
+
+ns.add = function () {
+
+    //新增
+    var index = layer.open({
+        type: 2,
+            title: "新增调课单",
+            area: ['1024px', '665px'], //自定义文本域宽高
+            maxmin: true,
+            content: ['/TeacherLessonAttach/Edit', 'no'],
+            btn: ['确定', '关闭'],
+            success: function (layero, index) {
+
+        },
+            yes: function (index, layero) {
+            var iframeWin = window[layero.find('iframe')[0]['name']];
+            iframeWin.TeacherLessonAttachEdit.submitPage();
+        }
+    });
+
+
+}
+
+ns.edit = function (id) {
+    //新增
+    var index = layer.open({
+        type: 2,
+            title: "编辑调课单",
+            area: ['1024px', '665px'], //自定义文本域宽高
+            maxmin: true,
+            content: ['/TeacherLessonAttach/Edit?TeacherLessonAttachID=' + id, 'no'],
+            btn: ['确定', '关闭'],
+            success: function (layero, index) {
+
+        },
+            yes: function (index, layero) {
+            var iframeWin = window[layero.find('iframe')[0]['name']];
+            iframeWin.TeacherLessonAttachEdit.submitPage();
+        }
+    });
+}
+
+ns.delete = function () {
+    var ids = TeacherLessonAttachList.getSelectIDs();
+
+    if (ids == "") {
+        window.Pantosoft.IT.Utility.alertDelete();
+        return false;
+    }
+
+    Pantosoft.IT.Utility.deleteRecord({
+        url: "/TeacherLessonAttach/Delete",
+            param: { ids: ids },
+            success: function (data) {
+            TeacherLessonAttachList.refreshTable();
+        }
+    });
+}
+
+})(TeacherLessonAttachList);
+    </textarea></pre>
+    <script src="~/Scripts/ace/ace.js"></script>
+    <script src="~/Scripts/ace/ext-language_tools.js"></script>
+
+    <script>
+        var editor = ace.edit("editor");
+        //设置风格和语言（更多风格和语言，请到github上相应目录查看）
+        theme = "xcode"
+        language = "javascript"//"csharp"
+        editor.setTheme("ace/theme/" + theme);
+        editor.session.setMode("ace/mode/" + language);
+        ace.require("ace/ext/language_tools");
+        //字体大小
+        editor.setFontSize(13);
+
+        //设置只读（true时只读，用于展示代码）
+        editor.setReadOnly(false);
+
+        //自动换行,设置为off关闭
+        editor.setOption("wrap", "free")
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true
+        });
+    </script>
+</body>
+</html>

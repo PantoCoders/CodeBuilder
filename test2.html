@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="default.min.css" />
+    <script class="loading" src="highlight.min.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script>
+</head>
+
+<body>
+    <pre><code class="cs">
+       using Panto.Map.Extensions.DAL;
+using PDRZ.Integration.Entity.School.Base;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PDRZ.Integration.Entity.MoralModule
+{
+    
+    ///     <<summary>>
+    /// PunishRegister 的实体类
+    ///    <</summary>>
+
+    [DataContract]
+    [Serializable]
+    [DataEntity(Alias = "Moral_PunishRegister")]
+    public partial class PunishRegister : WithSchoolIDBaseEntity
+    {
+        /// <summary>
+        /// 主键ID
+        /// </summary>
+        [DataMember]
+        [DataColumn(PrimaryKey = true)] [Description("主键ID")]
+        public Guid SignID { get; set; }
+        /// <summary>
+        /// 学期ID
+        /// </summary>
+        [DataMember]
+[DataColumn(IsNullable = true)]
+        [Description("学期ID")]
+        public Guid? SemesterID { get; set; }
+        /// <summary>
+        /// 学生ID
+        /// </summary>
+        [DataMember]
+        [DataColumn(IsNullable = true)]
+        [Description("学生ID")]
+        public Guid? StudentID { get; set; }
+        /// <summary>
+        /// 处分ID
+        /// </summary>
+        [DataMember]
+        [DataColumn(IsNullable = true)]
+        [Description("处分ID")]
+        public Guid? PunishID { get; set; }
+        /// <summary>
+        /// 处分日期
+        /// </summary>
+        [DataMember]
+        [DataColumn(IsNullable = true)]
+        [Description("处分日期")]
+        public DateTime? SignDate { get; set; }
+        /// <summary>
+        /// 处分结束日期
+        /// </summary>
+        [DataMember]
+        [DataColumn(IsNullable = true)]
+        [Description("处分结束日期")]
+        public DateTime? SignEndDate { get; set; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        [DataMember]
+        [DataColumn(IsNullable = true)]
+        [Description("备注")]
+        public string Remark { get; set; }
+
+        /// <summary>
+        /// 是否自动撤销处分
+        /// </summary>
+        [DataMember]
+        [DataColumn(IsNullable = true)]
+        [Description("是否自动撤销处分")]
+        public bool? IsAutoRepeal { get; set; }
+        #region 扩展字段
+        /// <summary>
+        /// 学号
+        /// </summary>
+        [DataMember]
+        [Description("学号")]
+        public string StudentNo { get; set; }
+        /// \<summary\>
+        /// 学生姓名
+        /// </summary>
+        [DataMember]
+        [Description("学生姓名")]
+        public string StudentName { get; set; }
+        /// <summary>
+        /// 专业名称
+        /// </summary>
+        [DataMember]
+        [Description("专业名称")]
+        public string SpecialtyName { get; set; }
+        /// <summary>
+        /// 班级名称
+        /// </summary>
+        [DataMember]
+        [Description("班级名称")]
+        public string ClassName { get; set; }
+        /// <summary>
+        /// 处分名称
+        /// </summary>
+        [DataMember]
+        [Description("处分名称")]
+        public string PunishName { get; set; }
+        /// <summary>
+        /// 处分状态
+        /// </summary>
+        [DataMember]
+        [Description("处分状态")]
+        public string PunishState { get; set; }
+        /// <summary>
+        /// 登记人
+        /// </summary>
+        [DataMember]
+        [Description("登记人")]
+        public string SignName { get; set; }
+
+        #endregion
+    }
+}
+
+        </code></pre>
+</body>
+
+</html>

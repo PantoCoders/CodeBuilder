@@ -1,0 +1,89 @@
+﻿@model Howfar.BuildCode.Models.Table
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Editor</title>
+    <style type="text/css" media="screen">
+        body {
+            overflow: hidden;
+        }
+
+        #editor {
+            margin: 0;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    </style>
+
+</head>
+<body>
+    <pre id="editor"><textarea>
+@@model PDRZ.Integration.Entity.TransferData.School.MoralModule.StudentPunishViewData
+@@using Panto.Framework.Entity;
+@@{
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+    List<PermissionInfo> perms = ViewBag.perms;
+    List<string> listPerm = new List<string>();
+    if (perms != null)
+    {
+        listPerm = perms.Select(p => p.Code).ToList();
+    }
+}
+
+&ltscript type="text/javascript" src="@@Url.Content("~/Scripts/MoralManage/SituationRegister/StudentPunishEdit.js")">&lt/script>
+<form class="formCommon addStaff" id="formEdit">
+@@Html.AntiForgeryToken()
+@*@ViewBag.Content*@
+@{ int Index = 0,Count= Model.EntityList.Count;}
+@foreach (var item in Model.EntityList)
+{
+if (Index % 2 == 0)
+{
+@("<div class=\"form - group maginWidth\">\r\n")
+}
+    <label class="col-xs-2 control-label form-left">@item.Comment</label>
+    <div class="col-xs-3 form-center">
+        <input type="text" id="@item.ColumnName" name="@item.ColumnName" value="@($"@Model.Entity.{item.ColumnName}")" />
+    </div>
+    <div class="col-xs-1 form-right"></div>
+if ((Index + 1) == Count || Index % 2 == 1) {
+ @("</div>\r\n")
+}
+Index++;
+}
+
+</form>
+</textarea></pre>
+    <script src="~/Scripts/ace/ace.js"></script>
+    <script src="~/Scripts/ace/ext-language_tools.js"></script>
+
+    <script>
+        var editor = ace.edit("editor");
+        //设置风格和语言（更多风格和语言，请到github上相应目录查看）
+        theme = "xcode"
+        language = "html"//"csharp"
+        editor.setTheme("ace/theme/" + theme);
+        editor.session.setMode("ace/mode/" + language);
+        ace.require("ace/ext/language_tools");
+        //字体大小
+        editor.setFontSize(13);
+
+        //设置只读（true时只读，用于展示代码）
+        editor.setReadOnly(false);
+
+        //自动换行,设置为off关闭
+        editor.setOption("wrap", "free")
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Howfar.BuildCode", "Howfar.BuildCode\Howfar.BuildCode.csproj", "{B55E9A07-A932-4007-AE30-BCD0348DC1E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Panto.Framework", "Panto.Framework\Panto.Framework.csproj", "{6A70FE43-212D-4FF5-9BD7-9C9009ACCF62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Panto.Map.Extensions", "Panto.Map.Extensions\Panto.Map.Extensions.csproj", "{EAEAB3A0-EEC5-43EF-8840-F239A4EF9AEB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B55E9A07-A932-4007-AE30-BCD0348DC1E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B55E9A07-A932-4007-AE30-BCD0348DC1E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B55E9A07-A932-4007-AE30-BCD0348DC1E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B55E9A07-A932-4007-AE30-BCD0348DC1E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A70FE43-212D-4FF5-9BD7-9C9009ACCF62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A70FE43-212D-4FF5-9BD7-9C9009ACCF62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A70FE43-212D-4FF5-9BD7-9C9009ACCF62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A70FE43-212D-4FF5-9BD7-9C9009ACCF62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAEAB3A0-EEC5-43EF-8840-F239A4EF9AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAEAB3A0-EEC5-43EF-8840-F239A4EF9AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAEAB3A0-EEC5-43EF-8840-F239A4EF9AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAEAB3A0-EEC5-43EF-8840-F239A4EF9AEB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

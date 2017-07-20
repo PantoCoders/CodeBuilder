@@ -1,0 +1,212 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@Styles.Render("~/Content")
+@Scripts.Render("~/JavaScript")
+@*<link href="~/Content/Index.css" rel="stylesheet" />*@
+
+
+<div class="container-fluid" id="container">
+    <h2>Build</h2>
+    <div class="tabs-container" style="height: calc(100% - 65px);">
+      
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 第一个选项卡</a>
+            </li>
+            <li class="">
+                <a data-toggle="tab" href="#tab-2" aria-expanded="false">第二个选项卡</a>
+            </li>
+            <li class="">
+                <a data-toggle="tab" href="#tab-3" aria-expanded="false">第三个选项卡</a>
+            </li>
+            <li class="">
+                <a data-toggle="tab" href="#tab-4" aria-expanded="false">第四个选项卡</a>
+            </li>
+            <li class="">
+                <a data-toggle="tab" href="#tab-5" aria-expanded="false">第五个选项卡</a>
+            </li>
+            <li class="">
+                <a data-toggle="tab" href="#tab-6" aria-expanded="false">第六个选项卡</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="list" style="height: calc(100% - 65px);">
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document" style="left:0px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" id="txtTableName" class="form-control" placeholder="txtTableName">
+                            <input type="text" id="txtModelFolderName" class="form-control" placeholder="txtModelFolderName">
+                            <input type="text" id="txtPageName" class="form-control" placeholder="txtPageName">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-1" class="tab-pane active" style="height:100%;">
+                <div class="panel-body" style="height:100%;">
+                    <div class="row" style="height:100%;">
+                        <div class="col-lg-2" style="height:100%;">
+                            <div id="container">
+                                <div id="wrap">
+                                    <div class="product-head">
+                                        <h1>Product Search</h1>
+                                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                            Launch demo modal
+                                        </button>
+                                        <div id="form"></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="list-group" style="height:100%;overflow-x:auto;">
+                                        <a class="list-group-item" :TableName="data.TableName" v-on:click="getTableInfo" v-for="data in tableList">
+                                            <h4 class="list-group-item-heading">{{data.TableName}}</h4>
+                                            <span class="badge">{{data.FieldCount}}</span>
+                                            <p class="list-group-item-text">{{data.Comment}}</p>
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-10" style="height:100%;">
+                            <div class="ibox">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <div class="checkbox checkbox-success">
+                                                    <input id="checkbox0" type="checkbox">
+                                                    <label for="checkbox0">
+                                                    </label>
+                                                </div>
+                                            </th>
+                                            <th>字段</th>
+                                            <th>注释</th>
+                                            <th>类型</th>
+                                            <th>长度</th>
+                                            <th>非空</th>
+                                            <th>默认值</th>
+                                            <th width="40%">各项配置</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(info,index) in fieldList">
+                                            <td>
+                                                <div class="checkbox checkbox-success">
+
+                                                    <input :id="'ck-1-'+index" type="checkbox" v-model="info.IsCheck">
+                                                    <label :for="'ck-1-'+index"></label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="checkbox checkbox-success checkbox-inline">
+
+                                                    <input :id="'ck-9-'+index" type="checkbox" v-model="info.IsDataColumn">
+                                                    <label :for="'ck-9-'+index"></label>
+                                                </div>
+                                                <input type="text" class="form-control" v-model="info.ColumnName">
+                                            </td>
+                                            <td><input type="text" class="form-control" v-model="info.Comment"></td>
+                                            <td><input type="text" class="form-control SelectType" v-model="info.TypeName"></td>
+                                            <td><input type="text" class="form-control form-control-sm" v-model="info.MaxLength"></td>
+                                            <td>
+                                                <div class="checkbox checkbox-success">
+                                                    <input :id="'ck-2-'+index" type="checkbox" v-model="info.NotNUll">
+                                                    <label :for="'ck-2-'+index"></label>
+                                                </div>
+                                            </td>
+                                            <td><input type="text" class="form-control" Value="默认值"></td>
+                                            <td>
+                                                <div class="checkbox checkbox-success checkbox-inline">
+                                                    <input :id="'ck-3-'+index" type="checkbox" v-model="info.IsValidate">
+                                                    <label :for="'ck-3-'+index">IsValidate</label>
+                                                </div>
+                                                <div class="checkbox checkbox-success checkbox-inline">
+                                                    <input :id="'ck-4-'+index" type="checkbox" v-model="info.NotNUll">
+                                                    <label :for="'ck-4-'+index"></label>
+                                                </div>
+                                                <div class="checkbox checkbox-success checkbox-inline">
+                                                    <input :id="'ck-5-'+index" type="checkbox" v-model="info.NotNUll">
+                                                    <label :for="'ck-5-'+index"></label>
+                                                </div>
+                                                <div class="checkbox checkbox-success">
+
+                                                </div>
+                                                <div class="checkbox checkbox-success checkbox-inline">
+                                                    <input :id="'ck-6-'+index" type="checkbox" v-model="info.IsShow">
+                                                    <label :for="'ck-6-'+index">IsShow</label>
+                                                </div>
+                                                <div class="checkbox checkbox-success checkbox-inline">
+                                                    <input :id="'ck-7-'+index" type="checkbox" v-model="info.IsCondition">
+                                                    <label :for="'ck-7-'+index">IsCondition</label>
+                                                </div>
+                                                <div class="checkbox checkbox-success checkbox-inline">
+                                                    <input :id="'ck-8-'+index" type="checkbox" v-model="info.NotNUll">
+                                                    <label :for="'ck-8-'+index"></label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-2" class="tab-pane" style="height:100%;">
+                <div class="panel-body" style="height:100%;">
+                    <button class="btn-success" onclick="setData('BuildEditHTML');" id="btnBuildEditHTML">Build Code</button>
+                    <iframe src="/Home/BuildEditHTML" id="iframeBuildEditHTML" style="width:100%;height:100%;border:none;"></iframe>
+                </div>
+            </div>
+            <div id="tab-3" class="tab-pane" style="height:100%;">
+                <div class="panel-body" style="height:100%;">
+                    <button class="btn-success" onclick="setData('BuildListJS');" id="btnBuildEditHTML">Build Code</button>
+                    <iframe src="/Home/BuildListJS" id="iframeBuildListJS" style="width:100%;height:100%;border:none;"></iframe>
+                </div>
+            </div>
+            <div id="tab-4" class="tab-pane" style="height:100%;">
+                <div class="panel-body" style="height:100%;">
+                    <button class="btn-success" onclick="setData('BuildEntity');" id="btnBuildEditHTML">Build Code</button>
+                    <iframe src="/Home/BuildEntity" id="iframeBuildEntity" style="width:100%;height:100%;border:none;"></iframe>
+                </div>
+            </div>
+            <div id="tab-5" class="tab-pane" style="height:100%;">
+                <div class="panel-body" style="height:100%;">
+                    <button class="btn-success" onclick="setData();" id="btnBuildEditHTML">Build Code</button>
+                    <iframe src="/Home/BuildEditHTML" id="iframeBuildEditHTML" style="width:100%;height:100%;border:none;"></iframe>
+                </div>
+            </div>
+            <div id="tab-6" class="tab-pane" style="height:100%;">
+                <div class="panel-body" style="height:100%;">
+                    <button class="btn-success" onclick="setData();" id="btnBuildEditHTML">Build Code</button>
+                    <iframe src="/Home/BuildEditHTML" id="iframeBuildEditHTML" style="width:100%;height:100%;border:none;"></iframe>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(function () {
+        var height = document.documentElement.clientHeight;
+        document.getElementsByTagName('body')[0].style.height = height;
+        $('#container').height(height);
+    });
+
+    window.onresize = function () {
+        var height = document.documentElement.clientHeight;
+        document.getElementsByTagName('body')[0].style.height = height;
+
+    }
+
+</script>
