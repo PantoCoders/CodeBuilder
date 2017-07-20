@@ -73,8 +73,10 @@ function createVue(data) {
                 var element = $(e.currentTarget);
                 $('.list-group-item').removeClass('active');
                 element.addClass('active');
-                $.getJSON('/Ajax/GetTableDetail?TableName=' + element.attr('TableName'), function (fieldData) {
-                    $('#txtTableName').val(element.attr('TableName'));
+                var tableName = element.attr('TableName');
+                $.getJSON('/Ajax/GetTableDetail?TableName=' + tableName, function (fieldData) {
+                    $('#txtTableName').val(tableName);
+                    $('#txtEntityName').val(tableName.substr(tableName.indexOf('_') + 1));
                     applist.fieldList = fieldData;
                     bindType();
                 });
@@ -87,7 +89,8 @@ function createVue(data) {
 function setData(name) {
     var ConfigInfo = {
         TableName: $.trim($('#txtTableName').val()),
-        ModelFolderName: $.trim($('#txtModelFolderName').val())
+        ModelFolderName: $.trim($('#txtModelFolderName').val()),
+        EntityName: $.trim($('#txtEntityName').val())
     };
     $.post('/Home/SetData', { DataList: applist.fieldList, ConfigInfo: ConfigInfo }, function () {
         document.getElementById('iframe' + name).src = '/Home/' + name;
