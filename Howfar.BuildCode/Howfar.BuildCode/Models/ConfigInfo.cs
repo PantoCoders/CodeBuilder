@@ -5,11 +5,12 @@ using System.Web;
 
 namespace Howfar.BuildCode.Models
 {
-    public  class ConfigInfo
+    public class ConfigInfo
     {
-        public  string TableName { get; set; }
-        public  string EntityName { get; set; }
-        public  string ModelFolderName { get; set; }
+        public string TableName { get; set; }
+        public string TableComment { get; set; }
+        public string EntityName { get; set; }
+        public string ModelFolderName { get; set; }
 
         public string PageName { get; set; }
     }
