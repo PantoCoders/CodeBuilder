@@ -1,5 +1,7 @@
 ﻿@model Howfar.BuildCode.Models.Table
-
+@{
+    string OName = Model.ConfigInfo.PageName + "List";
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,12 +26,12 @@
 </head>
 <body>
     <pre id="editor"><textarea>
-var TeacherLessonAttachList = {};
+var @OName = {};
 
 $(function () {
     //刷新表头和表格
-    $("#grid").initTableHeader(TeacherLessonAttachList.opt);
-    TeacherLessonAttachList.refreshTable();
+    $("#grid").initTableHeader(@OName@(".opt);")
+    @OName@(".refreshTable();")
 
     //选择日期
     $(".dateSearch").datetimepicker(
@@ -48,13 +50,13 @@ $(function () {
 
     //按钮事件
     $(document).on("click", "#btnQuery", function () {
-        TeacherLessonAttachList.search();
+        @OName@(".search();")
     });
 
     //编辑页面
     $(document).on("click", "#grid tbody tr td:nth-child(2) a", function () {
         var id = $($(this).parent().parent().children()[0]).find("input").attr("data-id");
-        TeacherLessonAttachList.edit(id);
+        @OName@(".edit(id);")
     });
 
     //回车事件
@@ -148,13 +150,13 @@ ns.edit = function (id) {
         },
             yes: function (index, layero) {
             var iframeWin = window[layero.find('iframe')[0]['name']];
-            iframeWin.TeacherLessonAttachEdit.submitPage();
+            iframeWin.@OName@("Edit.submitPage();")
         }
     });
 }
 
 ns.delete = function () {
-    var ids = TeacherLessonAttachList.getSelectIDs();
+    var ids = @OName@(".getSelectIDs();")
 
     if (ids == "") {
         window.Pantosoft.IT.Utility.alertDelete();
@@ -165,12 +167,12 @@ ns.delete = function () {
         url: "/TeacherLessonAttach/Delete",
             param: { ids: ids },
             success: function (data) {
-            TeacherLessonAttachList.refreshTable();
+            @OName@(".refreshTable();")
         }
     });
 }
 
-})(TeacherLessonAttachList);
+})(@OName);
     </textarea></pre>
     <script src="~/Scripts/ace/ace.js"></script>
     <script src="~/Scripts/ace/ext-language_tools.js"></script>

@@ -90,7 +90,8 @@ function setData(name) {
     var ConfigInfo = {
         TableName: $.trim($('#txtTableName').val()),
         ModelFolderName: $.trim($('#txtModelFolderName').val()),
-        EntityName: $.trim($('#txtEntityName').val())
+        EntityName: $.trim($('#txtEntityName').val()),
+        PageName: $.trim($('#txtPageName').val())
     };
     $.post('/Home/SetData', { DataList: applist.fieldList, ConfigInfo: ConfigInfo }, function () {
         document.getElementById('iframe' + name).src = '/Home/' + name;

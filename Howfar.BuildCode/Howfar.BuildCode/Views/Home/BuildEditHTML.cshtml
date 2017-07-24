@@ -24,19 +24,10 @@
 </head>
 <body>
     <pre id="editor"><textarea>
-@@model PDRZ.Integration.Entity.TransferData.School.MoralModule.StudentPunishViewData
+@@model PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.ModelFolderName@Model.ConfigInfo.EntityName@("ViewData")
 @@using Panto.Framework.Entity;
-@@{
-    Layout = "~/Views/Shared/_LayoutForm.cshtml";
-    List<PermissionInfo> perms = ViewBag.perms;
-    List<string> listPerm = new List<string>();
-    if (perms != null)
-    {
-        listPerm = perms.Select(p => p.Code).ToList();
-    }
-}
 
-&ltscript type="text/javascript" src="@@Url.Content("~/Scripts/MoralManage/SituationRegister/StudentPunishEdit.js")">&lt/script>
+&ltscript type="text/javascript" src="@@Url.Content("~/Scripts/XXXXX/XXXXXX/@Model.ConfigInfo.PageName@("Edit.js"))">&lt/script>
 <form class="formCommon addStaff" id="formEdit">
 @@Html.AntiForgeryToken()
 @*@ViewBag.Content*@

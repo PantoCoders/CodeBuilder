@@ -26,7 +26,7 @@ namespace Howfar.BuildCode.Controllers
             StaticDataList = DataList != null ? DataList.Where(t => t.IsCheck == true).ToList() : StaticDataList;
             StaticConfigInfo = ConfigInfo;
             List<Table> PKList = new List<Table>();
-            if (StaticDataList != null)
+            if (StaticDataList != null && StaticDataList.Count > 0)
             {
                 PKList = GetPKList(StaticDataList[0].TableName);
             }
@@ -69,6 +69,7 @@ namespace Howfar.BuildCode.Controllers
             ViewBag.Content = EditHtml();
             Table Entity = new Table();
             Entity.EntityList = StaticDataList;
+            Entity.ConfigInfo = StaticConfigInfo;
             return View(Entity);
         }
 
@@ -101,6 +102,7 @@ namespace Howfar.BuildCode.Controllers
             ViewBag.ListJSTitleContent = ListJS();
             Table Entity = new Table();
             Entity.EntityList = StaticDataList;
+            Entity.ConfigInfo = StaticConfigInfo;
             return View(Entity);
         }
 

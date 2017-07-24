@@ -43,7 +43,7 @@
                             <input type="text" id="txtTableName" class="form-control" placeholder="txtTableName">
                             <input type="text" id="txtModelFolderName" class="form-control" placeholder="txtModelFolderName">
                             <input type="text" id="txtPageName" class="form-control" placeholder="txtPageName">
-                            <input type="text" id="txtEntityName" class="form-control" placeholder="txtEntityName"/>
+                            <input type="text" id="txtEntityName" class="form-control" placeholder="txtEntityName" />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -102,19 +102,28 @@
                                     <tbody>
                                         <tr v-for="(info,index) in fieldList">
                                             <td>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                                                    </label>
+                                                </div>
                                                 <div class="checkbox checkbox-success">
-
-                                                    <input :id="'ck-1-'+index" type="checkbox" v-model="info.IsCheck">
-                                                    <label :for="'ck-1-'+index"></label>
+                                                    <label :for="'ck-1-'+index">
+                                                        <input :id="'ck-1-'+index" type="checkbox" v-model="info.IsCheck">
+                                                    </label>
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="checkbox checkbox-success checkbox-inline">
-
-                                                    <input :id="'ck-9-'+index" type="checkbox" v-model="info.IsDataColumn">
-                                                    <label :for="'ck-9-'+index"></label>
+                                                <input type="checkbox" class="css-checkbox lrg" id="checkbox_vlad" checked="checked">
+                                                <label for="checkbox_vlad" name="checkbox_vlad_lbl" class="css-label lrg vlad"></label>
+                                                <div class="input-group m-b">
+                                                    <span class="input-group-addon">
+                                                        <input :id="'ck-9-'+index"  type="checkbox" v-model="info.IsDataColumn">
+                                                    </span>
+                                                    <input type="text" class="form-control" v-model="info.ColumnName">
                                                 </div>
-                                                <input type="text" class="form-control" v-model="info.ColumnName">
+
+
                                             </td>
                                             <td><input type="text" class="form-control" v-model="info.Comment"></td>
                                             <td><input type="text" class="form-control SelectType" v-model="info.TypeName"></td>
