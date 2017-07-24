@@ -22,6 +22,7 @@ namespace Howfar.BuildCode.Models
         public string FieldCount { get; set; }
         public string ColumnName { get; set; }
         public int ColumsID { get; set; }
+        public string DefaultValue { get; set; }
 
         /// <summary>
         /// 是否主键

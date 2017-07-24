@@ -4,9 +4,11 @@
 
 @Styles.Render("~/Content")
 @Scripts.Render("~/JavaScript")
-@*<link href="~/Content/Index.css" rel="stylesheet" />*@
-
-
+<style>
+    .container-fluid {
+    font-size:10px;
+    }
+</style>
 <div class="container-fluid" id="container">
     <h2>Build</h2>
     <div class="tabs-container" style="height: calc(100% - 65px);">
@@ -102,28 +104,21 @@
                                     <tbody>
                                         <tr v-for="(info,index) in fieldList">
                                             <td>
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
-                                                    </label>
-                                                </div>
                                                 <div class="checkbox checkbox-success">
-                                                    <label :for="'ck-1-'+index">
-                                                        <input :id="'ck-1-'+index" type="checkbox" v-model="info.IsCheck">
-                                                    </label>
+                                                    <input :id="'ck-1-'+index" type="checkbox" v-model="info.IsCheck">
+                                                    <label :for="'ck-1-'+index"></label>
                                                 </div>
                                             </td>
                                             <td>
-                                                <input type="checkbox" class="css-checkbox lrg" id="checkbox_vlad" checked="checked">
-                                                <label for="checkbox_vlad" name="checkbox_vlad_lbl" class="css-label lrg vlad"></label>
-                                                <div class="input-group m-b">
-                                                    <span class="input-group-addon">
-                                                        <input :id="'ck-9-'+index"  type="checkbox" v-model="info.IsDataColumn">
+
+                                                <div class="input-group m-b" style="margin-bottom:0px;">
+                                                    <span class="input-group-addon" style="padding-bottom: 0px;padding-left: 2px;padding-right: 2px;
+">
+                                                        <input type="checkbox" class="css-checkbox lrg" :id="'ck-9-'+index" v-model="info.IsDataColumn">
+                                                        <label :for="'ck-9-'+index" class="css-label lrg vlad"></label>
                                                     </span>
                                                     <input type="text" class="form-control" v-model="info.ColumnName">
                                                 </div>
-
-
                                             </td>
                                             <td><input type="text" class="form-control" v-model="info.Comment"></td>
                                             <td><input type="text" class="form-control SelectType" v-model="info.TypeName"></td>
@@ -175,31 +170,31 @@
             <div id="tab-2" class="tab-pane" style="height:100%;">
                 <div class="panel-body" style="height:100%;">
                     <button class="btn-success" onclick="setData('BuildEditHTML');" id="btnBuildEditHTML">Build Code</button>
-                    <iframe src="/Home/BuildEditHTML" id="iframeBuildEditHTML" style="width:100%;height:100%;border:none;"></iframe>
+                    <iframe id="iframeBuildEditHTML" style="width:100%;height:100%;border:none;"></iframe>
                 </div>
             </div>
             <div id="tab-3" class="tab-pane" style="height:100%;">
                 <div class="panel-body" style="height:100%;">
                     <button class="btn-success" onclick="setData('BuildListJS');" id="btnBuildEditHTML">Build Code</button>
-                    <iframe src="/Home/BuildListJS" id="iframeBuildListJS" style="width:100%;height:100%;border:none;"></iframe>
+                    <iframe id="iframeBuildListJS" style="width:100%;height:100%;border:none;"></iframe>
                 </div>
             </div>
             <div id="tab-4" class="tab-pane" style="height:100%;">
                 <div class="panel-body" style="height:100%;">
                     <button class="btn-success" onclick="setData('BuildEntity');" id="btnBuildEditHTML">Build Code</button>
-                    <iframe src="/Home/BuildEntity" id="iframeBuildEntity" style="width:100%;height:100%;border:none;"></iframe>
+                    <iframe id="iframeBuildEntity" style="width:100%;height:100%;border:none;"></iframe>
                 </div>
             </div>
             <div id="tab-5" class="tab-pane" style="height:100%;">
                 <div class="panel-body" style="height:100%;">
                     <button class="btn-success" onclick="setData();" id="btnBuildEditHTML">Build Code</button>
-                    <iframe src="/Home/BuildEditHTML" id="iframeBuildEditHTML" style="width:100%;height:100%;border:none;"></iframe>
+                    <iframe id="iframeBuildEditHTML" style="width:100%;height:100%;border:none;"></iframe>
                 </div>
             </div>
             <div id="tab-6" class="tab-pane" style="height:100%;">
                 <div class="panel-body" style="height:100%;">
                     <button class="btn-success" onclick="setData();" id="btnBuildEditHTML">Build Code</button>
-                    <iframe src="/Home/BuildEditHTML" id="iframeBuildEditHTML" style="width:100%;height:100%;border:none;"></iframe>
+                    <iframe id="iframeBuildEditHTML" style="width:100%;height:100%;border:none;"></iframe>
                 </div>
             </div>
         </div>
