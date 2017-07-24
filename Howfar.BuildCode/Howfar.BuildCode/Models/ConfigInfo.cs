@@ -10,5 +10,7 @@ namespace Howfar.BuildCode.Models
         public  string TableName { get; set; }
         public  string EntityName { get; set; }
         public  string ModelFolderName { get; set; }
+
+        public string PageName { get; set; }
     }
 }
