@@ -59,15 +59,16 @@ namespace Howfar.BuildCode.App_Code
             List<string> strCreateComment = new List<string>();
 
             strCreateTable.Add($"CREATE TABLE [dbo].[{Config.TableName}](");
-            strCreateComment.Add($"EXEC sp_addextendedproperty N'MS_Description', N'{Config.TableComment}', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', NULL, NULL");
+            strCreateComment.Add($"EXEC sp_addextendedproperty N'MS_Description', N'{Config.TableComment}', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', NULL, NULL; ");
             foreach (var item in List)
             {
+                string length = item.TypeName.Contains("varchar") ? $"({item.MaxLength.ToString()})" : "";
                 strCreateTable.Add(string.Format($"[{item.ColumnName}] {item.TypeName}{{0}} {{1}} {{2}},",
-                    item.MaxLength > 0 ? $"({item.MaxLength})" : "",
+                    length,
                     item.NotNUll ? "Not Null" : "Null",
-                    item.DefaultValue.Length > 0 ? $"'{item.DefaultValue}'" : ""
+                    item.DefaultValue?.Length > 0 ? $"'{item.DefaultValue}'" : ""
                     ));
-                strCreateComment.Add($"EXEC sp_addextendedproperty N'MS_Description', N'{item.Comment}', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'{item.ColumnName}' ");
+                strCreateComment.Add($"EXEC sp_addextendedproperty N'MS_Description', N'{item.Comment}', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'{item.ColumnName}'; ");
             }
             strCreateTable.Add(@"   [Timestamp] [timestamp] NULL,
                                     [SchoolID] [uniqueidentifier] NOT NULL,
@@ -75,15 +76,15 @@ namespace Howfar.BuildCode.App_Code
                                     [CreateDate] [datetime] NULL,
                                     [UpdateUser] [nvarchar] (50) COLLATE Chinese_PRC_CI_AS NULL,
                                     [UpdateDate] [datetime] NULL,");
-            strCreateTable.Add($"PRIMARY KEY ( [{List[0].ColumnName}] ));GO");
+            strCreateTable.Add($"PRIMARY KEY ( [{List[0].ColumnName}] ));");
             strCreateComment.Add($@" EXEC sp_addextendedproperty N'MS_Description', N'时间戳', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'Timestamp' 
                                     EXEC sp_addextendedproperty N'MS_Description', N'学校ID', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'SchoolID' 
                                     EXEC sp_addextendedproperty N'MS_Description', N'创建人', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'CreateUser' 
                                     EXEC sp_addextendedproperty N'MS_Description', N'创建时间', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'CreateDate' 
                                     EXEC sp_addextendedproperty N'MS_Description', N'修改人', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'UpdateUser' 
                                     EXEC sp_addextendedproperty N'MS_Description', N'修改时间', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'UpdateDate' ");
-            CPQuery.From(strCreateTable.ToString()).ExecuteNonQuery();
-            CPQuery.From(strCreateComment.ToString()).ExecuteNonQuery();
+            CPQuery.From(string.Join("", strCreateTable)).ExecuteNonQuery();
+            CPQuery.From(string.Join("", strCreateComment)).ExecuteNonQuery();
 
         }
 

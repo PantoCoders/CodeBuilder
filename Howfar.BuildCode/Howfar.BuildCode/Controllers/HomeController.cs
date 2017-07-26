@@ -181,5 +181,12 @@ namespace Howfar.BuildCode.Controllers
         }
         #endregion
 
+        #region · CreateTable
+        public ActionResult CreateTable()
+        {
+            Public.CreateTable(StaticDataList, StaticConfigInfo);
+            return View();
+        }
+        #endregion
     }
 }

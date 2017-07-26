@@ -80,6 +80,9 @@ function createVue(data) {
                     applist.fieldList = fieldData;
                     bindType();
                 });
+            },
+            addNext: function (index) {
+                applist.fieldList.splice(index + 1, 0, {});
             }
         }, filters: {}
     });
@@ -95,18 +98,5 @@ function setData(name) {
     };
     $.post('/Home/SetData', { DataList: applist.fieldList, ConfigInfo: ConfigInfo }, function () {
         document.getElementById('iframe' + name).src = '/Home/' + name;
-    });
-}
-
-function BuildEditHTML() {
-    setData(function () {
-
-    });
-}
-
-
-function BuildListJS() {
-    setData(function () {
-        document.getElementById('iframeBuildListJS').src = '/Home/BuildListJS';
     });
 }

@@ -5,13 +5,66 @@
 @Styles.Render("~/Content")
 @Scripts.Render("~/JavaScript")
 <style>
-    .container-fluid {
-    font-size:10px;
+    .form-control {
+        padding: 0px;
+        font-size: 9px;
+        height: 30px;
+    }
+
+    #table tr {
+        /*height: 45px;*/
+    }
+
+    #table td {
+        padding: 3px;
+    }
+
+    #table th {
+        font-size: 6px;
+        padding: 3px;
+    }
+
+    #list .panel-body {
+        padding: 10px;
+    }
+
+    .list-group-item {
+        min-height: 45px;
+        padding: 3px 5px;
+    }
+
+    .list-group-item-heading {
+        margin-top: 0px;
+        font-size: 9px;
+    }
+
+    .list-group-item-text {
+        margin-bottom: 0px;
+    }
+
+    .w30 {
+        width: 30px;
+    }
+
+    .w40 {
+        width: 40px;
+    }
+
+    .w60 {
+        width: 60px;
+    }
+
+    .w80 {
+        width: 80px;
+    }
+
+    .w90 {
+        width: 90px;
     }
 </style>
-<div class="container-fluid" id="container">
+<div class="container-fluid" id="container" style="font-size:9px;height:calc(100% - 10px));">
     <h2>Build</h2>
-    <div class="tabs-container" style="height: calc(100% - 65px);">
+    <div class="tabs-container" style="height:calc(100% - 65px);">
 
         <ul class="nav nav-tabs">
             <li class="active">
@@ -33,7 +86,7 @@
                 <a data-toggle="tab" href="#tab-6" aria-expanded="false">第六个选项卡</a>
             </li>
         </ul>
-        <div class="tab-content" id="list" style="height: calc(100% - 65px);">
+        <div class="tab-content" id="list" style="height: calc(100% - 35px);">
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document" style="left:0px;">
                     <div class="modal-content">
@@ -58,17 +111,17 @@
                 <div class="panel-body" style="height:100%;">
                     <div class="row" style="height:100%;">
                         <div class="col-lg-2" style="height:100%;">
-                            <div id="container">
-                                <div id="wrap">
+                            <div id="container" style="height:100%;">
+                                <div id="wrap" style="height:100%;">
                                     <div class="product-head">
-                                        <h1>Product Search</h1>
-                                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                                            Launch demo modal
-                                        </button>
+                                        @*<h1>Product Search</h1>*@
+                                        @*<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                                Launch demo modal
+                                            </button>*@
                                         <div id="form"></div>
                                         <div class="clear"></div>
                                     </div>
-                                    <div class="list-group" style="height:100%;overflow-x:auto;">
+                                    <div class="list-group" style="height:calc(100% - 35px);overflow-x:hidden;margin-bottom: 0px;">
                                         <a class="list-group-item" :TableName="data.TableName" v-on:click="getTableInfo" v-for="data in tableList">
                                             <h4 class="list-group-item-heading">{{data.TableName}}</h4>
                                             <span class="badge">{{data.FieldCount}}</span>
@@ -81,86 +134,84 @@
                         </div>
 
                         <div class="col-lg-10" style="height:100%;">
-                            <div class="ibox">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                <div class="checkbox checkbox-success">
-                                                    <input id="checkbox0" type="checkbox">
-                                                    <label for="checkbox0">
-                                                    </label>
-                                                </div>
-                                            </th>
-                                            <th>字段</th>
-                                            <th>注释</th>
-                                            <th>类型</th>
-                                            <th>长度</th>
-                                            <th>非空</th>
-                                            <th>默认值</th>
-                                            <th width="40%">各项配置</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="(info,index) in fieldList">
-                                            <td>
-                                                <div class="checkbox checkbox-success">
-                                                    <input :id="'ck-1-'+index" type="checkbox" v-model="info.IsCheck">
-                                                    <label :for="'ck-1-'+index"></label>
-                                                </div>
-                                            </td>
-                                            <td>
 
-                                                <div class="input-group m-b" style="margin-bottom:0px;">
-                                                    <span class="input-group-addon" style="padding-bottom: 0px;padding-left: 2px;padding-right: 2px;
-">
-                                                        <input type="checkbox" class="css-checkbox lrg" :id="'ck-9-'+index" v-model="info.IsDataColumn">
-                                                        <label :for="'ck-9-'+index" class="css-label lrg vlad"></label>
-                                                    </span>
-                                                    <input type="text" class="form-control" v-model="info.ColumnName">
-                                                </div>
-                                            </td>
-                                            <td><input type="text" class="form-control" v-model="info.Comment"></td>
-                                            <td><input type="text" class="form-control SelectType" v-model="info.TypeName"></td>
-                                            <td><input type="text" class="form-control form-control-sm" v-model="info.MaxLength"></td>
-                                            <td>
-                                                <div class="checkbox checkbox-success">
-                                                    <input :id="'ck-2-'+index" type="checkbox" v-model="info.NotNUll">
-                                                    <label :for="'ck-2-'+index"></label>
-                                                </div>
-                                            </td>
-                                            <td><input type="text" class="form-control" Value="默认值"></td>
-                                            <td>
-                                                <div class="checkbox checkbox-success checkbox-inline">
-                                                    <input :id="'ck-3-'+index" type="checkbox" v-model="info.IsValidate">
-                                                    <label :for="'ck-3-'+index">IsValidate</label>
-                                                </div>
-                                                <div class="checkbox checkbox-success checkbox-inline">
-                                                    <input :id="'ck-4-'+index" type="checkbox" v-model="info.NotNUll">
-                                                    <label :for="'ck-4-'+index"></label>
-                                                </div>
-                                                <div class="checkbox checkbox-success checkbox-inline">
-                                                    <input :id="'ck-5-'+index" type="checkbox" v-model="info.NotNUll">
-                                                    <label :for="'ck-5-'+index"></label>
-                                                </div>
-                                                <div class="checkbox checkbox-success">
+                            <table id="table" class="table" style="font-size:9px;margin-bottom:0px;">
+                                <thead>
+                                    <tr>
+                                        <th class="w40">操作</th>
+                                        <th class="w30">
+                                            <input id="checkbox0" type="checkbox" class="css-checkbox lrg">
+                                            <label for="checkbox0" class="css-label lrg vlad" style="margin-bottom:0px;"></label>
+                                        </th>
+                                        <th>字段</th>
+                                        <th>注释</th>
+                                        <th class="w90">类型</th>
+                                        <th class="w60">长度</th>
+                                        <th class="w40">非空</th>
+                                        <th class="w60">默认值</th>
+                                        <th width="40%">各项配置</th>
+                                    </tr>
+                                </thead>
+                            </table>
 
-                                                </div>
-                                                <div class="checkbox checkbox-success checkbox-inline">
-                                                    <input :id="'ck-6-'+index" type="checkbox" v-model="info.IsShow">
-                                                    <label :for="'ck-6-'+index">IsShow</label>
-                                                </div>
-                                                <div class="checkbox checkbox-success checkbox-inline">
-                                                    <input :id="'ck-7-'+index" type="checkbox" v-model="info.IsCondition">
-                                                    <label :for="'ck-7-'+index">IsCondition</label>
-                                                </div>
-                                                <div class="checkbox checkbox-success checkbox-inline">
-                                                    <input :id="'ck-8-'+index" type="checkbox" v-model="info.NotNUll">
-                                                    <label :for="'ck-8-'+index"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                            <div class="ibox" style="height:calc(100% - 28px);overflow:auto;">
+                                <table id="table" class="table" style="font-size:9px;">
+                                    <tr v-for="(info,index) in fieldList">
+                                        <td class="w40">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true" v-on:click="addNext(index)"></span>
+                                            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                        </td>
+                                        <td class="w30">
+                                            <input :id="'ck-1-'+index" type="checkbox" class="css-checkbox lrg" v-model="info.IsCheck">
+                                            <label :for="'ck-1-'+index" class="css-label lrg vlad" style="margin-bottom:0px;"></label>
+                                        </td>
+                                        <td>
+                                            <div class="input-group m-b" style="margin-bottom:0px;">
+                                                <span class="input-group-addon" style="padding-bottom: 0px;padding-left: 6px;padding-right: 2px;padding-top: 0px;">
+                                                    <input type="checkbox" class="css-checkbox lrg" :id="'ck-9-'+index" v-model="info.IsDataColumn">
+                                                    <label :for="'ck-9-'+index" class="css-label lrg vlad" style="margin-bottom:0px;"></label>
+                                                </span>
+                                                <input type="text" class="form-control" v-model="info.ColumnName">
+                                            </div>
+                                        </td>
+                                        <td><input type="text" class="form-control" v-model="info.Comment"></td>
+                                        <td class="w90"><input type="text" class="form-control SelectType" v-model="info.TypeName"></td>
+                                        <td class="w60"><input type="text" class="form-control form-control-sm" v-model="info.MaxLength"></td>
+                                        <td class="w40">
+                                            <input :id="'ck-2-'+index" type="checkbox" class="css-checkbox lrg" v-model="info.NotNUll">
+                                            <label :for="'ck-2-'+index" class="css-label lrg vlad" style="margin-bottom:0px;"></label>
+                                        </td>
+                                        <td class="w60"><input type="text" class="form-control" Value="默认值"></td>
+                                        <td width="40%">
+                                            <div class="checkbox checkbox-success checkbox-inline">
+                                                <input :id="'ck-3-'+index" type="checkbox" v-model="info.IsValidate">
+                                                <label :for="'ck-3-'+index">IsValidate</label>
+                                            </div>
+                                            <div class="checkbox checkbox-success checkbox-inline">
+                                                <input :id="'ck-4-'+index" type="checkbox" v-model="info.NotNUll">
+                                                <label :for="'ck-4-'+index"></label>
+                                            </div>
+                                            <div class="checkbox checkbox-success checkbox-inline">
+                                                <input :id="'ck-5-'+index" type="checkbox" v-model="info.NotNUll">
+                                                <label :for="'ck-5-'+index"></label>
+                                            </div>
+                                            @*<div class="checkbox checkbox-success">
+
+                                                </div>*@
+                                            <div class="checkbox checkbox-success checkbox-inline">
+                                                <input :id="'ck-6-'+index" type="checkbox" v-model="info.IsShow">
+                                                <label :for="'ck-6-'+index">IsShow</label>
+                                            </div>
+                                            <div class="checkbox checkbox-success checkbox-inline">
+                                                <input :id="'ck-7-'+index" type="checkbox" v-model="info.IsCondition">
+                                                <label :for="'ck-7-'+index">IsCondition</label>
+                                            </div>
+                                            <div class="checkbox checkbox-success checkbox-inline">
+                                                <input :id="'ck-8-'+index" type="checkbox" v-model="info.NotNUll">
+                                                <label :for="'ck-8-'+index"></label>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>
@@ -170,7 +221,7 @@
             <div id="tab-2" class="tab-pane" style="height:100%;">
                 <div class="panel-body" style="height:100%;">
                     <button class="btn-success" onclick="setData('BuildEditHTML');" id="btnBuildEditHTML">Build Code</button>
-                    <iframe id="iframeBuildEditHTML" style="width:100%;height:100%;border:none;"></iframe>
+                    <iframe id="iframeBuildEditHTML" style="width:100%;height:calc(100% - 20px);border:none;"></iframe>
                 </div>
             </div>
             <div id="tab-3" class="tab-pane" style="height:100%;">
@@ -187,8 +238,8 @@
             </div>
             <div id="tab-5" class="tab-pane" style="height:100%;">
                 <div class="panel-body" style="height:100%;">
-                    <button class="btn-success" onclick="setData();" id="btnBuildEditHTML">Build Code</button>
-                    <iframe id="iframeBuildEditHTML" style="width:100%;height:100%;border:none;"></iframe>
+                    <button class="btn-success" onclick="setData('CreateTable');" id="btnCreateTable">CreateTable</button>
+                    <iframe id="iframeCreateTable" style="width:100%;height:100%;border:none;"></iframe>
                 </div>
             </div>
             <div id="tab-6" class="tab-pane" style="height:100%;">
@@ -205,7 +256,7 @@
     $(function () {
         var height = document.documentElement.clientHeight;
         document.getElementsByTagName('body')[0].style.height = height;
-        $('#container').height(height);
+        $('#container').height(height-10);
     });
 
     window.onresize = function () {
