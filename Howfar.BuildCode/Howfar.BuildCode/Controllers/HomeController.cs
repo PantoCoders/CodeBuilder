@@ -181,10 +181,35 @@ namespace Howfar.BuildCode.Controllers
         }
         #endregion
 
+
+
+        #region  · Build Dal
+        public ActionResult BuildDal()
+        {
+            Table Entity = new Table();
+            Entity.ConfigInfo = StaticConfigInfo;
+            return View(Entity);
+        }
+        #endregion
+
+
+        public ActionResult BuildBLL()
+        {
+            Table Entity = new Table();
+            Entity.ConfigInfo = StaticConfigInfo;
+            return View(Entity);
+        }
+
+        public ActionResult BuildController()
+        {
+            Table Entity = new Table();
+            Entity.ConfigInfo = StaticConfigInfo;
+            return View(Entity);
+        }
         #region · CreateTable
         public ActionResult CreateTable()
         {
-            Public.CreateTable(StaticDataList, StaticConfigInfo);
+            ViewBag.SQLContent = Public.CreateTable(StaticDataList, StaticConfigInfo);
             return View();
         }
         #endregion

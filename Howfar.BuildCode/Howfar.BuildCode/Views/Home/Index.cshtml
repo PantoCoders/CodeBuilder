@@ -42,6 +42,28 @@
         margin-bottom: 0px;
     }
 
+    #tbInfo td {
+        width: 120px;
+    }
+
+    #tbInfo th {
+        width: 120px;
+        font-size: 11px;
+    }
+
+    #tbInfo input {
+        width: 120px;
+    }
+
+    .vlad {
+        font-size: 9px !important;
+    }
+    /*.tbInfo td {
+        width: 120px;
+    }
+    .tbInfo td {
+        width: 120px;
+    }*/
     .w30 {
         width: 30px;
     }
@@ -64,49 +86,63 @@
 </style>
 <div class="container-fluid" id="container" style="font-size:9px;height:calc(100% - 10px));">
     <h2>Build</h2>
+    <div style="float:right;">
+        <table id="tbInfo">
+            <thead>
+                <tr>
+                    <th>TableName</th>
+                    <th>TableComment</th>
+                    <th>EntityName</th>
+                    <th>PageName</th>
+                    <th>ModelFolderName</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> <input type="text" id="txtTableName"></td>
+                    <td> <input type="text" id="txtTableComment"></td>
+                    <td> <input type="text" id="txtEntityName" /></td>
+                    <td> <input type="text" id="txtPageName"></td>
+                    <td> <input type="text" id="txtModelFolderName"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div class="tabs-container" style="height:calc(100% - 65px);">
 
         <ul class="nav nav-tabs">
             <li class="active">
-                <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 第一个选项卡</a>
+                <a data-toggle="tab" href="#tab-1" aria-expanded="true"> Main</a>
             </li>
             <li class="">
-                <a data-toggle="tab" href="#tab-2" aria-expanded="false">第二个选项卡</a>
+                <a data-toggle="tab" href="#tab-2" aria-expanded="false">BuildEntity</a>
             </li>
             <li class="">
-                <a data-toggle="tab" href="#tab-3" aria-expanded="false">第三个选项卡</a>
+                <a data-toggle="tab" href="#tab-3" aria-expanded="false">Add Table SQL</a>
             </li>
             <li class="">
-                <a data-toggle="tab" href="#tab-4" aria-expanded="false">第四个选项卡</a>
+                <a data-toggle="tab" href="#tab-4" aria-expanded="false">Controller</a>
             </li>
             <li class="">
-                <a data-toggle="tab" href="#tab-5" aria-expanded="false">第五个选项卡</a>
+                <a data-toggle="tab" href="#tab-5" aria-expanded="false">BLL</a>
             </li>
             <li class="">
-                <a data-toggle="tab" href="#tab-6" aria-expanded="false">第六个选项卡</a>
+                <a data-toggle="tab" href="#tab-6" aria-expanded="false">Edit Html</a>
+            </li>
+            <li class="">
+                <a data-toggle="tab" href="#tab-7" aria-expanded="false">Edit JS</a>
+            </li>
+            <li class="">
+                <a data-toggle="tab" href="#tab-8" aria-expanded="false">List Html</a>
+            </li>
+            <li class="">
+                <a data-toggle="tab" href="#tab-9" aria-expanded="false">List JS</a>
+            </li>
+            <li class="">
+                <a data-toggle="tab" href="#tab-10" aria-expanded="false">Dal</a>
             </li>
         </ul>
         <div class="tab-content" id="list" style="height: calc(100% - 35px);">
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document" style="left:0px;">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                        </div>
-                        <div class="modal-body">
-                            <input type="text" id="txtTableName" class="form-control" placeholder="txtTableName">
-                            <input type="text" id="txtModelFolderName" class="form-control" placeholder="txtModelFolderName">
-                            <input type="text" id="txtPageName" class="form-control" placeholder="txtPageName">
-                            <input type="text" id="txtEntityName" class="form-control" placeholder="txtEntityName" />
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div id="tab-1" class="tab-pane active" style="height:100%;">
                 <div class="panel-body" style="height:100%;">
                     <div class="row" style="height:100%;">
@@ -114,10 +150,6 @@
                             <div id="container" style="height:100%;">
                                 <div id="wrap" style="height:100%;">
                                     <div class="product-head">
-                                        @*<h1>Product Search</h1>*@
-                                        @*<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                                                Launch demo modal
-                                            </button>*@
                                         <div id="form"></div>
                                         <div class="clear"></div>
                                     </div>
@@ -134,7 +166,6 @@
                         </div>
 
                         <div class="col-lg-10" style="height:100%;">
-
                             <table id="table" class="table" style="font-size:9px;margin-bottom:0px;">
                                 <thead>
                                     <tr>
@@ -158,8 +189,8 @@
                                 <table id="table" class="table" style="font-size:9px;">
                                     <tr v-for="(info,index) in fieldList">
                                         <td class="w40">
-                                            <span class="glyphicon glyphicon-plus" aria-hidden="true" v-on:click="addNext(index)"></span>
-                                            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true" v-on:click="addRow(index)"></span>
+                                            <span class="glyphicon glyphicon-minus" aria-hidden="true" v-on:click="delRow(index)"></span>
                                         </td>
                                         <td class="w30">
                                             <input :id="'ck-1-'+index" type="checkbox" class="css-checkbox lrg" v-model="info.IsCheck">
@@ -183,33 +214,24 @@
                                         </td>
                                         <td class="w60"><input type="text" class="form-control" Value="默认值"></td>
                                         <td width="40%">
-                                            <div class="checkbox checkbox-success checkbox-inline">
-                                                <input :id="'ck-3-'+index" type="checkbox" v-model="info.IsValidate">
-                                                <label :for="'ck-3-'+index">IsValidate</label>
-                                            </div>
-                                            <div class="checkbox checkbox-success checkbox-inline">
+                                            <input :id="'ck-3-'+index" type="checkbox" class="css-checkbox lrg" v-model="info.IsValidate">
+                                            <label :for="'ck-3-'+index" class="css-label lrg vlad" style="margin-bottom:0px;">表单验证</label>
+                                            @*<div class="checkbox checkbox-success checkbox-inline">
                                                 <input :id="'ck-4-'+index" type="checkbox" v-model="info.NotNUll">
                                                 <label :for="'ck-4-'+index"></label>
                                             </div>
                                             <div class="checkbox checkbox-success checkbox-inline">
                                                 <input :id="'ck-5-'+index" type="checkbox" v-model="info.NotNUll">
                                                 <label :for="'ck-5-'+index"></label>
-                                            </div>
-                                            @*<div class="checkbox checkbox-success">
-
-                                                </div>*@
-                                            <div class="checkbox checkbox-success checkbox-inline">
-                                                <input :id="'ck-6-'+index" type="checkbox" v-model="info.IsShow">
-                                                <label :for="'ck-6-'+index">IsShow</label>
-                                            </div>
-                                            <div class="checkbox checkbox-success checkbox-inline">
-                                                <input :id="'ck-7-'+index" type="checkbox" v-model="info.IsCondition">
-                                                <label :for="'ck-7-'+index">IsCondition</label>
-                                            </div>
-                                            <div class="checkbox checkbox-success checkbox-inline">
+                                            </div>*@
+                                            <input :id="'ck-6-'+index" type="checkbox" class="css-checkbox lrg" v-model="info.IsShow">
+                                            <label :for="'ck-6-'+index" class="css-label lrg vlad" style="margin-bottom:0px;">列表展示</label>
+                                            <input :id="'ck-7-'+index" type="checkbox" class="css-checkbox lrg" v-model="info.IsCondition">
+                                            <label :for="'ck-7-'+index" class="css-label lrg vlad" style="margin-bottom:0px;">搜索条件</label>
+                                            @*<div class="checkbox checkbox-success checkbox-inline">
                                                 <input :id="'ck-8-'+index" type="checkbox" v-model="info.NotNUll">
                                                 <label :for="'ck-8-'+index"></label>
-                                            </div>
+                                            </div>*@
                                         </td>
                                     </tr>
                                 </table>
@@ -220,32 +242,50 @@
             </div>
             <div id="tab-2" class="tab-pane" style="height:100%;">
                 <div class="panel-body" style="height:100%;">
-                    <button class="btn-success" onclick="setData('BuildEditHTML');" id="btnBuildEditHTML">Build Code</button>
-                    <iframe id="iframeBuildEditHTML" style="width:100%;height:calc(100% - 20px);border:none;"></iframe>
-                </div>
-            </div>
-            <div id="tab-3" class="tab-pane" style="height:100%;">
-                <div class="panel-body" style="height:100%;">
-                    <button class="btn-success" onclick="setData('BuildListJS');" id="btnBuildEditHTML">Build Code</button>
-                    <iframe id="iframeBuildListJS" style="width:100%;height:100%;border:none;"></iframe>
-                </div>
-            </div>
-            <div id="tab-4" class="tab-pane" style="height:100%;">
-                <div class="panel-body" style="height:100%;">
-                    <button class="btn-success" onclick="setData('BuildEntity');" id="btnBuildEditHTML">Build Code</button>
+                    <button class="btn-success" onclick="setData('BuildEntity');" id="btnBuildEntity">Build Code</button>
                     <iframe id="iframeBuildEntity" style="width:100%;height:100%;border:none;"></iframe>
                 </div>
             </div>
-            <div id="tab-5" class="tab-pane" style="height:100%;">
+            <div id="tab-3" class="tab-pane" style="height:100%;">
                 <div class="panel-body" style="height:100%;">
                     <button class="btn-success" onclick="setData('CreateTable');" id="btnCreateTable">CreateTable</button>
                     <iframe id="iframeCreateTable" style="width:100%;height:100%;border:none;"></iframe>
                 </div>
             </div>
+            <div id="tab-4" class="tab-pane" style="height:100%;">
+                <div class="panel-body" style="height:100%;">
+                    <button class="btn-success" onclick="setData('BuildController');">BuildController</button>
+                    <iframe id="iframeBuildController" style="width:100%;height:100%;border:none;"></iframe>
+                </div>
+            </div>
+            <div id="tab-5" class="tab-pane" style="height:100%;">
+                <div class="panel-body" style="height:100%;">
+                    <button class="btn-success" onclick="setData('BuildBLL');">BuildBLL</button>
+                    <iframe id="iframeBuildBLL" style="width:100%;height:100%;border:none;"></iframe>
+                </div>
+            </div>
             <div id="tab-6" class="tab-pane" style="height:100%;">
                 <div class="panel-body" style="height:100%;">
-                    <button class="btn-success" onclick="setData();" id="btnBuildEditHTML">Build Code</button>
-                    <iframe id="iframeBuildEditHTML" style="width:100%;height:100%;border:none;"></iframe>
+                    <button class="btn-success" onclick="setData('BuildEditHTML');" id="btnBuildEditHTML">Build Code</button>
+                    <iframe id="iframeBuildEditHTML" style="width:100%;height:calc(100% - 20px);border:none;"></iframe>
+                </div>
+            </div>
+            <div id="tab-7" class="tab-pane" style="height:100%;">
+                @*edit js*@
+            </div>
+            <div id="tab-8" class="tab-pane" style="height:100%;">
+                @*List HTML*@
+            </div>
+            <div id="tab-9" class="tab-pane" style="height:100%;">
+                <div class="panel-body" style="height:100%;">
+                    <button class="btn-success" onclick="setData('BuildListJS');" id="btnBuildListJS">Build Code</button>
+                    <iframe id="iframeBuildListJS" style="width:100%;height:100%;border:none;"></iframe>
+                </div>
+            </div>
+            <div id="tab-10" class="tab-pane" style="height:100%;">
+                <div class="panel-body" style="height:100%;">
+                    <button class="btn-success" onclick="setData('BuildDal');">Build Code</button>
+                    <iframe id="iframeBuildDal" style="width:100%;height:100%;border:none;"></iframe>
                 </div>
             </div>
         </div>
@@ -256,7 +296,7 @@
     $(function () {
         var height = document.documentElement.clientHeight;
         document.getElementsByTagName('body')[0].style.height = height;
-        $('#container').height(height-10);
+        $('#container').height(height - 10);
     });
 
     window.onresize = function () {

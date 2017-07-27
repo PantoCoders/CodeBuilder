@@ -1,0 +1,163 @@
+﻿@model Howfar.BuildCode.Models.Table
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Editor</title>
+    <style type="text/css" media="screen">
+        body {
+            overflow: hidden;
+        }
+
+        #editor {
+            margin: 0;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    </style>
+
+</head>
+<body>
+    <pre id="editor"><textarea>
+using PDRZ.Integration.Entity.School;
+using Panto.Framework;
+using Panto.Framework.BLL;
+using Panto.Framework.Exceptions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Web;
+
+namespace PDRZ.Integration.BLL.School.@Model.ConfigInfo.ModelFolderName
+{
+    /// &ltsummary>
+    /// @Model.ConfigInfo.EntityName 的业务逻辑类
+    /// &lt/summary>
+    public class @Model.ConfigInfo.EntityName@("BLL : StandardBLL")<@Model.ConfigInfo.EntityName>
+    {
+        @Model.ConfigInfo.EntityName@("Dal") Dal=new @Model.ConfigInfo.EntityName@("Dal")();
+        #region 标准方法
+
+        /// &ltsummary>
+        /// 新增方法
+        /// &lt/summary>
+        /// &ltparam name="entity">待更新的实体&lt/param>
+        /// <returns>大于0表示成功，否则失败。</returns>
+        public override int Insert(@Model.ConfigInfo.EntityName entity)
+        {
+            return base.Insert(entity);
+        }
+
+        /// &ltsummary>
+        /// 修改方法
+        /// &lt/summary>
+        /// &ltparam name="entity">待修改的实体&lt/param>
+        /// <returns>大于0表示成功，否则失败。</returns>
+        public override int Update(@Model.ConfigInfo.EntityName entity)
+        {
+            return base.Update(entity);
+        }
+
+        /// &ltsummary>
+        /// 获取实体列表
+        /// &lt/summary>
+        /// &ltparam name="argsObject">参数&lt/param>
+        /// &ltparam name="filter">过滤条件（参数化sql的过滤条件语句）&lt/param>
+        /// <returns>实体列表</returns>
+        public override List<@Model.ConfigInfo.EntityName> GetList(object argsObject, string filter)
+        {
+            return base.GetList(argsObject, filter);
+        }
+
+        /// &ltsummary>
+        /// 获取详细信息
+        /// &lt/summary>
+        /// &ltparam name="oid">主键&lt/param>
+        /// <returns>实体详细信息</returns>
+        public @Model.ConfigInfo.EntityName GetDetail(Guid oid)
+        {
+            return base.GetSingle(oid);
+        }
+
+        /// &ltsummary>
+        /// 获取个数
+        /// &lt/summary>
+        /// &ltparam name="argsObject">参数&lt/param>
+        /// &ltparam name="filter">过滤条件（参数化sql的过滤条件语句）&lt/param>
+        /// <returns>个数</returns>
+        public override int GetCount(object argsObject, string filter)
+        {
+            return base.GetCount(argsObject, filter);
+        }
+
+        /// &ltsummary>
+        /// 获取分页列表
+        /// &lt/summary>
+        /// &ltparam name="pagingInfo">分页信息&lt/param>
+        /// <returns>分页列表</returns>
+        public List<@Model.ConfigInfo.EntityName> GetPageList(PagingInfo pagingInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// &ltsummary>
+        /// 校验方法
+        /// &lt/summary>
+        /// &ltparam name="entity">实体信息&lt/param>
+        public override void CheckBefore(@Model.ConfigInfo.EntityName entity)
+        {
+            base.CheckBefore(entity);
+        }
+
+        #endregion
+
+        #region 扩展方法
+
+        /// &ltsummary>
+        /// 分页获取数据
+        /// &lt/summary>
+        /// &ltparam name="param">&lt/param>
+        /// &ltparam name="json">&lt/param>
+        /// &ltparam name="schoolID">&lt/param>
+        /// <returns></returns>
+        public List<@Model.ConfigInfo.EntityName> GetPageList(SearchParam param, string json, Guid schoolID)
+        {
+            return Dal.GetPageList(param, json, schoolID);
+        }
+        #endregion
+    }
+}
+    </textarea></pre>
+    <script src="~/Scripts/ace/ace.js"></script>
+    <script src="~/Scripts/ace/ext-language_tools.js"></script>
+
+    <script>
+        var editor = ace.edit("editor");
+        //设置风格和语言（更多风格和语言，请到github上相应目录查看）
+        theme = "xcode"
+        language = "csharp"//"csharp"
+        editor.setTheme("ace/theme/" + theme);
+        editor.session.setMode("ace/mode/" + language);
+        ace.require("ace/ext/language_tools");
+        //字体大小
+        editor.setFontSize(13);
+
+        //设置只读（true时只读，用于展示代码）
+        editor.setReadOnly(false);
+
+        //自动换行,设置为off关闭
+        editor.setOption("wrap", "free")
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true
+        });
+    </script>
+</body>
+</html>

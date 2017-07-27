@@ -81,10 +81,22 @@ function createVue(data) {
                     bindType();
                 });
             },
-            addNext: function (index) {
+            addRow: function (index) {
                 applist.fieldList.splice(index + 1, 0, {});
+            },
+            delRow: function (index) {
+                applist.fieldList.splice(index, 1);
             }
-        }, filters: {}
+        }, filters: {},
+        computed: {
+            computerArr: function () {
+                var arr = applist.fieldList;
+                return arr.filter(function (item) {
+                    console.log(item.ColumnName);
+                    $.trim(item.ColumnName).length > 0;
+                });
+            }
+        }
     });
 }
 
@@ -96,6 +108,8 @@ function setData(name) {
         EntityName: $.trim($('#txtEntityName').val()),
         PageName: $.trim($('#txtPageName').val())
     };
+    console.log(applist.fieldList);
+    console.log(applist.computerArr);
     $.post('/Home/SetData', { DataList: applist.fieldList, ConfigInfo: ConfigInfo }, function () {
         document.getElementById('iframe' + name).src = '/Home/' + name;
     });

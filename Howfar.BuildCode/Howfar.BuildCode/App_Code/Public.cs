@@ -53,22 +53,29 @@ namespace Howfar.BuildCode.App_Code
             return csharpType;
         }
 
-        public static void CreateTable(List<Table> List, ConfigInfo Config)
+        public static string CreateTable(List<Table> List, ConfigInfo Config)
         {
             List<string> strCreateTable = new List<string>();
             List<string> strCreateComment = new List<string>();
 
-            strCreateTable.Add($"CREATE TABLE [dbo].[{Config.TableName}](");
+            List = List.Where(t => t.IsDataColumn == true).ToList(); //过滤非数据库字段
+
+            if (CPQuery.From($"SELECT  COUNT(1) FROM dbo.SysObjects WHERE ID = object_id(N'[{Config.TableName.Trim()}]') ").ExecuteScalar<int>() > 0)
+            {
+                return Config.TableName + "已存在！";
+            }
+
+            strCreateTable.Add($"CREATE TABLE [dbo].[{Config.TableName.Trim()}](");
             strCreateComment.Add($"EXEC sp_addextendedproperty N'MS_Description', N'{Config.TableComment}', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', NULL, NULL; ");
             foreach (var item in List)
             {
                 string length = item.TypeName.Contains("varchar") ? $"({item.MaxLength.ToString()})" : "";
-                strCreateTable.Add(string.Format($"[{item.ColumnName}] {item.TypeName}{{0}} {{1}} {{2}},",
+                strCreateTable.Add(string.Format($"[{item.ColumnName.Trim()}] {item.TypeName}{{0}} {{1}} {{2}},",
                     length,
                     item.NotNUll ? "Not Null" : "Null",
                     item.DefaultValue?.Length > 0 ? $"'{item.DefaultValue}'" : ""
                     ));
-                strCreateComment.Add($"EXEC sp_addextendedproperty N'MS_Description', N'{item.Comment}', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'{item.ColumnName}'; ");
+                strCreateComment.Add($"EXEC sp_addextendedproperty N'MS_Description', N'{item.Comment}', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName.Trim()}', 'COLUMN', N'{item.ColumnName.Trim()}'; ");
             }
             strCreateTable.Add(@"   [Timestamp] [timestamp] NULL,
                                     [SchoolID] [uniqueidentifier] NOT NULL,
@@ -85,7 +92,7 @@ namespace Howfar.BuildCode.App_Code
                                     EXEC sp_addextendedproperty N'MS_Description', N'修改时间', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'UpdateDate' ");
             CPQuery.From(string.Join("", strCreateTable)).ExecuteNonQuery();
             CPQuery.From(string.Join("", strCreateComment)).ExecuteNonQuery();
-
+            return string.Join("\r\n", strCreateTable) + string.Join("\r\n", strCreateComment);
         }
 
     }

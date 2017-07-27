@@ -600,6 +600,11 @@
     <Content Include="Views\Home\BuildListJS.cshtml" />
     <Content Include="Views\Home\test.cshtml" />
     <Content Include="Views\Home\BuildEntity.cshtml" />
+    <Content Include="Views\Home\CreateTable.cshtml" />
+    <Content Include="Views\Home\BuildController.cshtml" />
+    <Content Include="Views\Home\BuildBLL.cshtml" />
+    <Content Include="Views\Home\BuildDal.cshtml" />
+    <Content Include="Views\Home\BuildListHtml.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
