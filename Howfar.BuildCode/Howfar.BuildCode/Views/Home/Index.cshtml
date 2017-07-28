@@ -4,6 +4,8 @@
 
 @Styles.Render("~/Content")
 @Scripts.Render("~/JavaScript")
+<link href="~/Content/toastr.min.css" rel="stylesheet" />
+<script src="~/Scripts/toastr.min.js"></script>
 <style>
     .form-control {
         padding: 0px;
@@ -52,7 +54,8 @@
     }
 
     #tbInfo input {
-        width: 120px;
+        width: 140px;
+        font-size:10px;
     }
 
     .vlad {
@@ -154,7 +157,7 @@
                                         <div class="clear"></div>
                                     </div>
                                     <div class="list-group" style="height:calc(100% - 35px);overflow-x:hidden;margin-bottom: 0px;">
-                                        <a class="list-group-item" :TableName="data.TableName" v-on:click="getTableInfo" v-for="data in tableList">
+                                        <a class="list-group-item" :TableName="data.TableName" v-on:click="getTableInfo(data.TableName,data.Comment,this)" v-for="data in tableList">
                                             <h4 class="list-group-item-heading">{{data.TableName}}</h4>
                                             <span class="badge">{{data.FieldCount}}</span>
                                             <p class="list-group-item-text">{{data.Comment}}</p>
@@ -274,6 +277,10 @@
                 @*edit js*@
             </div>
             <div id="tab-8" class="tab-pane" style="height:100%;">
+                <div class="panel-body" style="height:100%;">
+                    <button class="btn-success" onclick="setData('BuildListHtml');">Build Code</button>
+                    <iframe id="iframeBuildListHtml" style="width:100%;height:100%;border:none;"></iframe>
+                </div>
                 @*List HTML*@
             </div>
             <div id="tab-9" class="tab-pane" style="height:100%;">
@@ -297,6 +304,21 @@
         var height = document.documentElement.clientHeight;
         document.getElementsByTagName('body')[0].style.height = height;
         $('#container').height(height - 10);
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "1000",
+            "hideDuration": "20",
+            "timeOut": "5000",
+            "extendedTimeOut": "20",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
     });
 
     window.onresize = function () {

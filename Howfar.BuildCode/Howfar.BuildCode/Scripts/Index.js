@@ -69,14 +69,15 @@ function createVue(data) {
         , created: function () { }
         , methods: {
             init: function () { },
-            getTableInfo: function (e) {
+            getTableInfo: function (tableName, tablecomment, e) {
                 var element = $(e.currentTarget);
                 $('.list-group-item').removeClass('active');
                 element.addClass('active');
-                var tableName = element.attr('TableName');
+
                 $.getJSON('/Ajax/GetTableDetail?TableName=' + tableName, function (fieldData) {
                     $('#txtTableName').val(tableName);
                     $('#txtEntityName').val(tableName.substr(tableName.indexOf('_') + 1));
+                    $('#txtTableComment').val(tablecomment);
                     applist.fieldList = fieldData;
                     bindType();
                 });
@@ -92,8 +93,7 @@ function createVue(data) {
             computerArr: function () {
                 var arr = applist.fieldList;
                 return arr.filter(function (item) {
-                    console.log(item.ColumnName);
-                    $.trim(item.ColumnName).length > 0;
+                    return $.trim(item.ColumnName).length > 0;
                 });
             }
         }
@@ -104,13 +104,18 @@ function createVue(data) {
 function setData(name) {
     var ConfigInfo = {
         TableName: $.trim($('#txtTableName').val()),
+        TableComment: $.trim($('#txtTableComment').val()),
         ModelFolderName: $.trim($('#txtModelFolderName').val()),
         EntityName: $.trim($('#txtEntityName').val()),
         PageName: $.trim($('#txtPageName').val())
     };
-    console.log(applist.fieldList);
-    console.log(applist.computerArr);
-    $.post('/Home/SetData', { DataList: applist.fieldList, ConfigInfo: ConfigInfo }, function () {
+    var flag = true;
+    if (ConfigInfo.TableName.length <= 0) {
+        toastr['error']("TableName 为空")
+        flag = false;
+    }
+    if (!flag) { return;}
+    $.post('/Home/SetData', { DataList: applist.computerArr, ConfigInfo: ConfigInfo }, function () {
         document.getElementById('iframe' + name).src = '/Home/' + name;
     });
 }

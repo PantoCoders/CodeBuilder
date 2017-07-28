@@ -192,6 +192,7 @@
     <Content Include="Content\font-awesome.min93e3.css" />
     <Content Include="Content\Index.css" />
     <Content Include="Content\style.min862f.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont93e3.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -581,6 +582,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery.autocomplete.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\vue.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

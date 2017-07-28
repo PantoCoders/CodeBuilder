@@ -48,34 +48,11 @@ namespace PDRZ.Integration.Dal.School.@Model.ConfigInfo.ModelFolderName
         public List<@Model.ConfigInfo.EntityName> GetPageList(SearchParam param, string json, Guid schoolID)
         {
             JObject jo = JObject.Parse(json);
-            string sql = @@"  ";
-            @*string SemseterID = "", ClassID = "", StudentNo = "", SpecialtyID = "";
-            if (jo["SemseterID"] != null && jo["SemseterID"].ToString() != "")
-            {
-                sql += " AND Moral_PunishRegister.SemesterID = @SemesterID ";
-                SemseterID = jo["SemseterID"].ToString();
-            }
-            if (jo["ClassID"] != null && jo["ClassID"].ToString() != "")
-            {
-                sql += " AND b.classID LIKE '%' + @ClassID + '%' ";
-                ClassID = jo["ClassID"].ToString();
-            }
-            if (jo["SpecialtyID"] != null && jo["SpecialtyID"].ToString() != "")
-            {
-                sql += " AND c.SpecialtyID LIKE '%' + @SpecialtyID + '%' ";
-                SpecialtyID = jo["SpecialtyID"].ToString();
-            }
-            if (jo["StudentNo"] != null && jo["StudentNo"].ToString() != "")
-            {
-                sql += " AND (a.StudentNO LIKE '%' + @StudentNo + '%' OR a.Name LIKE '%' + @StudentNo + '%') ";
-                StudentNo = jo["StudentNo"].ToString();
-            }*@
+            string sql = @@" SELECT * FROM @Model.ConfigInfo.TableName ";
+@ViewBag.sbCond
             return SortPageHelper.GetList<@Model.ConfigInfo.EntityName>(sql, new
             {
-                SemesterID = SemseterID,
-                ClassID = ClassID,
-                StudentNo = StudentNo,
-                SpecialtyID = SpecialtyID,
+@ViewBag.sbParam
                 SchoolID = schoolID
             }, param);
         }

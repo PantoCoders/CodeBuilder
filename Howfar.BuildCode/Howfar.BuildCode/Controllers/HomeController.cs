@@ -32,6 +32,7 @@ namespace Howfar.BuildCode.Controllers
             }
             for (int i = 0; i < StaticDataList.Count; i++)
             {
+                StaticDataList[i].CommentSimple = StaticDataList[i].Comment.Substring(0, StaticDataList[i].Comment.IndexOf("("));
                 StaticDataList[i].IsPK = PKList.Where(t => t.ColumnName == StaticDataList[i].ColumnName).Count() > 0;
                 StaticDataList[i].CsharpType = Public.MapCsharpType(StaticDataList[i].TypeName, StaticDataList[i].NotNUll);
             }
@@ -188,7 +189,28 @@ namespace Howfar.BuildCode.Controllers
         {
             Table Entity = new Table();
             Entity.ConfigInfo = StaticConfigInfo;
+            var t = strDalContent();
+            ViewBag.sbCond = t.Item1;
+            ViewBag.sbParam = t.Item2;
             return View(Entity);
+        }
+        private Tuple<string, string> strDalContent()
+        {
+            // 过滤 非 条件 字段
+            List<Table> List = StaticDataList.Where(t => t.IsCondition == true).ToList();
+            List<string> sbCond = new List<string>();
+            List<string> sbParam = new List<string>();
+            foreach (var item in List)
+            {
+                sbCond.Add($@"            string {item.ColumnName} =string.Empty;
+            if (jo[""{item.ColumnName}""] != null && !string.IsNullOrEmpty(jo[""{item.ColumnName}""].ToString()))
+            {{
+                   sql += "" AND {StaticConfigInfo.TableName}.{item.ColumnName} = @{item.ColumnName} "";
+                   {item.ColumnName} = jo[""{item.ColumnName}""].ToString();
+             }}");
+                sbParam.Add($"                {item.ColumnName} = {item.ColumnName},");
+            }
+            return new Tuple<string, string>(string.Join("\r\n", sbCond), string.Join("\r\n", sbParam));
         }
         #endregion
 
@@ -206,6 +228,15 @@ namespace Howfar.BuildCode.Controllers
             Entity.ConfigInfo = StaticConfigInfo;
             return View(Entity);
         }
+
+        public ActionResult BuildListHtml()
+        {
+            Table Entity = new Table();
+            Entity.ConfigInfo = StaticConfigInfo;
+            Entity.EntityList = StaticDataList.Where(t => t.IsCondition == true).ToList();
+            return View(Entity);
+        }
+
         #region · CreateTable
         public ActionResult CreateTable()
         {

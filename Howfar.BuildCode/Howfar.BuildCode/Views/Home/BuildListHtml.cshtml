@@ -24,7 +24,65 @@
 </head>
 <body>
     <pre id="editor"><textarea>
-
+@@model PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.EntityName@Model.ConfigInfo.EntityName@("ViewData")
+@@using PDRZ.IntegrationController.Base;
+@@using Panto.Framework.Entity;
+@@{
+    ViewBag.Title = "@Model.ConfigInfo.TableComment";
+    List<PermissionInfo> perms = ViewBag.perms;
+    List<string> listPerm = new List<string>();
+    if (perms != null)
+    {
+        listPerm = perms.Select(p => p.Code).ToList();
+    }
+}
+&ltscript type="text/javascript" src="@Url.Content("~/Front/js/jQuery.table.js")">&lt/script>
+&ltcript type="text/javascript" src="@@Url.Content("~/Scripts/*******/*******/@Model.ConfigInfo.PageName@("List.js")">&lt/script>
+@@Html.AntiForgeryToken()
+<div class="container-fluid" style="height: calc(100%);">
+    <div class="row">
+        <div class="col-xs-12 catalog clearfix">
+            <i class="current"></i>
+            <p>
+                <span class="catalog-parent">德育管理</span><strong>></strong><span class="catalog-child">@Model.ConfigInfo.TableComment</span>
+            </p>
+         </div>
+    </div>
+    <div class="row main user">
+        <div class="col-xs-12 info-left">
+            <div id="grid" class="col-sm-12 infoMain commonStyle staff active">
+                <div class="inputWrap" style="height: 65px;">
+                    <span class="search_">查询条件</span>
+                    <div class="searchWrap">
+                        @foreach (var item in Model.EntityList)
+                        {
+                        <div class="searchContent search">
+                            <label>@item.CommentSimple</label>
+                            <input type="text" name="" id="@item.ColumnName" value="" />
+                        </div>
+                        }
+                        <div class="searchButton">
+                            <input type="button" id="btnQuery" value="查询" onclick="@Model.ConfigInfo.PageName@("List.searchTable();")" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 info" style="height: calc(100% - 65px);">
+                     <div class="col-xs-12 table2 fullHeight tableEllipsis" style="padding-top: 10px;">
+                          <div class="row commonRow">
+                            <p class="col-xs-12 infoTitle">
+                                <span>@Model.ConfigInfo.TableComment@("列表")</span>
+                            </p>
+                            <div class="btnGroup searchRight">
+                                @@Html.PermissionButtonList(perms)
+                            </div>
+                            <div class="row_import"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     </textarea></pre>
     <script src="~/Scripts/ace/ace.js"></script>
     <script src="~/Scripts/ace/ext-language_tools.js"></script>
@@ -33,7 +91,7 @@
         var editor = ace.edit("editor");
         //设置风格和语言（更多风格和语言，请到github上相应目录查看）
         theme = "xcode"
-        language = "csharp"//"csharp"
+        language = "html"//"csharp"
         editor.setTheme("ace/theme/" + theme);
         editor.session.setMode("ace/mode/" + language);
         ace.require("ace/ext/language_tools");
