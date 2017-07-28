@@ -56,6 +56,18 @@ namespace PDRZ.Integration.Dal.School.@Model.ConfigInfo.ModelFolderName
                 SchoolID = schoolID
             }, param);
         }
+
+        /// &ltsummary>
+        /// 批量删除
+        /// &lt/summary>
+        /// &ltparam name="param">&lt/param>
+        public bool BatchDelete(string IDs)
+        {
+            string sql = @@" DELETE @Model.ConfigInfo.TableName WHERE @Model.ConfigInfo.PKName IN ('" + IDs + "') ";
+            return CPQuery.From(sql).ExecuteNonQuery() > 0;
+        }
+
+
     }
 }
 

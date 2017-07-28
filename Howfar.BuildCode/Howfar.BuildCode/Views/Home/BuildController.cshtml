@@ -24,6 +24,152 @@
 </head>
 <body>
     <pre id="editor"><textarea>
+using PDRZ.Integration.BLL.School.@Model.ConfigInfo.ModelFolderName;
+using PDRZ.Integration.Entity.TransferData.Base;
+using PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.ModelFolderName;
+using PDRZ.IntegrationController.Attribute;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web.Mvc;
+
+namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
+{
+    public class @Model.ConfigInfo.ControllerName@("Controller") : BaseController
+    {
+        private @Model.ConfigInfo.EntityName@("BLL") BLL = new  @Model.ConfigInfo.EntityName@("BLL")();
+
+        /// &ltsummary>
+        /// 列表 页面
+        /// &lt/summary>
+        /// <returns></returns>
+        [ActionPermission]
+       
+        public ActionResult Manage()
+        {
+            return View("~/******/******/@Model.ConfigInfo.PageName@("List.cshtml")");
+        }
+
+        /// &ltsummary>
+        /// 获取列表信息
+        /// &lt/summary>
+        /// &ltparam name="combinSearchText">&lt/param>
+        /// &ltparam name="pageNo">&lt/param>
+        /// &ltparam name="pageSize">&lt/param>
+        /// <returns></returns>
+        [ValidateAntiForgeryToken]
+        public JsonResult GetPageList(string combinSearchText, int pageNo, int pageSize, string orderSeq)
+        {
+            SearchParam param = new SearchParam()
+            {
+                PageIndex = pageNo - 1,
+                PageSize = pageSize,
+                OrderSeq = orderSeq
+            };
+            var list = BLL.GetPageList(param, combinSearchText, this.SchoolID);
+            return new JsonResult()
+            {
+                Data = new
+                {
+                    body = new
+                    {
+                        total = param.TotalRecords,
+                        pageNum = param.PageIndex + 1,
+                        pageSize = param.PageSize,
+                        pages = param.CalcPageCount(),
+                        list = list
+                    }
+                },
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        /// &ltsummary>
+        /// 编辑 页面
+        /// &lt/summary>
+        /// <returns></returns>
+
+        [ActionPermission]
+        public ActionResult Edit(@Model.ConfigInfo.EntityName Entity)
+        {
+            Entity = Entity.@Model.ConfigInfo.PKName != Guid.Empty ? BLL.GetDetail(Entity.@Model.ConfigInfo.PKName) : Entity;
+            return View("~/******/******/@Model.ConfigInfo.PageName@("Edit.cshtml")", Entity);
+        }
+
+        /// &ltsummary>
+        /// 新增/更新  信息
+        /// &lt/summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionPermission]
+        [ValidateJsonAntiForgeryToken]
+        public JsonResult EditInfo(@Model.ConfigInfo.EntityName Entity)
+        {
+            StringResult Result = new StringResult();
+            string isInsert = Entity.Entity.@Model.ConfigInfo.PKName == Guid.Empty ? "新增" : "更新";
+            Result.Flag = FlagStatus.NO;
+            Entity.SchoolID = SchoolID;
+
+            //if (BLL.CheckRepeatName(Entity))
+            //{
+            //    Result.Message = "名称已存在！";
+            //    return Json(Result);
+            //}
+
+            if (isInsert.Contains("新增"))
+            {
+                Entity.Entity.@Model.ConfigInfo.PKName = Guid.NewGuid();
+                Entity.CreateUser = UserInfo.UserID.ToString();
+                if (BLL.Insert(Entity) > 0)
+                {
+                    Result.Flag = FlagStatus.OK;
+                }
+            }
+            else
+            {
+                Entity.SetNullabledNeedUpdateField(null, false);
+                Entity.UpdateUser = UserInfo.UserID.ToString();
+                if (BLL.Update(Entity) > 0)
+                {
+                    Result.Flag = FlagStatus.OK;
+                }
+            }
+            Result.Message = Result.Flag == FlagStatus.OK ? isInsert + "成功!" : isInsert + "失败!";
+
+            return Json(Result);
+        }
+
+        /// &ltsummary>
+        /// 删除角色（组）
+        /// &lt/summary>
+        /// &ltparam name="Entity">&lt/param>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionPermission]
+        [ValidateJsonAntiForgeryToken]
+        public JsonResult Delete(string Ids)
+        {
+            StringResult Result = new StringResult();
+            Result.Flag = FlagStatus.NO;
+            Entity.SchoolID = SchoolID;
+
+            if (BLL.BatchDelete(Ids) > 0)
+            {
+                Result.Flag = FlagStatus.OK;
+                Result.Message = "删除成功！";
+            }
+            else
+            {
+                Result.Message = "删除失败！";
+            }
+            return Json(Result);
+        }
+
+
+    }
+}
 
     </textarea></pre>
     <script src="~/Scripts/ace/ace.js"></script>

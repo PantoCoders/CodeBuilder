@@ -130,6 +130,15 @@ namespace PDRZ.Integration.BLL.School.@Model.ConfigInfo.ModelFolderName
         {
             return Dal.GetPageList(param, json, schoolID);
         }
+
+        /// &ltsummary>
+        /// 批量删除
+        /// &lt/summary>
+        /// &ltparam name="param">&lt/param>
+        public bool BatchDelete(string IDs)
+        {
+            return Dal.BatchDelete(IDs);
+        }
         #endregion
     }
 }

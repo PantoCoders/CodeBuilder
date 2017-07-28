@@ -87,6 +87,11 @@
         width: 90px;
     }
 </style>
+<div style="position:absolute;">
+    <span style="color:red;">
+        1.【ModelFolderName】 必须统一，也就是 BLL/Dal/Controller 在同一名称的 Model 下面 否则 应用路径不对。 
+    </span><br />
+</div>
 <div class="container-fluid" id="container" style="font-size:9px;height:calc(100% - 10px));">
     <h2>Build</h2>
     <div style="float:right;">
@@ -285,7 +290,7 @@
             </div>
             <div id="tab-9" class="tab-pane" style="height:100%;">
                 <div class="panel-body" style="height:100%;">
-                    <button class="btn-success" onclick="setData('BuildListJS');" id="btnBuildListJS">Build Code</button>
+                    <button class="btn-success" onclick="setData('BuildListJS');" >Build Code</button>
                     <iframe id="iframeBuildListJS" style="width:100%;height:100%;border:none;"></iframe>
                 </div>
             </div>

@@ -32,8 +32,12 @@ namespace Howfar.BuildCode.Controllers
             }
             for (int i = 0; i < StaticDataList.Count; i++)
             {
-                StaticDataList[i].CommentSimple = StaticDataList[i].Comment.Substring(0, StaticDataList[i].Comment.IndexOf("("));
+                StaticDataList[i].CommentSimple = Public.SplitComment(StaticDataList[i].Comment);
                 StaticDataList[i].IsPK = PKList.Where(t => t.ColumnName == StaticDataList[i].ColumnName).Count() > 0;
+                if (StaticDataList[i].IsPK.Value && StaticConfigInfo.PKName != null) //保存 主键 名称
+                {
+                    StaticConfigInfo.PKName = StaticDataList[i].ColumnName;
+                }
                 StaticDataList[i].CsharpType = Public.MapCsharpType(StaticDataList[i].TypeName, StaticDataList[i].NotNUll);
             }
         }

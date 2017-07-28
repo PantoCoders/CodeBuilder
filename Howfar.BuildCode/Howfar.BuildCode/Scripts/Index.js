@@ -107,7 +107,8 @@ function setData(name) {
         TableComment: $.trim($('#txtTableComment').val()),
         ModelFolderName: $.trim($('#txtModelFolderName').val()),
         EntityName: $.trim($('#txtEntityName').val()),
-        PageName: $.trim($('#txtPageName').val())
+        PageName: $.trim($('#txtPageName').val()),
+        ControllerName: $.trim($('#txtEntityName').val())
     };
     var flag = true;
     if (ConfigInfo.TableName.length <= 0) {

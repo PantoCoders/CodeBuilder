@@ -11,7 +11,14 @@ namespace Howfar.BuildCode.Models
         public string TableComment { get; set; }
         public string EntityName { get; set; }
         public string ModelFolderName { get; set; }
+        public string ControllerName { get; set; }
 
         public string PageName { get; set; }
+
+
+        /// <summary>
+        /// 主键名称
+        /// </summary>
+        public string PKName { get; set; }
     }
 }

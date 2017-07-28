@@ -9,6 +9,16 @@ namespace Howfar.BuildCode.App_Code
 {
     public class Public
     {
+        public static string SplitComment(string v)
+        {
+            var index = v.IndexOf("(");
+            index = index <= 0 ? v.IndexOf("（") : index;
+            if (index >= 0)
+            {
+                return v.Substring(0, index);
+            }
+            return v;
+        }
         public static string MapCsharpType(string dbtype, bool NotNull)
         {
             string strNull = NotNull ? "" : "?";

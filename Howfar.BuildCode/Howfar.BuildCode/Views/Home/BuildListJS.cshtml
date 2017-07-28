@@ -29,7 +29,7 @@
 var @OName = {};
 
 $(function () {
-    //刷新表头和表格
+    //加载表头和表格
     $("#grid").initTableHeader(@OName@(".opt);")
     @OName@(".refreshTable();")
 
@@ -48,10 +48,6 @@ $(function () {
         });
     $(".datetimepicker-months table.table-condensed").css("width", "200px");
 
-    //按钮事件
-    $(document).on("click", "#btnQuery", function () {
-        @OName@(".search();")
-    });
 
     //编辑页面
     $(document).on("click", "#grid tbody tr td:nth-child(2) a", function () {
@@ -73,8 +69,8 @@ $(function () {
 (function (ns, undefind) {
 
     ns.opt = {
-        name: "追加课时列表",
-        url: "/EducationalModule/TeacherLessonAttach/GetPageList",
+        name: "@Model.ConfigInfo.TableComment",
+        url: "/@Model.ConfigInfo.ControllerName/GetPageList",
         tHeader: [
 @ViewBag.ListJSTitleContent
         ],
@@ -84,9 +80,10 @@ $(function () {
             pageNo: 1,
             pageSize: 20
         },
-        checkAll: { data_id: "TeacherLessonAttachID", flag: true }
+        checkAll: { data_id: "@Model.ConfigInfo.PKName", flag: true }
     }
 
+//刷新列表
 ns.refreshTable = function () {
     $("#grid").drawTable(ns.opt);
 }
@@ -104,8 +101,8 @@ ns.getCondition = function () {
     var param = {
             AttachTime: $.trim($('#ddlMonth').val()),
             EmployeName: $.trim($('#txtEmployeeName').val())
-        };
-        return JSON.stringify(param);
+    };
+    return JSON.stringify(param);
 }
 
 ns.search = function () {
@@ -114,40 +111,24 @@ ns.search = function () {
     ns.refreshTable();
 }
 
-ns.add = function () {
-
-    //新增
-    var index = layer.open({
-        type: 2,
-            title: "新增调课单",
-            area: ['1024px', '665px'], //自定义文本域宽高
-            maxmin: true,
-            content: ['/TeacherLessonAttach/Edit', 'no'],
-            btn: ['确定', '关闭'],
-            success: function (layero, index) {
-
-        },
-            yes: function (index, layero) {
-            var iframeWin = window[layero.find('iframe')[0]['name']];
-            iframeWin.TeacherLessonAttachEdit.submitPage();
-        }
-    });
-
-
-}
-
+//新增、编辑
 ns.edit = function (id) {
-    //新增
+    var title='@Model.ConfigInfo.TableComment';
+    if(id.length>0){
+        title='编辑'+title;
+    }else{
+        title='新增'+title;
+    }
     var index = layer.open({
         type: 2,
-            title: "编辑调课单",
+            title: title,
             area: ['1024px', '665px'], //自定义文本域宽高
             maxmin: true,
-            content: ['/TeacherLessonAttach/Edit?TeacherLessonAttachID=' + id, 'no'],
+            content: ['/@Model.ConfigInfo.ControllerName/Edit?@Model.ConfigInfo.PKName =' + id, 'no'],
             btn: ['确定', '关闭'],
             success: function (layero, index) {
 
-        },
+            },
             yes: function (index, layero) {
             var iframeWin = window[layero.find('iframe')[0]['name']];
             iframeWin.@OName@("Edit.submitPage();")
@@ -155,6 +136,7 @@ ns.edit = function (id) {
     });
 }
 
+//删除
 ns.delete = function () {
     var ids = @OName@(".getSelectIDs();")
 
@@ -164,7 +146,7 @@ ns.delete = function () {
     }
 
     Pantosoft.IT.Utility.deleteRecord({
-        url: "/TeacherLessonAttach/Delete",
+        url: "/@Model.ConfigInfo.ControllerName/Delete",
             param: { ids: ids },
             success: function (data) {
             @OName@(".refreshTable();")
