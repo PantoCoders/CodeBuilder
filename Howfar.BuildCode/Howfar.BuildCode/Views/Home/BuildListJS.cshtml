@@ -99,8 +99,7 @@ ns.getSelectIDs = function () {
 
 ns.getCondition = function () {
     var param = {
-            AttachTime: $.trim($('#ddlMonth').val()),
-            EmployeName: $.trim($('#txtEmployeeName').val())
+@ViewBag.ListJSCond
     };
     return JSON.stringify(param);
 }

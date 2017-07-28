@@ -108,10 +108,11 @@ namespace Howfar.BuildCode.Controllers
             Table Entity = new Table();
             Entity.EntityList = StaticDataList;
             Entity.ConfigInfo = StaticConfigInfo;
+            ViewBag.ListJSCond = ListJSCond();
             return View(Entity);
         }
 
-        public string ListJS()
+        private string ListJS()
         {
             List<string> sb = new List<string>();
             List<Table> List = StaticDataList.Where(t => t.IsShow == true).ToList();
@@ -141,7 +142,16 @@ namespace Howfar.BuildCode.Controllers
 
             return string.Join("\r\n", sb).Replace(",\r\n          }", "\r\n          }");
         }
-
+        private string ListJSCond()
+        {
+            List<string> sb = new List<string>();
+            var List = StaticDataList.Where(t => t.IsCondition == true).ToList();
+            foreach (var item in List)
+            {
+                sb.Add($@"        {item.ColumnName}:$.trim($('#{item.ColumnName}').val())");
+            }
+            return string.Join(",\r\n", sb);
+        }
         #endregion
 
         //public ActionResult test(List<Table> DataList)
