@@ -108,7 +108,7 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
         public JsonResult EditInfo(@Model.ConfigInfo.EntityName Entity)
         {
             StringResult Result = new StringResult();
-            string isInsert = Entity.Entity.@Model.ConfigInfo.PKName == Guid.Empty ? "新增" : "更新";
+            string isInsert = Entity.@Model.ConfigInfo.PKName == Guid.Empty ? "新增" : "更新";
             Result.Flag = FlagStatus.NO;
             Entity.SchoolID = SchoolID;
 
@@ -120,7 +120,7 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
 
             if (isInsert.Contains("新增"))
             {
-                Entity.Entity.@Model.ConfigInfo.PKName = Guid.NewGuid();
+                Entity.@Model.ConfigInfo.PKName = Guid.NewGuid();
                 Entity.CreateUser = UserInfo.UserID.ToString();
                 if (BLL.Insert(Entity) > 0)
                 {
@@ -142,7 +142,7 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
         }
 
         /// &ltsummary>
-        /// 删除角色（组）
+        /// 批量删除
         /// &lt/summary>
         /// &ltparam name="Entity">&lt/param>
         /// <returns></returns>

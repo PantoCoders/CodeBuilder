@@ -197,6 +197,7 @@
                                 <table id="table" class="table" style="font-size:9px;">
                                     <tr v-for="(info,index) in fieldList">
                                         <td class="w40">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true" v-on:click="appendRow(index)"></span>
                                             <span class="glyphicon glyphicon-plus" aria-hidden="true" v-on:click="addRow(index)"></span>
                                             <span class="glyphicon glyphicon-minus" aria-hidden="true" v-on:click="delRow(index)"></span>
                                         </td>

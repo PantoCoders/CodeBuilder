@@ -1,5 +1,6 @@
 var nullField = { "Comment": "", "ColumnName": "", "ColumsID": 0, "TypeName": "", "MaxLength": null };
 var applist;
+var storage;
 
 (function ($) {
     jQuery.expr[':'].Contains = function (a, i, m) {
@@ -34,6 +35,8 @@ var applist;
 }(jQuery));
 
 function init() {
+    storage = window.localStorage;
+    $('#txtModelFolderName').val(storage["ModelFolderName"]);
     bindType();
 }
 
@@ -87,6 +90,21 @@ function createVue(data) {
             },
             delRow: function (index) {
                 applist.fieldList.splice(index, 1);
+            },
+            appendRow: function (index) {
+                var name = applist.fieldList[index].ColumnName;
+                var comment = applist.fieldList[index].Comment;
+                if (name.indexOf('ID') >= 0) {
+                    applist.fieldList.push({
+                        IsCheck: true,
+                        ColumnName: name.substr(0, name.length - 2) + 'Name',
+                        Comment: comment.substr(0, comment.length - 2) + '名称',
+                        TypeName:'nvarchar'
+                    });
+                } else {
+                    toastr['error']("只有列名中含有“ID” 才可追加扩展字段");
+                }
+
             }
         }, filters: {},
         computed: {
@@ -110,12 +128,19 @@ function setData(name) {
         PageName: $.trim($('#txtPageName').val()),
         ControllerName: $.trim($('#txtEntityName').val())
     };
+    var isVer = ['BuildEntity', 'CreateTable'].indexOf(name) >= 0;//不需要判断
     var flag = true;
     if (ConfigInfo.TableName.length <= 0) {
         toastr['error']("TableName 为空")
         flag = false;
     }
-    if (!flag) { return;}
+    if (ConfigInfo.ModelFolderName.length <= 0 && !isVer) {
+        toastr['error']("ModelFolderName 为空")
+        flag = false;
+    } else {
+        storage["ModelFolderName"] = ConfigInfo.ModelFolderName;
+    }
+    if (!flag) { return; }
     $.post('/Home/SetData', { DataList: applist.computerArr, ConfigInfo: ConfigInfo }, function () {
         document.getElementById('iframe' + name).src = '/Home/' + name;
     });
