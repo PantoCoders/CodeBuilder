@@ -24,14 +24,14 @@
 </head>
 <body>
     <pre id="editor"><textarea>
-@@model PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.ModelFolderName@Model.ConfigInfo.EntityName@("ViewData")
+@@model PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.ModelFolderName@(".")@Model.ConfigInfo.EntityName@("ViewData")
 @@using Panto.Framework.Entity;
 
-&ltscript type="text/javascript" src="@@Url.Content("~/Scripts/XXXXX/XXXXXX/@Model.ConfigInfo.PageName@("Edit.js"))">&lt/script>
+&ltscript type="text/javascript" src="@@Url.Content("~/Scripts/#####/######/@Model.ConfigInfo.PageName@("List.js")")">&lt/script>
 <form class="formCommon addStaff" id="formEdit">
 @@Html.AntiForgeryToken()
-@*@ViewBag.Content*@
-@{ int Index = 0,Count= Model.EntityList.Count;}
+@ViewBag.Content
+@*@{ int Index = 0,Count= Model.EntityList.Count;}
 @foreach (var item in Model.EntityList)
 {
 if (Index % 2 == 0)
@@ -40,14 +40,15 @@ if (Index % 2 == 0)
 }
     <label class="col-xs-2 control-label form-left">@item.Comment</label>
     <div class="col-xs-3 form-center">
-        <input type="text" id="@item.ColumnName" name="@item.ColumnName" value="@($"@Model.Entity.{item.ColumnName}")" />
+    <input type="text" id="@item.ColumnName" name="@item.ColumnName" value="@($"@Model.Entity.{item.ColumnName}")" />
+
     </div>
     <div class="col-xs-1 form-right"></div>
 if ((Index + 1) == Count || Index % 2 == 1) {
  @("</div>\r\n")
 }
 Index++;
-}
+}*@
 
 </form>
 </textarea></pre>

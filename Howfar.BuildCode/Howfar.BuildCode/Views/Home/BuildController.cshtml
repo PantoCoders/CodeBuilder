@@ -24,15 +24,12 @@
 </head>
 <body>
     <pre id="editor"><textarea>
+using PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.ModelFolderName@(".")@Model.ConfigInfo.EntityName@("ViewData")
 using PDRZ.Integration.BLL.School.@Model.ConfigInfo.ModelFolderName;
 using PDRZ.Integration.Entity.TransferData.Base;
-using PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.ModelFolderName;
+using PDRZ.Integration.Entity.School.@Model.ConfigInfo.ModelFolderName;
 using PDRZ.IntegrationController.Attribute;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
@@ -46,7 +43,6 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
         /// &lt/summary>
         /// <returns></returns>
         [ActionPermission]
-       
         public ActionResult Manage()
         {
             return View("~/******/******/@Model.ConfigInfo.PageName@("List.cshtml")");
@@ -59,7 +55,6 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
         /// &ltparam name="pageNo">&lt/param>
         /// &ltparam name="pageSize">&lt/param>
         /// <returns></returns>
-        [ValidateAntiForgeryToken]
         public JsonResult GetPageList(string combinSearchText, int pageNo, int pageSize, string orderSeq)
         {
             SearchParam param = new SearchParam()
@@ -90,12 +85,12 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
         /// 编辑 页面
         /// &lt/summary>
         /// <returns></returns>
-
         [ActionPermission]
         public ActionResult Edit(@Model.ConfigInfo.EntityName Entity)
         {
-            Entity = Entity.@Model.ConfigInfo.PKName != Guid.Empty ? BLL.GetDetail(Entity.@Model.ConfigInfo.PKName) : Entity;
-            return View("~/******/******/@Model.ConfigInfo.PageName@("Edit.cshtml")", Entity);
+            @Model.ConfigInfo.EntityName@("ViewData") vd = new @Model.ConfigInfo.EntityName@("ViewData")();
+            vd.Entity = Entity.@Model.ConfigInfo.PKName != Guid.Empty ? BLL.GetDetail(Entity.@Model.ConfigInfo.PKName) : Entity;
+            return View("~/******/******/@Model.ConfigInfo.PageName@("Edit.cshtml")", vd);
         }
 
         /// &ltsummary>
@@ -103,7 +98,6 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
         /// &lt/summary>
         /// <returns></returns>
         [HttpPost]
-        [ActionPermission]
         [ValidateJsonAntiForgeryToken]
         public JsonResult EditInfo(@Model.ConfigInfo.EntityName Entity)
         {
@@ -148,14 +142,12 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
         /// <returns></returns>
         [HttpPost]
         [ActionPermission]
-        [ValidateJsonAntiForgeryToken]
         public JsonResult Delete(string Ids)
         {
             StringResult Result = new StringResult();
             Result.Flag = FlagStatus.NO;
-            Entity.SchoolID = SchoolID;
 
-            if (BLL.BatchDelete(Ids) > 0)
+            if (BLL.BatchDelete(Ids))
             {
                 Result.Flag = FlagStatus.OK;
                 Result.Message = "删除成功！";
@@ -167,11 +159,8 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
             return Json(Result);
         }
 
-
     }
-}
-
-    </textarea></pre>
+}</textarea></pre>
     <script src="~/Scripts/ace/ace.js"></script>
     <script src="~/Scripts/ace/ext-language_tools.js"></script>
 

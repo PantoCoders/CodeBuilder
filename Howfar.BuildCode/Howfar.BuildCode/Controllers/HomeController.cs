@@ -34,7 +34,7 @@ namespace Howfar.BuildCode.Controllers
             {
                 StaticDataList[i].CommentSimple = Public.SplitComment(StaticDataList[i].Comment);
                 StaticDataList[i].IsPK = PKList.Where(t => t.ColumnName == StaticDataList[i].ColumnName).Count() > 0;
-                if (StaticDataList[i].IsPK.Value && StaticConfigInfo.PKName != null) //保存 主键 名称
+                if (StaticDataList[i].IsPK.Value && StaticConfigInfo.PKName == null) //保存 主键 名称
                 {
                     StaticConfigInfo.PKName = StaticDataList[i].ColumnName;
                 }
@@ -85,8 +85,9 @@ namespace Howfar.BuildCode.Controllers
             int Count = StaticDataList.Count;
             foreach (var item in StaticDataList)
             {
+                var IsValidate = item.IsValidate ? @"<span style=""color: red; "">*</span>" : "";
                 if (Index % 2 == 0) { sb.Add("<div class=\"form-group maginWidth\">"); }
-                sb.Add($"    <label class=\"col-xs-2 control-label form-left\">{item.Comment}</label>");
+                sb.Add($"    <label class=\"col-xs-2 control-label form-left\">{IsValidate}{item.CommentSimple}</label>");
                 sb.Add("    <div class=\"col-xs-3 form-center\">");
                 sb.Add($"        <input type=\"text\" id=\"{item.ColumnName}\" name=\"{item.ColumnName}\" value=\"@Model.Entity.{item.ColumnName}\" />");
                 sb.Add("    </div>");
@@ -119,24 +120,24 @@ namespace Howfar.BuildCode.Controllers
             int Index = 0, Count = List.Count;
             foreach (var item in List)
             {
-                sb.Add("          {");
-                sb.Add($"           selectName: '{item.ColumnName}',");
-                sb.Add($"           name: '{item.Comment}',");
-                sb.Add($"           width: '150px',");
-                sb.Add($"           sortable: 'true',");
-                sb.Add($"           type: 'link',");
-                sb.Add(string.Format("           align: '{0}',", item.TypeName.Contains("int") ? "right" : "left"));
+                sb.Add("            {");
+                sb.Add($"               selectName: '{item.ColumnName}',");
+                sb.Add($"               name: '{item.Comment}',");
+                sb.Add($"               width: '150px',");
+                sb.Add($"               sortable: 'true',");
+                //sb.Add($"             type: 'link',");
+                sb.Add(string.Format("              align: '{0}',", item.TypeName.Contains("int") ? "right" : "left"));
                 if (item.TypeName.ToLower().Contains("date"))
                 {
                     sb.Add("            fn: function (e) {");
                     sb.Add("                if (e != null && e != '') {");
-                    sb.Add($"                   return $.JsonToDateTimeString(e, 'yyyy - MM - dd');");
+                    sb.Add($"                   return $.JsonToDateTimeString(e, 'yyyy-MM-dd');");
                     sb.Add("                } else {");
                     sb.Add($"                   return '';");
                     sb.Add("                }");
                     sb.Add("            }");
                 }
-                sb.Add(string.Format("          }}{0}", (Index + 1) == Count ? "" : ","));
+                sb.Add(string.Format("            }}{0}", (Index + 1) == Count ? "" : ","));
                 Index++;
             }
 
@@ -188,7 +189,7 @@ namespace Howfar.BuildCode.Controllers
                     sb.Add(string.Format("        [DataColumn(IsNullable = {0})] ", item.NotNUll ? "false" : "true"));
                 }
                 sb.Add($"        [Description(\"{item.Comment}\")] ");
-                sb.Add($"        public {item.CsharpType} {item.ColumnName} {{ get; set; }};");
+                sb.Add($"        public {item.CsharpType} {item.ColumnName} {{ get; set; }}");
             }
             sb.Add("        #endregion");
 

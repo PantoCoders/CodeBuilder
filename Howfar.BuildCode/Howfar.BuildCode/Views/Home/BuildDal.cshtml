@@ -26,13 +26,11 @@
     <pre id="editor"><textarea>
 using Newtonsoft.Json.Linq;
 using Panto.Framework;
-using PDRZ.Integration.Entity.@Model.ConfigInfo.ModelFolderName;
+using Panto.Map.Extensions.DAL;
+using PDRZ.Integration.Entity.School.@Model.ConfigInfo.ModelFolderName;
 using PDRZ.Integration.Entity.TransferData.Base;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PDRZ.Integration.Dal.School.@Model.ConfigInfo.ModelFolderName
 {
@@ -60,7 +58,7 @@ namespace PDRZ.Integration.Dal.School.@Model.ConfigInfo.ModelFolderName
         /// &ltsummary>
         /// 批量删除
         /// &lt/summary>
-        /// &ltparam name="param">&lt/param>
+        /// &ltparam name="IDs">&lt/param>
         public bool BatchDelete(string IDs)
         {
             string sql = @@" DELETE @Model.ConfigInfo.TableName WHERE @Model.ConfigInfo.PKName IN ('" + IDs + "') ";
@@ -69,9 +67,7 @@ namespace PDRZ.Integration.Dal.School.@Model.ConfigInfo.ModelFolderName
 
 
     }
-}
-
-    </textarea></pre>
+}</textarea></pre>
     <script src="~/Scripts/ace/ace.js"></script>
     <script src="~/Scripts/ace/ext-language_tools.js"></script>
 

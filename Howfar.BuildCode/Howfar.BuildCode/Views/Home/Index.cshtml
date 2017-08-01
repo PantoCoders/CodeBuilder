@@ -129,10 +129,13 @@
                 <a data-toggle="tab" href="#tab-3" aria-expanded="false">Add Table SQL</a>
             </li>
             <li class="">
-                <a data-toggle="tab" href="#tab-4" aria-expanded="false">Controller</a>
+                <a data-toggle="tab" href="#tab-10" aria-expanded="false">Dal</a>
             </li>
             <li class="">
                 <a data-toggle="tab" href="#tab-5" aria-expanded="false">BLL</a>
+            </li>
+            <li class="">
+                <a data-toggle="tab" href="#tab-4" aria-expanded="false">Controller</a>
             </li>
             <li class="">
                 <a data-toggle="tab" href="#tab-6" aria-expanded="false">Edit Html</a>
@@ -146,9 +149,7 @@
             <li class="">
                 <a data-toggle="tab" href="#tab-9" aria-expanded="false">List JS</a>
             </li>
-            <li class="">
-                <a data-toggle="tab" href="#tab-10" aria-expanded="false">Dal</a>
-            </li>
+            
         </ul>
         <div class="tab-content" id="list" style="height: calc(100% - 35px);">
             <div id="tab-1" class="tab-pane active" style="height:100%;">
@@ -224,7 +225,7 @@
                                         <td class="w60"><input type="text" class="form-control" Value="默认值"></td>
                                         <td width="40%">
                                             <input :id="'ck-3-'+index" type="checkbox" class="css-checkbox lrg" v-model="info.IsValidate">
-                                            <label :for="'ck-3-'+index" class="css-label lrg vlad" style="margin-bottom:0px;">表单验证</label>
+                                            <label :for="'ck-3-'+index" class="css-label lrg vlad" style="margin-bottom:0px;">必填</label>
                                             @*<div class="checkbox checkbox-success checkbox-inline">
                                                 <input :id="'ck-4-'+index" type="checkbox" v-model="info.NotNUll">
                                                 <label :for="'ck-4-'+index"></label>

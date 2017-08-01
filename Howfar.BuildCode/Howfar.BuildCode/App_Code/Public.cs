@@ -32,6 +32,7 @@ namespace Howfar.BuildCode.App_Code
                 case "bit": csharpType = "bool" + strNull; break;
                 case "char": csharpType = "string"; break;
                 case "date": csharpType = "DateTime" + strNull; break;
+                case "datetime": csharpType = "DateTime" + strNull; break;
                 case "DateTime": csharpType = "DateTime" + strNull; break;
                 case "datetime2": csharpType = "DateTime" + strNull; break;
                 case "datetimeoffset": csharpType = "DateTimeOffset"; break;

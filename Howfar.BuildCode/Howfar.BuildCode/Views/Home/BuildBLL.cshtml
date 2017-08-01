@@ -24,7 +24,9 @@
 </head>
 <body>
     <pre id="editor"><textarea>
-using PDRZ.Integration.Entity.School;
+using PDRZ.Integration.Entity.School.@Model.ConfigInfo.ModelFolderName;
+using PDRZ.Integration.Dal.School.@Model.ConfigInfo.ModelFolderName;
+using PDRZ.Integration.Entity.TransferData.Base;
 using Panto.Framework;
 using Panto.Framework.BLL;
 using Panto.Framework.Exceptions;
@@ -42,6 +44,7 @@ namespace PDRZ.Integration.BLL.School.@Model.ConfigInfo.ModelFolderName
     public class @Model.ConfigInfo.EntityName@("BLL : StandardBLL")<@Model.ConfigInfo.EntityName>
     {
         @Model.ConfigInfo.EntityName@("Dal") Dal=new @Model.ConfigInfo.EntityName@("Dal")();
+
         #region 标准方法
 
         /// &ltsummary>
@@ -141,8 +144,7 @@ namespace PDRZ.Integration.BLL.School.@Model.ConfigInfo.ModelFolderName
         }
         #endregion
     }
-}
-    </textarea></pre>
+}</textarea></pre>
     <script src="~/Scripts/ace/ace.js"></script>
     <script src="~/Scripts/ace/ext-language_tools.js"></script>
 
