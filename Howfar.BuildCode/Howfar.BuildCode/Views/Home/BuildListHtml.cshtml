@@ -1,5 +1,11 @@
 ﻿@model Howfar.BuildCode.Models.Table
-
+@using Howfar.BuildCode.App_Code;
+@functions{ 
+    public bool IsSearch(string ColumnName) {
+        List<string> arr = new List<string>() { "EmployeeID" };
+        return arr.Contains(ColumnName);
+    }
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +30,7 @@
 </head>
 <body>
     <pre id="editor"><textarea>
-@@model PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.EntityName@Model.ConfigInfo.EntityName@("ViewData")
+@*@@model PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.EntityName@Model.ConfigInfo.EntityName@("ViewData")*@
 @@using PDRZ.IntegrationController.Base;
 @@using Panto.Framework.Entity;
 @@{
@@ -37,14 +43,14 @@
     }
 }
 &ltscript type="text/javascript" src="@Url.Content("~/Front/js/jQuery.table.js")">&lt/script>
-&ltscript type="text/javascript" src="@@Url.Content("~/Scripts/#####/######/@Model.ConfigInfo.PageName@("List.js")")">&lt/script>
+&ltscript type="text/javascript" src="@@Url.Content("~/Scripts/@Model.ConfigInfo.FolderPath/@Model.ConfigInfo.PageName@("List.js")")">&lt/script>
 @@Html.AntiForgeryToken()
 <div class="container-fluid" style="height: calc(100%);">
     <div class="row">
         <div class="col-xs-12 catalog clearfix">
             <i class="current"></i>
             <p>
-                <span class="catalog-parent">德育管理</span><strong>></strong><span class="catalog-child">@Model.ConfigInfo.TableComment</span>
+                <span class="catalog-parent">教科</span><strong>></strong><span class="catalog-child">@Model.ConfigInfo.TableComment</span>
             </p>
          </div>
     </div>
@@ -56,9 +62,21 @@
                     <div class="searchWrap">
                         @foreach (var item in Model.EntityList)
                         {
+                            var IsKz = item.ColumnName.Contains("ID");
                         <div class="searchContent search">
                             <label>@item.CommentSimple</label>
-                            <input type="text" name="" id="@item.ColumnName" value="" />
+                            @if(IsKz)
+                            {
+                            <input type="text" @(IsSearch(@item.ColumnName) ? "readonly" : "") id="@item.ColumnName.Substring(0,item.ColumnName.Length-2)@("Name")" value="" />
+                            <input type="hidden"  id="@item.ColumnName" value="" />
+                            }
+                            else
+                            {
+                                <input type="text" id="@item.ColumnName" value="" />
+                            }
+                            @if (IsSearch(@item.ColumnName)) {
+                            <img src="@Url.Content("~/Front/images/search.png")" alt="" onclick="@Model.ConfigInfo.PageName@("List").Select();">
+                            }
                         </div>
                         }
                         <div class="searchButton">

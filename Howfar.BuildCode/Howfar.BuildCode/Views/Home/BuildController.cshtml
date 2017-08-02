@@ -24,7 +24,7 @@
 </head>
 <body>
     <pre id="editor"><textarea>
-using PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.ModelFolderName@(".")@Model.ConfigInfo.EntityName@("ViewData")
+@*using PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.ModelFolderName;*@
 using PDRZ.Integration.BLL.School.@Model.ConfigInfo.ModelFolderName;
 using PDRZ.Integration.Entity.TransferData.Base;
 using PDRZ.Integration.Entity.School.@Model.ConfigInfo.ModelFolderName;
@@ -45,7 +45,7 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
         [ActionPermission]
         public ActionResult Manage()
         {
-            return View("~/******/******/@Model.ConfigInfo.PageName@("List.cshtml")");
+            return View("~/@Model.ConfigInfo.FolderPath/@Model.ConfigInfo.PageName@("List.cshtml")");
         }
 
         /// &ltsummary>
@@ -88,17 +88,16 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
         [ActionPermission]
         public ActionResult Edit(@Model.ConfigInfo.EntityName Entity)
         {
-            @Model.ConfigInfo.EntityName@("ViewData") vd = new @Model.ConfigInfo.EntityName@("ViewData")();
-            vd.Entity = Entity.@Model.ConfigInfo.PKName != Guid.Empty ? BLL.GetDetail(Entity.@Model.ConfigInfo.PKName) : Entity;
-            return View("~/******/******/@Model.ConfigInfo.PageName@("Edit.cshtml")", vd);
+            @*@Model.ConfigInfo.EntityName@("ViewData") vd = new @Model.ConfigInfo.EntityName@("ViewData")();*@
+            Entity = Entity.@Model.ConfigInfo.PKName != Guid.Empty ? BLL.GetDetail(Entity.@Model.ConfigInfo.PKName) : Entity;
+            return View("~/@Model.ConfigInfo.FolderPath/@Model.ConfigInfo.PageName@("Edit.cshtml")", Entity);
         }
 
         /// &ltsummary>
         /// 新增/更新  信息
         /// &lt/summary>
         /// <returns></returns>
-        [HttpPost]
-        [ValidateJsonAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public JsonResult EditInfo(@Model.ConfigInfo.EntityName Entity)
         {
             StringResult Result = new StringResult();
@@ -140,7 +139,6 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
         /// &lt/summary>
         /// &ltparam name="Entity">&lt/param>
         /// <returns></returns>
-        [HttpPost]
         [ActionPermission]
         public JsonResult Delete(string Ids)
         {

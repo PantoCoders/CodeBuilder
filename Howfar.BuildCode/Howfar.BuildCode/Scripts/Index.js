@@ -8,8 +8,9 @@ var storage;
     };
     function filterList(header, list) {
         var form = $("<form>").attr({ "class": "filterform", "action": "#" }),
-            input = $("<input>").attr({ "class": "filterinput form-control", "type": "text" });
+            input = $("<input>").attr({ "class": "filterinput form-control", "type": "text", "id": "txtSearch" });
         $(form).append(input).appendTo(header);
+
         $(input).change(function () {
             var filter = $(this).val();
             if (filter) {
@@ -23,6 +24,8 @@ var storage;
         }).keyup(function () {
             $(this).change();
         });
+        $(input).val(storage["SearchText"]);
+        $(input).change();
     }
     $(function () {
         $.getJSON('/Ajax/gettablelist', function (data) {
@@ -37,29 +40,30 @@ var storage;
 function init() {
     storage = window.localStorage;
     $('#txtModelFolderName').val(storage["ModelFolderName"]);
+    $('#txtFolderPath').val(storage["FolderPath"]);
     bindType();
 }
 
 function bindType() {
-    setTimeout(function () {
-        $(".SelectType").autocompleteArray([
-            'bigint', 'binary', 'bit', 'char', 'date', 'datetime', 'datetime2', 'datetimeoffset',
-            'decimal', 'float', 'geography', 'geometry', 'hierarchyid', 'image', 'int', 'money',
-            'nchar', 'ntext', 'numeric', 'nvarchar', 'real', 'smalldatetime', 'smallint', 'smallmoney',
-            'sql_variant', 'sysname', 'text', 'time', 'timestamp', 'tinyint', 'uniqueidentifier',
-            'varbinary', 'varchar', 'xml'
-        ], {
-                delay: 10,
-                minChars: 0,
-                matchSubset: 1,
-                width: 400, //提示的宽度
-                scrollHeight: 300, //提示的高度
-                // onItemSelect:selectItem,
-                // onFindValue:findValue,
-                autoFill: true,
-                maxItemsToShow: 10
-            });
-    }, 500);
+    //setTimeout(function () {
+    //$(".SelectType").autocompleteArray([
+    //    'bigint', 'binary', 'bit', 'char', 'date', 'datetime', 'datetime2', 'datetimeoffset',
+    //    'decimal', 'float', 'geography', 'geometry', 'hierarchyid', 'image', 'int', 'money',
+    //    'nchar', 'ntext', 'numeric', 'nvarchar', 'real', 'smalldatetime', 'smallint', 'smallmoney',
+    //    'sql_variant', 'sysname', 'text', 'time', 'timestamp', 'tinyint', 'uniqueidentifier',
+    //    'varbinary', 'varchar', 'xml'
+    //], {
+    //        delay: 10,
+    //        minChars: 0,
+    //        matchSubset: 1,
+    //        width: 400, //提示的宽度
+    //        scrollHeight: 300, //提示的高度
+    //        // onItemSelect:selectItem,
+    //        // onFindValue:findValue,
+    //        autoFill: true,
+    //        maxItemsToShow: 10
+    //    });
+    //}, 500);
 }
 
 function createVue(data) {
@@ -81,12 +85,17 @@ function createVue(data) {
                     $('#txtTableName').val(tableName);
                     $('#txtEntityName').val(tableName.substr(tableName.indexOf('_') + 1));
                     $('#txtTableComment').val(tablecomment);
+                    storage["SearchText"] = $("#txtSearch").val();
                     applist.fieldList = fieldData;
                     bindType();
                 });
             },
             addRow: function (index) {
-                applist.fieldList.splice(index + 1, 0, {});
+                applist.fieldList.splice(index + 1, 0, {
+                    IsCheck: true,
+                    IsDataColumn: true,
+                    TypeName: ''
+                });
             },
             delRow: function (index) {
                 applist.fieldList.splice(index, 1);
@@ -94,12 +103,21 @@ function createVue(data) {
             appendRow: function (index) {
                 var name = applist.fieldList[index].ColumnName;
                 var comment = applist.fieldList[index].Comment;
+                var IsHave = false;
+                applist.fieldList.filter(function (item) {
+                    if (item.ParentName != null && name == item.ParentName) {
+                        IsHave = true;
+                        return;
+                    }
+                });
+                if (IsHave) { toastr['error']("该字段 已存在扩展字段!"); return; }
                 if (name.indexOf('ID') >= 0) {
                     applist.fieldList.push({
                         IsCheck: true,
+                        ParentName: name,
                         ColumnName: name.substr(0, name.length - 2) + 'Name',
                         Comment: comment.substr(0, comment.length - 2) + '名称',
-                        TypeName:'nvarchar'
+                        TypeName: 'nvarchar'
                     });
                 } else {
                     toastr['error']("只有列名中含有“ID” 才可追加扩展字段");
@@ -126,7 +144,8 @@ function setData(name) {
         ModelFolderName: $.trim($('#txtModelFolderName').val()),
         EntityName: $.trim($('#txtEntityName').val()),
         PageName: $.trim($('#txtPageName').val()),
-        ControllerName: $.trim($('#txtEntityName').val())
+        ControllerName: $.trim($('#txtEntityName').val()),
+        FolderPath: $.trim($('#txtFolderPath').val())
     };
     var isVer = ['BuildEntity', 'CreateTable'].indexOf(name) >= 0;//不需要判断
     var flag = true;
@@ -139,6 +158,8 @@ function setData(name) {
         flag = false;
     } else {
         storage["ModelFolderName"] = ConfigInfo.ModelFolderName;
+        storage["FolderPath"] = ConfigInfo.FolderPath;
+
     }
     if (!flag) { return; }
     $.post('/Home/SetData', { DataList: applist.computerArr, ConfigInfo: ConfigInfo }, function () {

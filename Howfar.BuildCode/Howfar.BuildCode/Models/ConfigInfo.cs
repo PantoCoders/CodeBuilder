@@ -14,7 +14,7 @@ namespace Howfar.BuildCode.Models
         public string ControllerName { get; set; }
 
         public string PageName { get; set; }
-
+        public string FolderPath { get; set; }
 
         /// <summary>
         /// 主键名称

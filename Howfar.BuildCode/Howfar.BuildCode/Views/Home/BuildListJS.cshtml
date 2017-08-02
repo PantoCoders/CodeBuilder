@@ -33,22 +33,6 @@ $(function () {
     $("#grid").initTableHeader(@OName@(".opt);")
     @OName@(".refreshTable();")
 
-    //选择日期
-    $(".dateSearch").datetimepicker(
-        {
-            language: "zh-CN",
-            forceParse: false,
-            format: "yyyy-mm",
-            autoclose: true,
-            weekStart: 1,
-            startView: 3,
-            minView: 3,
-            todayBtn: true,
-            clearBtn: true
-        });
-    $(".datetimepicker-months table.table-condensed").css("width", "200px");
-
-
     //编辑页面
     $(document).on("click", "#grid tbody tr td:nth-child(2) a", function () {
         var id = $($(this).parent().parent().children()[0]).find("input").attr("data-id");
@@ -66,11 +50,17 @@ $(function () {
 });
 
 
-(function (ns, undefind) {
+(function (ns) {
+    ns.getCondition = function () {
+        var param = {
+    @ViewBag.ListJSCond
+        };
+        return JSON.stringify(param);
+    }
 
     ns.opt = {
         name: "@Model.ConfigInfo.TableComment",
-        url: "/@Model.ConfigInfo.ControllerName/GetPageList",
+        url: "/@Model.ConfigInfo.ModelFolderName/@Model.ConfigInfo.ControllerName/GetPageList",
         tHeader: [
 @ViewBag.ListJSTitleContent
         ],
@@ -97,14 +87,9 @@ $(function () {
         return ids;
     }
 
-    ns.getCondition = function () {
-        var param = {
-    @ViewBag.ListJSCond
-        };
-        return JSON.stringify(param);
-    }
 
-    ns.search = function () {
+
+    ns.searchTable = function () {
         ns.opt.data.combinSearchText = ns.getCondition();
         ns.opt.data.pageNo = 1;
         ns.refreshTable();
@@ -113,7 +98,7 @@ $(function () {
     //新增、编辑
     ns.edit = function (id) {
         var title='@Model.ConfigInfo.TableComment';
-        if(id.length>0){
+        if(id && id.length > 0){
             title='编辑'+title;
         }else{
             title='新增'+title;
@@ -123,7 +108,7 @@ $(function () {
                 title: title,
                 area: ['1024px', '665px'], //自定义文本域宽高
                 maxmin: true,
-                content: ['/@Model.ConfigInfo.ControllerName/Edit?@Model.ConfigInfo.PKName =' + id, 'no'],
+                content: ['/@Model.ConfigInfo.ModelFolderName/@Model.ConfigInfo.ControllerName/Edit?@Model.ConfigInfo.PKName=' + id, 'no'],
                 btn: ['确定', '关闭'],
                 success: function (layero, index) {
 
@@ -145,10 +130,40 @@ $(function () {
         }
 
         Pantosoft.IT.Utility.deleteRecord({
-            url: "/@Model.ConfigInfo.ControllerName/Delete",
+            url: "/@Model.ConfigInfo.ModelFolderName/@Model.ConfigInfo.ControllerName/Delete",
                 param: { ids: ids },
                 success: function (data) {
                 @OName@(".refreshTable();")
+            }
+        });
+    }
+
+    //选择教职工
+    ns.SelectEmployee = function () {
+
+        var index = top.layer.open({
+            type: 2,
+            title: "选择教职工",
+            area: ['1024px', '665px'], //自定义文本域宽高
+            maxmin: true,
+            content: ["/SelectEmployee/SelectEmployee?type=single", 'no'],
+            btn: ['确定', '清空', '关闭'],
+            yes: function (index, layero) {
+                //当前的iframe
+                var iframeWin = top.window[layero.find('iframe')[0]['name']];
+                var listEmployee = iframeWin.SelectEmployee.getEmployee();
+                if (listEmployee) {
+                    $('#EmployeeName').val(listEmployee[0].Name);
+                    $('#EmployeeID').val(listEmployee[0].EmployeeID);
+                }
+                top.layer.close(index);
+                @Model.ConfigInfo.PageName@("List").searchTable();
+            },
+            btn2: function (index, layero) {
+                $('#EmployeeName').val('');
+                $('#EmployeeID').val('');
+                top.layer.close(index);
+                @Model.ConfigInfo.PageName@("List").searchTable();
             }
         });
     }

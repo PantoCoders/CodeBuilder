@@ -25,6 +25,10 @@ namespace Howfar.BuildCode.Models
         public string DefaultValue { get; set; }
 
         /// <summary>
+        /// 父级名称 扩展字段 主表字段的名称
+        /// </summary>
+        public string ParentName { get; set; }
+        /// <summary>
         /// 是否主键
         /// </summary>
         public bool? IsPK { get; set; }

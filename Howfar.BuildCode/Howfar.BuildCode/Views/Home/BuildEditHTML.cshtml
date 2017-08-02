@@ -24,12 +24,18 @@
 </head>
 <body>
     <pre id="editor"><textarea>
-@@model PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.ModelFolderName@(".")@Model.ConfigInfo.EntityName@("ViewData")
+@*@@model PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.ModelFolderName@(".")@Model.ConfigInfo.EntityName@("ViewData")*@
+@*@@model PDRZ.Integration.Entity.School.@Model.ConfigInfo.ModelFolderName@(".");*@
 @@using Panto.Framework.Entity;
 
-&ltscript type="text/javascript" src="@@Url.Content("~/Scripts/#####/######/@Model.ConfigInfo.PageName@("List.js")")">&lt/script>
-<form class="formCommon addStaff" id="formEdit">
+@@{
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+
+&ltscript type="text/javascript" src="@@Url.Content("~/Scripts/@Model.ConfigInfo.FolderPath/@Model.ConfigInfo.PageName@("Edit.js")")">&lt/script>
+<form class="formCommon addStaff" method="post" action="/@Model.ConfigInfo.ModelFolderName/@Model.ConfigInfo.ControllerName/EditInfo" id="formEdit" style="margin-top:15px;">
 @@Html.AntiForgeryToken()
+    <input type="hidden" name="@Model.ConfigInfo.PKName" value="@("@Model.Entity.")@Model.ConfigInfo.PKName" />
 @ViewBag.Content
 @*@{ int Index = 0,Count= Model.EntityList.Count;}
 @foreach (var item in Model.EntityList)

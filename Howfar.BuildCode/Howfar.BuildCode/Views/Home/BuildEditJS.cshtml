@@ -1,0 +1,146 @@
+﻿@model Howfar.BuildCode.Models.Table
+@{
+    string OName = Model.ConfigInfo.PageName + "List";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Editor</title>
+    <style type="text/css" media="screen">
+        body {
+            overflow: hidden;
+        }
+
+        #editor {
+            margin: 0;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    </style>
+
+</head>
+<body>
+    <pre id="editor"><textarea>
+var @Model.ConfigInfo.PageName@("Edit") = {};
+var indexLoading;
+
+(function (ns, undifind) {
+
+    ns.submitPage = function () {
+        $("#formEdit").submit();
+    }
+
+    ns.initPage = function () {
+        $("#formEdit").validate({
+            focusCleanup: false, focusInvalid: true,
+            submitHandler: function () {
+                indexLoading = window.parent.Pantosoft.IT.Utility.loading();
+                $("#formEdit").ajaxSubmit({
+                    dataType: 'json',
+                    success: function (data) {
+                        parent.layer.close(indexLoading);
+                        if (data.Flag == window.Constant.AjaxStatus.OK) {
+                            Pantosoft.IT.Utility.alertOkFunc(data.Message, function () {
+                                window.parent.@Model.ConfigInfo.PageName@("List").refreshTable();
+                            });
+                        }
+                        else {
+                            Pantosoft.IT.Utility.alertError(data.Message);
+                        }
+                    }
+                });
+            },
+            errorPlacement: function (error, element) {
+                $(element).attr('title', $(error).text()).tooltip('show');
+            },
+            unhighlight: function (element, errorClass, validClass) { //验证通过
+                $(element).tooltip('destroy');
+            },
+            success: function (label) {
+
+            },
+            rules: {
+
+            }
+        });
+
+    }
+
+    //选择教职工
+    ns.SelectEmployee = function () {
+
+        var index = top.layer.open({
+            type: 2,
+            title: "选择教职工",
+            area: ['1024px', '665px'], //自定义文本域宽高
+            maxmin: true,
+            content: ["/SelectEmployee/SelectEmployee?type=single", 'no'],
+            btn: ['确定', '清空', '关闭'],
+            yes: function (index, layero) {
+                //当前的iframe
+                var iframeWin = top.window[layero.find('iframe')[0]['name']];
+                var listEmployee = iframeWin.SelectEmployee.getEmployee();
+                if (listEmployee) {
+                    $('#EmployeeName').val(listEmployee[0].Name);
+                    $('#EmployeeID').val(listEmployee[0].EmployeeID);
+                }
+                top.layer.close(index);
+            },
+            btn2: function (index, layero) {
+                $('#EmployeeName').val('');
+                $('#EmployeeID').val('');
+                top.layer.close(index);
+            }
+        });
+    }
+
+})(@Model.ConfigInfo.PageName@("Edit"));
+
+$(document).ready(function () {
+    @Model.ConfigInfo.PageName@("Edit").initPage();
+    //选择日期
+    $(".dateShow").datetimepicker({
+        language: "zh-CN",
+        forceParse: false,
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        weekStart: 1,
+        startView: 2,
+        minView: 2,
+        todayBtn: true,
+        clearBtn: true
+    });
+});
+    </textarea></pre>
+    <script src="~/Scripts/ace/ace.js"></script>
+    <script src="~/Scripts/ace/ext-language_tools.js"></script>
+
+    <script>
+        var editor = ace.edit("editor");
+        //设置风格和语言（更多风格和语言，请到github上相应目录查看）
+        theme = "xcode"
+        language = "javascript"//"csharp"
+        editor.setTheme("ace/theme/" + theme);
+        editor.session.setMode("ace/mode/" + language);
+        ace.require("ace/ext/language_tools");
+        //字体大小
+        editor.setFontSize(13);
+
+        //设置只读（true时只读，用于展示代码）
+        editor.setReadOnly(false);
+
+        //自动换行,设置为off关闭
+        editor.setOption("wrap", "free")
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableSnippets: true,
+            enableLiveAutocompletion: true
+        });
+    </script>
+</body>
+</html>

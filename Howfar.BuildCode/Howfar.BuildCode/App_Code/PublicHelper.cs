@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Howfar.BuildCode.App_Code
 {
-    public class Public
+    public class PublicHelper
     {
         public static string SplitComment(string v)
         {
@@ -15,8 +15,9 @@ namespace Howfar.BuildCode.App_Code
             index = index <= 0 ? v.IndexOf("（") : index;
             if (index >= 0)
             {
-                return v.Substring(0, index);
+                v = v.Substring(0, index);
             }
+            v.Replace("ID", "");
             return v;
         }
         public static string MapCsharpType(string dbtype, bool NotNull)
@@ -106,5 +107,10 @@ namespace Howfar.BuildCode.App_Code
             return string.Join("\r\n", strCreateTable) + string.Join("\r\n", strCreateComment);
         }
 
+        public static bool IsSearch(string ColumnName)
+        {
+            List<string> arr = new List<string>() { "EmployeeID" };
+            return arr.Contains(ColumnName);
+        }
     }
 }

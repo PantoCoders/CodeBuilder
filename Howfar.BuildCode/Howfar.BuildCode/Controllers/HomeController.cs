@@ -32,13 +32,13 @@ namespace Howfar.BuildCode.Controllers
             }
             for (int i = 0; i < StaticDataList.Count; i++)
             {
-                StaticDataList[i].CommentSimple = Public.SplitComment(StaticDataList[i].Comment);
+                StaticDataList[i].CommentSimple = PublicHelper.SplitComment(StaticDataList[i].Comment);
                 StaticDataList[i].IsPK = PKList.Where(t => t.ColumnName == StaticDataList[i].ColumnName).Count() > 0;
                 if (StaticDataList[i].IsPK.Value && StaticConfigInfo.PKName == null) //保存 主键 名称
                 {
                     StaticConfigInfo.PKName = StaticDataList[i].ColumnName;
                 }
-                StaticDataList[i].CsharpType = Public.MapCsharpType(StaticDataList[i].TypeName, StaticDataList[i].NotNUll);
+                StaticDataList[i].CsharpType = PublicHelper.MapCsharpType(StaticDataList[i].TypeName, StaticDataList[i].NotNUll);
             }
         }
 
@@ -82,14 +82,23 @@ namespace Howfar.BuildCode.Controllers
         {
             List<string> sb = new List<string>();
             int Index = 0;
-            int Count = StaticDataList.Count;
-            foreach (var item in StaticDataList)
+
+            //排除主键
+            List<Table> List = StaticDataList.Where(t => t.ColumnName != StaticConfigInfo.PKName).ToList();
+            int Count = List.Count;
+            foreach (var item in List)
             {
+                //日期样式
+                string DateClass = item.TypeName.Contains("Date") ? @"class=""dateShow chooseDate""" : string.Empty;
+                //是否必填
                 var IsValidate = item.IsValidate ? @"<span style=""color: red; "">*</span>" : "";
+                //最大长度
+                var strLength = item.MaxLength > 0 ? $@"maxlength=""{item.MaxLength}""" : "";
+
                 if (Index % 2 == 0) { sb.Add("<div class=\"form-group maginWidth\">"); }
                 sb.Add($"    <label class=\"col-xs-2 control-label form-left\">{IsValidate}{item.CommentSimple}</label>");
                 sb.Add("    <div class=\"col-xs-3 form-center\">");
-                sb.Add($"        <input type=\"text\" id=\"{item.ColumnName}\" name=\"{item.ColumnName}\" value=\"@Model.Entity.{item.ColumnName}\" />");
+                sb.Add($"        <input type=\"text\" {DateClass} id=\"{item.ColumnName}\" name=\"{item.ColumnName}\" value=\"@Model.{item.ColumnName}\" />");
                 sb.Add("    </div>");
                 sb.Add("    <div class=\"col-xs-1 form-right\"></div>");
                 if ((Index + 1) == Count || Index % 2 == 1) { sb.Add("</div>"); }
@@ -217,10 +226,11 @@ namespace Howfar.BuildCode.Controllers
             List<string> sbParam = new List<string>();
             foreach (var item in List)
             {
+                string Islike = item.TypeName.Contains("char") ? $" LIKE '%' + @{item.ColumnName} + '%' " : $"= @{item.ColumnName}";
                 sbCond.Add($@"            string {item.ColumnName} =string.Empty;
             if (jo[""{item.ColumnName}""] != null && !string.IsNullOrEmpty(jo[""{item.ColumnName}""].ToString()))
             {{
-                   sql += "" AND {StaticConfigInfo.TableName}.{item.ColumnName} = @{item.ColumnName} "";
+                   sql += "" AND {StaticConfigInfo.TableName}.{item.ColumnName} {Islike} "";
                    {item.ColumnName} = jo[""{item.ColumnName}""].ToString();
              }}");
                 sbParam.Add($"                {item.ColumnName} = {item.ColumnName},");
@@ -255,7 +265,7 @@ namespace Howfar.BuildCode.Controllers
         #region · CreateTable
         public ActionResult CreateTable()
         {
-            ViewBag.SQLContent = Public.CreateTable(StaticDataList, StaticConfigInfo);
+            ViewBag.SQLContent = PublicHelper.CreateTable(StaticDataList, StaticConfigInfo);
             return View();
         }
         #endregion
