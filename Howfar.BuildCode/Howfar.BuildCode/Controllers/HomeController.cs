@@ -261,7 +261,12 @@ namespace Howfar.BuildCode.Controllers
             Entity.EntityList = StaticDataList.Where(t => t.IsCondition == true).ToList();
             return View(Entity);
         }
-
+        public ActionResult BuildEditJS()
+        {
+            Table Entity = new Table();
+            Entity.ConfigInfo = StaticConfigInfo;
+            return View(Entity);
+        }
         #region · CreateTable
         public ActionResult CreateTable()
         {

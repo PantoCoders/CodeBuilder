@@ -71,8 +71,8 @@
         width: 30px;
     }
 
-    .w40 {
-        width: 40px;
+    .w50 {
+        width: 50px;
     }
 
     .w60 {
@@ -180,7 +180,7 @@
                             <table id="table" class="table" style="font-size:9px;margin-bottom:0px;">
                                 <thead>
                                     <tr>
-                                        <th class="w40">操作</th>
+                                        <th class="w50">操作</th>
                                         <th class="w30">
                                             <input id="checkbox0" type="checkbox" class="css-checkbox lrg">
                                             <label for="checkbox0" class="css-label lrg vlad" style="margin-bottom:0px;"></label>
@@ -199,8 +199,8 @@
                             <div class="ibox" style="height:calc(100% - 28px);overflow:auto;">
                                 <table id="table" class="table" style="font-size:9px;">
                                     <tr v-for="(info,index) in fieldList">
-                                        <td class="w40">
-                                            <span class="glyphicon glyphicon-plus" aria-hidden="true" v-on:click="appendRow(index)"></span>
+                                        <td class="w50">
+                                            <span class="glyphicon glyphicon-fullscreen" aria-hidden="true" v-on:click="appendRow(index)"></span>
                                             <span class="glyphicon glyphicon-plus" aria-hidden="true" v-on:click="addRow(index)"></span>
                                             <span class="glyphicon glyphicon-minus" aria-hidden="true" v-on:click="delRow(index)"></span>
                                         </td>
@@ -284,6 +284,10 @@
             </div>
             <div id="tab-7" class="tab-pane" style="height:100%;">
                 @*edit js*@
+                <div class="panel-body" style="height:100%;">
+                    <button class="btn-success" onclick="setData('BuildEditJS');">Build Code</button>
+                    <iframe id="iframeBuildEditJS" style="width:100%;height:100%;border:none;"></iframe>
+                </div>
             </div>
             <div id="tab-8" class="tab-pane" style="height:100%;">
                 <div class="panel-body" style="height:100%;">

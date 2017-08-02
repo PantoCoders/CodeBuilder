@@ -11,13 +11,16 @@ namespace Howfar.BuildCode.App_Code
     {
         public static string SplitComment(string v)
         {
-            var index = v.IndexOf("(");
-            index = index <= 0 ? v.IndexOf("（") : index;
-            if (index >= 0)
+            if (!string.IsNullOrEmpty(v))
             {
-                v = v.Substring(0, index);
+                var index = v.IndexOf("(");
+                index = index <= 0 ? v.IndexOf("（") : index;
+                if (index >= 0)
+                {
+                    v = v.Substring(0, index);
+                }
+                v.Replace("ID", "");
             }
-            v.Replace("ID", "");
             return v;
         }
         public static string MapCsharpType(string dbtype, bool NotNull)

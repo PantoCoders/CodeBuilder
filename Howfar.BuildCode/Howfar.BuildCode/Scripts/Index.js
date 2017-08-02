@@ -80,12 +80,20 @@ function createVue(data) {
                 var element = $(e.currentTarget);
                 $('.list-group-item').removeClass('active');
                 element.addClass('active');
+                $('#txtTableName').val(tableName);
+                $('#txtEntityName').val(tableName.substr(tableName.indexOf('_') + 1));
+                $('#txtTableComment').val(tablecomment);
+                storage["SearchText"] = $("#txtSearch").val();
 
+                if (storage[tableName] && storage[tableName].length > 0) {
+                    applist.fieldList = JSON.parse(storage[tableName]);
+                    toastr.options.onclick = function () {
+                        storage.removeItem(tableName);
+                    }
+                    toastr['warning']("单击清除缓存", tableName + " 表已加载缓存数据!");
+                    return;
+                }
                 $.getJSON('/Ajax/GetTableDetail?TableName=' + tableName, function (fieldData) {
-                    $('#txtTableName').val(tableName);
-                    $('#txtEntityName').val(tableName.substr(tableName.indexOf('_') + 1));
-                    $('#txtTableComment').val(tablecomment);
-                    storage["SearchText"] = $("#txtSearch").val();
                     applist.fieldList = fieldData;
                     bindType();
                 });
@@ -104,7 +112,7 @@ function createVue(data) {
                 var name = applist.fieldList[index].ColumnName;
                 var comment = applist.fieldList[index].Comment;
                 var IsHave = false;
-                applist.fieldList.filter(function (item) {
+                applist.fieldList.forEach(function (item) {
                     if (item.ParentName != null && name == item.ParentName) {
                         IsHave = true;
                         return;
@@ -159,10 +167,23 @@ function setData(name) {
     } else {
         storage["ModelFolderName"] = ConfigInfo.ModelFolderName;
         storage["FolderPath"] = ConfigInfo.FolderPath;
-
     }
     if (!flag) { return; }
-    $.post('/Home/SetData', { DataList: applist.computerArr, ConfigInfo: ConfigInfo }, function () {
+    storage[ConfigInfo.TableName] = JSON.stringify(applist.computerArr);
+    var data = applist.computerArr;
+    var flag = false;
+    data.forEach(function (item, index) {
+        if (item.Comment.length <= 0) {
+            toastr['error']("第" + (index + 1) + "行 注释 为空！");
+            flag = true;
+        }
+        if (item.TypeName.indexOf('char') >= 0 && item.MaxLength.length <= 0) {
+            toastr['error']("第" + (index + 1) + "行 长度 为空！");
+            flag = true;
+        }
+    });
+    if (flag) { return; };
+    $.post('/Home/SetData', { DataList: data, ConfigInfo: ConfigInfo }, function () {
         document.getElementById('iframe' + name).src = '/Home/' + name;
     });
 }
