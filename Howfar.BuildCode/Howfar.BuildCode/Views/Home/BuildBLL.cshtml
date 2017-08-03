@@ -149,7 +149,7 @@ namespace PDRZ.Integration.BLL.School.@Model.ConfigInfo.ModelFolderName
         /// &ltparam name="@Model.ConfigInfo.PKName">&lt/param>
         public @Model.ConfigInfo.EntityName GetEntity(Guid @Model.ConfigInfo.PKName)
         {
-            return Dal.GetEntity(ID);
+            return Dal.GetEntity(@Model.ConfigInfo.PKName);
         }
         #endregion
     }

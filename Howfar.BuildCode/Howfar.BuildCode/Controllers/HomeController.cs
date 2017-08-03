@@ -25,8 +25,14 @@ namespace Howfar.BuildCode.Controllers
         {
             try
             {
+                if (DataList.SequenceEqual(StaticDataList)) {
+                    return "相等";
+                } else {
+                    return "不相等";
+                }
                 StaticDataList = DataList != null ? DataList.Where(t => t.IsCheck == true).ToList() : StaticDataList;
                 StaticConfigInfo = ConfigInfo;
+                
                 List<Table> PKList = new List<Table>();
                 if (StaticDataList != null && StaticDataList.Count > 0)
                 {
