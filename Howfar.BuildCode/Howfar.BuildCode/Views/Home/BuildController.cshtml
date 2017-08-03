@@ -22,9 +22,8 @@
     </style>
 
 </head>
-<body>
+<body>@*using PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.ModelFolderName;*@
     <pre id="editor"><textarea>
-@*using PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.ModelFolderName;*@
 using PDRZ.Integration.BLL.School.@Model.ConfigInfo.ModelFolderName;
 using PDRZ.Integration.Entity.TransferData.Base;
 using PDRZ.Integration.Entity.School.@Model.ConfigInfo.ModelFolderName;
@@ -89,7 +88,7 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
         public ActionResult Edit(@Model.ConfigInfo.EntityName Entity)
         {
             @*@Model.ConfigInfo.EntityName@("ViewData") vd = new @Model.ConfigInfo.EntityName@("ViewData")();*@
-            Entity = Entity.@Model.ConfigInfo.PKName != Guid.Empty ? BLL.GetDetail(Entity.@Model.ConfigInfo.PKName) : Entity;
+            Entity = Entity.@Model.ConfigInfo.PKName != Guid.Empty ? BLL.GetEntity(Entity.@Model.ConfigInfo.PKName) : Entity;
             return View("~/@Model.ConfigInfo.FolderPath/@Model.ConfigInfo.PageName@("Edit.cshtml")", Entity);
         }
 
@@ -102,7 +101,6 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
         {
             StringResult Result = new StringResult();
             string isInsert = Entity.@Model.ConfigInfo.PKName == Guid.Empty ? "新增" : "更新";
-            Result.Flag = FlagStatus.NO;
             Entity.SchoolID = SchoolID;
 
             //if (BLL.CheckRepeatName(Entity))
@@ -113,24 +111,21 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
 
             if (isInsert.Contains("新增"))
             {
-                Entity.@Model.ConfigInfo.PKName = Guid.NewGuid();
+                Entity.AuthorInfoID = Guid.NewGuid();
                 Entity.CreateUser = UserInfo.UserID.ToString();
-                if (BLL.Insert(Entity) > 0)
-                {
-                    Result.Flag = FlagStatus.OK;
-                }
+                iResult = BLL.Insert(Entity);
             }
             else
             {
                 Entity.SetNullabledNeedUpdateField(null, false);
                 Entity.UpdateUser = UserInfo.UserID.ToString();
-                if (BLL.Update(Entity) > 0)
-                {
-                    Result.Flag = FlagStatus.OK;
-                }
+                iResult = BLL.Update(Entity);
             }
-            Result.Message = Result.Flag == FlagStatus.OK ? isInsert + "成功!" : isInsert + "失败!";
-
+            
+            Result.Flag = iResult > 0 ? FlagStatus.OK : FlagStatus.NO;
+            Result.Message = isInsert;
+            Result.Message += iResult > 0 ? "成功！" : "失败！";
+            
             return Json(Result);
         }
 

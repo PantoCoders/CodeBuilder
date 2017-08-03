@@ -70,7 +70,9 @@
     .w30 {
         width: 30px;
     }
-
+    .w40 {
+        width: 40px;
+    }
     .w50 {
         width: 50px;
     }
@@ -83,8 +85,8 @@
         width: 80px;
     }
 
-    .w90 {
-        width: 90px;
+    .w95 {
+        width: 95px;
     }
 </style>
 <div style="position:absolute;display:none;">
@@ -108,7 +110,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td> <input type="text" id="txtTableName"></td>
+                    <td> <input type="text" id="txtTableName" ondblclick="getDB();";></td>
                     <td> <input type="text" id="txtTableComment"></td>
                     <td> <input type="text" id="txtEntityName" /></td>
                     <td> <input type="text" id="txtPageName"></td>
@@ -161,7 +163,14 @@
                             <div id="container" style="height:100%;">
                                 <div id="wrap" style="height:100%;">
                                     <div class="product-head">
-                                        <div id="form"></div>
+                                        <div id="form">
+                                            <div class="input-group">
+                                                <input id="txtSearch" type="text" class="filterinput form-control" placeholder="Search for...">
+                                                <span class="input-group-btn" style="top:-1px;">
+                                                    <button class="btn btn-primary btn-sm glyphicon glyphicon-repeat" type="button" onclick="refreshList();"><span class="" aria-hidden="true"></span></button>
+                                                </span>
+                                            </div>
+                                        </div>
                                         <div class="clear"></div>
                                     </div>
                                     <div class="list-group" style="height:calc(100% - 35px);overflow-x:hidden;margin-bottom: 0px;">
@@ -177,7 +186,7 @@
                         </div>
 
                         <div class="col-lg-10" style="height:100%;">
-                            <table id="table" class="table" style="font-size:9px;margin-bottom:0px;">
+                            <table id="table" class="table" style="font-size:9px;margin-bottom:0px;table-layout:fixed;">
                                 <thead>
                                     <tr>
                                         <th class="w50">操作</th>
@@ -185,9 +194,9 @@
                                             <input id="checkbox0" type="checkbox" class="css-checkbox lrg">
                                             <label for="checkbox0" class="css-label lrg vlad" style="margin-bottom:0px;"></label>
                                         </th>
-                                        <th>字段</th>
+                                        <th><div class="input-group m-b" style="margin-bottom:0px;">字段</div></th>
                                         <th>注释</th>
-                                        <th class="w90">类型</th>
+                                        <th class="w95">类型</th>
                                         <th class="w60">长度</th>
                                         <th class="w40">非空</th>
                                         <th class="w60">默认值</th>
@@ -197,7 +206,7 @@
                             </table>
 
                             <div class="ibox" style="height:calc(100% - 28px);overflow:auto;">
-                                <table id="table" class="table" style="font-size:9px;">
+                                <table id="table" class="table" style="font-size:9px;table-layout:fixed;">
                                     <tr v-for="(info,index) in fieldList">
                                         <td class="w50">
                                             <span class="glyphicon glyphicon-fullscreen" aria-hidden="true" v-on:click="appendRow(index)"></span>
@@ -218,7 +227,7 @@
                                             </div>
                                         </td>
                                         <td><input type="text" class="form-control" v-model="info.Comment"></td>
-                                        <td class="w90"><input type="text" class="form-control SelectType" v-model="info.TypeName"></td>
+                                        <td class="w95"><input type="text" class="form-control SelectType" v-model="info.TypeName"></td>
                                         <td class="w60"><input type="text" class="form-control form-control-sm" v-model="info.MaxLength"></td>
                                         <td class="w40">
                                             <input :id="'ck-2-'+index" type="checkbox" class="css-checkbox lrg" v-model="info.NotNUll">

@@ -142,6 +142,15 @@ namespace PDRZ.Integration.BLL.School.@Model.ConfigInfo.ModelFolderName
         {
             return Dal.BatchDelete(IDs);
         }
+
+        /// &ltsummary>
+        /// 获取 实体 详细信息
+        /// &lt/summary>
+        /// &ltparam name="@Model.ConfigInfo.PKName">&lt/param>
+        public @Model.ConfigInfo.EntityName GetEntity(Guid @Model.ConfigInfo.PKName)
+        {
+            return Dal.GetEntity(ID);
+        }
         #endregion
     }
 }</textarea></pre>

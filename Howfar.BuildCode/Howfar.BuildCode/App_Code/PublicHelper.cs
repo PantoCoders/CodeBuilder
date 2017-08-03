@@ -19,7 +19,7 @@ namespace Howfar.BuildCode.App_Code
                 {
                     v = v.Substring(0, index);
                 }
-                v.Replace("ID", "");
+                v = v.Replace("ID", "");
             }
             return v;
         }
@@ -92,19 +92,19 @@ namespace Howfar.BuildCode.App_Code
                     ));
                 strCreateComment.Add($"EXEC sp_addextendedproperty N'MS_Description', N'{item.Comment}', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName.Trim()}', 'COLUMN', N'{item.ColumnName.Trim()}'; ");
             }
-            strCreateTable.Add(@"   [Timestamp] [timestamp] NULL,
-                                    [SchoolID] [uniqueidentifier] NOT NULL,
-                                    [CreateUser] [nvarchar] (50) COLLATE Chinese_PRC_CI_AS NULL,
-                                    [CreateDate] [datetime] NULL,
-                                    [UpdateUser] [nvarchar] (50) COLLATE Chinese_PRC_CI_AS NULL,
-                                    [UpdateDate] [datetime] NULL,");
-            strCreateTable.Add($"PRIMARY KEY ( [{List[0].ColumnName}] ));");
-            strCreateComment.Add($@" EXEC sp_addextendedproperty N'MS_Description', N'时间戳', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'Timestamp' 
-                                    EXEC sp_addextendedproperty N'MS_Description', N'学校ID', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'SchoolID' 
-                                    EXEC sp_addextendedproperty N'MS_Description', N'创建人', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'CreateUser' 
-                                    EXEC sp_addextendedproperty N'MS_Description', N'创建时间', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'CreateDate' 
-                                    EXEC sp_addextendedproperty N'MS_Description', N'修改人', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'UpdateUser' 
-                                    EXEC sp_addextendedproperty N'MS_Description', N'修改时间', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'UpdateDate' ");
+            strCreateTable.Add(@"[Timestamp] [timestamp] NULL,
+[SchoolID] [uniqueidentifier] NOT NULL,
+[CreateUser] [nvarchar] (50) COLLATE Chinese_PRC_CI_AS NULL,
+[CreateDate] [datetime] NULL,
+[UpdateUser] [nvarchar] (50) COLLATE Chinese_PRC_CI_AS NULL,
+[UpdateDate] [datetime] NULL,");
+            strCreateTable.Add($"PRIMARY KEY ( [{List[0].ColumnName}] ));\r\n");
+            strCreateComment.Add($@"EXEC sp_addextendedproperty N'MS_Description', N'时间戳', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'Timestamp' 
+EXEC sp_addextendedproperty N'MS_Description', N'学校ID', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'SchoolID' 
+EXEC sp_addextendedproperty N'MS_Description', N'创建人', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'CreateUser' 
+EXEC sp_addextendedproperty N'MS_Description', N'创建时间', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'CreateDate' 
+EXEC sp_addextendedproperty N'MS_Description', N'修改人', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'UpdateUser' 
+EXEC sp_addextendedproperty N'MS_Description', N'修改时间', 'SCHEMA', N'dbo', 'TABLE', N'{Config.TableName}', 'COLUMN', N'UpdateDate' ");
             CPQuery.From(string.Join("", strCreateTable)).ExecuteNonQuery();
             CPQuery.From(string.Join("", strCreateComment)).ExecuteNonQuery();
             return string.Join("\r\n", strCreateTable) + string.Join("\r\n", strCreateComment);

@@ -7,11 +7,10 @@ var storage;
         return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
     };
     function filterList(header, list) {
-        var form = $("<form>").attr({ "class": "filterform", "action": "#" }),
-            input = $("<input>").attr({ "class": "filterinput form-control", "type": "text", "id": "txtSearch" });
-        $(form).append(input).appendTo(header);
+        var form = $("<form>").attr({ "class": "filterform", "action": "#" });
+        $(form).appendTo(header);
 
-        $(input).change(function () {
+        $('#txtSearch').change(function () {
             var filter = $(this).val();
             if (filter) {
                 $matches = $(list).find('h4:Contains(' + filter + ')').parent();
@@ -24,8 +23,8 @@ var storage;
         }).keyup(function () {
             $(this).change();
         });
-        $(input).val(storage["SearchText"]);
-        $(input).change();
+        $('#txtSearch').val(storage["SearchText"]);
+        $('#txtSearch').change();
     }
     $(function () {
         $.getJSON('/Ajax/gettablelist', function (data) {
@@ -153,7 +152,8 @@ function setData(name) {
         EntityName: $.trim($('#txtEntityName').val()),
         PageName: $.trim($('#txtPageName').val()),
         ControllerName: $.trim($('#txtEntityName').val()),
-        FolderPath: $.trim($('#txtFolderPath').val())
+        FolderPath: $.trim($('#txtFolderPath').val()),
+        EventName: name
     };
     var isVer = ['BuildEntity', 'CreateTable'].indexOf(name) >= 0;//不需要判断
     var flag = true;
@@ -171,7 +171,7 @@ function setData(name) {
     if (!flag) { return; }
     storage[ConfigInfo.TableName] = JSON.stringify(applist.computerArr);
     var data = applist.computerArr;
-    var flag = false;
+    flag = false;
     data.forEach(function (item, index) {
         if (item.Comment.length <= 0) {
             toastr['error']("第" + (index + 1) + "行 注释 为空！");
@@ -183,7 +183,29 @@ function setData(name) {
         }
     });
     if (flag) { return; };
-    $.post('/Home/SetData', { DataList: data, ConfigInfo: ConfigInfo }, function () {
+    $.post('/Home/SetData', { DataList: data, ConfigInfo: ConfigInfo }, function (msg) {
+        if (msg.length > 0) {
+            toastr['error'](msg);
+            return;
+        }
+        if (name == 'CreateTable') {
+            refreshList();
+        }
         document.getElementById('iframe' + name).src = '/Home/' + name;
     });
+}
+
+//单击 表名 文本框 从缓存 获取数据
+function getDB() {
+    applist.fieldList = JSON.parse(storage[$('#txtTableName').val()]);
+    toastr['warning']("单击清除缓存", tableName + " 表已加载缓存数据!");
+};
+
+//刷新 表 列表数据
+function refreshList() {
+    $.getJSON('/Ajax/gettablelist', function (data) {
+        applist.tableList = data;
+        $('#txtSearch').change();
+        toastr['success']("列表已刷新！");
+    })
 }

@@ -115,7 +115,7 @@ $(function () {
                 },
                 yes: function (index, layero) {
                 var iframeWin = window[layero.find('iframe')[0]['name']];
-                iframeWin.@OName@("Edit.submitPage();")
+                iframeWin.@(OName.Substring(0,OName.Length-4))@("Edit.submitPage();")
             }
         });
     }
@@ -157,13 +157,13 @@ $(function () {
                     $('#EmployeeID').val(listEmployee[0].EmployeeID);
                 }
                 top.layer.close(index);
-                @Model.ConfigInfo.PageName@("List").searchTable();
+                @OName@("").searchTable();
             },
             btn2: function (index, layero) {
                 $('#EmployeeName').val('');
                 $('#EmployeeID').val('');
                 top.layer.close(index);
-                @Model.ConfigInfo.PageName@("List").searchTable();
+                @OName@("").searchTable();
             }
         });
     }

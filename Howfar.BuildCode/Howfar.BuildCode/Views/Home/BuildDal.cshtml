@@ -46,7 +46,7 @@ namespace PDRZ.Integration.Dal.School.@Model.ConfigInfo.ModelFolderName
         public List<@Model.ConfigInfo.EntityName> GetPageList(SearchParam param, string json, Guid schoolID)
         {
             JObject jo = JObject.Parse(json);
-            string sql = @@" SELECT * FROM @Model.ConfigInfo.TableName ";
+            string sql = @@" SELECT * FROM @Model.ConfigInfo.TableName a Where @Model.ConfigInfo.TableName@(".")SchoolID=@@SchoolID ";
 @ViewBag.sbCond
             return SortPageHelper.GetList<@Model.ConfigInfo.EntityName>(sql, new
             {
@@ -65,6 +65,19 @@ namespace PDRZ.Integration.Dal.School.@Model.ConfigInfo.ModelFolderName
             return CPQuery.From(sql).ExecuteNonQuery() > 0;
         }
 
+        /// &ltsummary>
+        /// 获取 实体 详细信息
+        /// &lt/summary>
+        /// &ltparam name="@Model.ConfigInfo.PKName">&lt/param>
+        public @Model.ConfigInfo.EntityName GetEntity(Guid @Model.ConfigInfo.PKName)
+        {
+            string sql = @@" SELECT a.*,b.Name EmployeeName,c.OrgName OrgName FROM @Model.ConfigInfo.TableName a
+                            LEFT JOIN dbo.KH_Employee b ON a.EmployeeID=b.EmployeeID
+                            LEFT JOIN dbo.KH_Organization c ON b.DefaultOrgID=c.OrgID
+                            Where a.@@Model.ConfigInfo.PKName=@@Model.ConfigInfo.PKName
+                          ";
+            return CPQuery.From(sql, new { @Model.ConfigInfo.PKName = @Model.ConfigInfo.PKName }).ToSingle<@Model.ConfigInfo.EntityName>();
+        }
 
     }
 }</textarea></pre>

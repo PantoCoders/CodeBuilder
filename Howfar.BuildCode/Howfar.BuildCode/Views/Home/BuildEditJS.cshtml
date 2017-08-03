@@ -36,37 +36,14 @@ var indexLoading;
     }
 
     ns.initPage = function () {
-        $("#formEdit").validate({
-            focusCleanup: false, focusInvalid: true,
-            submitHandler: function () {
-                indexLoading = window.parent.Pantosoft.IT.Utility.loading();
-                $("#formEdit").ajaxSubmit({
-                    dataType: 'json',
-                    success: function (data) {
-                        parent.layer.close(indexLoading);
-                        if (data.Flag == window.Constant.AjaxStatus.OK) {
-                            Pantosoft.IT.Utility.alertOkFunc(data.Message, function () {
-                                window.parent.@Model.ConfigInfo.PageName@("List").refreshTable();
-                            });
-                        }
-                        else {
-                            Pantosoft.IT.Utility.alertError(data.Message);
-                        }
-                    }
-                });
-            },
-            errorPlacement: function (error, element) {
-                $(element).attr('title', $(error).text()).tooltip('show');
-            },
-            unhighlight: function (element, errorClass, validClass) { //验证通过
-                $(element).tooltip('destroy');
-            },
-            success: function (label) {
 
-            },
+        //表单验证
+        validate('#formEdit', {
             rules: {
-
+@ViewBag.strEditJS
             }
+        }, function () {
+            window.parent.@Model.ConfigInfo.PageName@("List").refreshTable();
         });
 
     }
