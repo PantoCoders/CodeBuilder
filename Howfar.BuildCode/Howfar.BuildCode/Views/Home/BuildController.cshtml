@@ -22,20 +22,23 @@
     </style>
 
 </head>
-<body>@*using PDRZ.Integration.Entity.TransferData.School.@Model.ConfigInfo.ModelFolderName;*@
-    <pre id="editor"><textarea>
+<body>
+    @*;*@
+<pre id="editor"><textarea>
 using PDRZ.Integration.BLL.School.@Model.ConfigInfo.ModelFolderName;
 using PDRZ.Integration.Entity.TransferData.Base;
 using PDRZ.Integration.Entity.School.@Model.ConfigInfo.ModelFolderName;
 using PDRZ.IntegrationController.Attribute;
 using System;
 using System.Web.Mvc;
+@(Model.ConfigInfo.IsViewData? "using PDRZ.Integration.Entity.TransferData.School."+ Model.ConfigInfo.ModelFolderName+";" : "")
 
 namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
 {
     public class @Model.ConfigInfo.ControllerName@("Controller") : BaseController
     {
         private @Model.ConfigInfo.EntityName@("BLL") BLL = new  @Model.ConfigInfo.EntityName@("BLL")();
+        @(Model.ConfigInfo.IsViewData? "private DataDictionaryBLL dyBLL = new DataDictionaryBLL();" : "")
 
         /// &ltsummary>
         /// 列表 页面
@@ -87,9 +90,10 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
         [ActionPermission]
         public ActionResult Edit(@Model.ConfigInfo.EntityName Entity)
         {
-            @*@Model.ConfigInfo.EntityName@("ViewData") vd = new @Model.ConfigInfo.EntityName@("ViewData")();*@
-            Entity = Entity.@Model.ConfigInfo.PKName != Guid.Empty ? BLL.GetEntity(Entity.@Model.ConfigInfo.PKName) : Entity;
-            return View("~/@Model.ConfigInfo.FolderPath/@Model.ConfigInfo.PageName@("Edit.cshtml")", Entity);
+            @(Model.ConfigInfo.IsViewData ? Model.ConfigInfo.EntityName+ "ViewData  vd = new "+ @Model.ConfigInfo.EntityName+ "ViewData();" : "")
+@ViewBag.strControllerCode
+            @(Model.ConfigInfo.IsViewData? "vd.Entity" : "Entity") = Entity.@Model.ConfigInfo.PKName != Guid.Empty ? BLL.GetEntity(Entity.@Model.ConfigInfo.PKName) : Entity;
+            return View("~/@Model.ConfigInfo.FolderPath/@Model.ConfigInfo.PageName@("Edit.cshtml")", @(Model.ConfigInfo.IsViewData? "vd" : "Entity"));
         }
 
         /// &ltsummary>
@@ -108,10 +112,10 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
             //    Result.Message = "名称已存在！";
             //    return Json(Result);
             //}
-
+            int iResult = 0;
             if (isInsert.Contains("新增"))
             {
-                Entity.AuthorInfoID = Guid.NewGuid();
+                Entity.@Model.ConfigInfo.PKName = Guid.NewGuid();
                 Entity.CreateUser = UserInfo.UserID.ToString();
                 iResult = BLL.Insert(Entity);
             }
@@ -154,30 +158,30 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
 
     }
 }</textarea></pre>
-    <script src="~/Scripts/ace/ace.js"></script>
-    <script src="~/Scripts/ace/ext-language_tools.js"></script>
+<script src="~/Scripts/ace/ace.js"></script>
+<script src="~/Scripts/ace/ext-language_tools.js"></script>
 
-    <script>
-        var editor = ace.edit("editor");
-        //设置风格和语言（更多风格和语言，请到github上相应目录查看）
-        theme = "xcode"
-        language = "csharp"//"csharp"
-        editor.setTheme("ace/theme/" + theme);
-        editor.session.setMode("ace/mode/" + language);
-        ace.require("ace/ext/language_tools");
-        //字体大小
-        editor.setFontSize(13);
+<script>
+    var editor = ace.edit("editor");
+    //设置风格和语言（更多风格和语言，请到github上相应目录查看）
+    theme = "xcode"
+    language = "csharp"//"csharp"
+    editor.setTheme("ace/theme/" + theme);
+    editor.session.setMode("ace/mode/" + language);
+    ace.require("ace/ext/language_tools");
+    //字体大小
+    editor.setFontSize(13);
 
-        //设置只读（true时只读，用于展示代码）
-        editor.setReadOnly(false);
+    //设置只读（true时只读，用于展示代码）
+    editor.setReadOnly(false);
 
-        //自动换行,设置为off关闭
-        editor.setOption("wrap", "free")
-        editor.setOptions({
-            enableBasicAutocompletion: true,
-            enableSnippets: true,
-            enableLiveAutocompletion: true
-        });
-    </script>
+    //自动换行,设置为off关闭
+    editor.setOption("wrap", "free")
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true
+    });
+</script>
 </body>
 </html>

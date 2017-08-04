@@ -24,21 +24,23 @@
 </head>
 <body>
     <pre id="editor"><textarea>
-@ViewBag.strEditModePath
-@@using Panto.Framework.Entity;
+using System.Collections.Generic;
+using PDRZ.Integration.Entity.School;
+using PDRZ.Integration.Entity.School.@Model.ConfigInfo.ModelFolderName;
 
-@@{
-    Layout = "~/Views/Shared/_LayoutForm.cshtml";
-}
+namespace PDRZ.Integration.TransferData.School.@Model.ConfigInfo.ModelFolderName
+{
+    /// &ltsummary>
+    /// @Model.ConfigInfo.EntityName@("ViewData") 的实体类
+    /// &lt/summary>
+   
+    public class @Model.ConfigInfo.EntityName@("ViewData")
+    {
+        public @Model.ConfigInfo.EntityName Entity { get; set; }
 
-&ltscript type="text/javascript" src="@@Url.Content("~/Scripts/@Model.ConfigInfo.FolderPath/@Model.ConfigInfo.PageName@("Edit.js")")">&lt/script>
-<form class="formCommon addStaff" method="post" action="/@Model.ConfigInfo.ModelFolderName/@Model.ConfigInfo.ControllerName/EditInfo" id="formEdit" style="margin-top:15px;">
-@@Html.AntiForgeryToken()
-    <input type="hidden" name="@Model.ConfigInfo.PKName" value="@("@Model.")@Model.ConfigInfo.PKName" />
-@ViewBag.Content
-
-</form>
-</textarea></pre>
+@ViewBag.strEntityViewData
+    }
+}</textarea></pre>
     <script src="~/Scripts/ace/ace.js"></script>
     <script src="~/Scripts/ace/ext-language_tools.js"></script>
 
@@ -46,7 +48,7 @@
         var editor = ace.edit("editor");
         //设置风格和语言（更多风格和语言，请到github上相应目录查看）
         theme = "xcode"
-        language = "html"//"csharp"
+        language = "csharp"//"csharp"
         editor.setTheme("ace/theme/" + theme);
         editor.session.setMode("ace/mode/" + language);
         ace.require("ace/ext/language_tools");

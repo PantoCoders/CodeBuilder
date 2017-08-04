@@ -25,29 +25,51 @@ namespace Howfar.BuildCode.Controllers
         {
             try
             {
-                if (DataList.SequenceEqual(StaticDataList)) {
-                    return "相等";
-                } else {
-                    return "不相等";
-                }
+                //if (StaticDataList == null || DataList.SequenceEqual(StaticDataList))
+                //{
+                //    return "相等";
+                //}
+                //else
+                //{
+                //    return "不相等";
+                //}
                 StaticDataList = DataList != null ? DataList.Where(t => t.IsCheck == true).ToList() : StaticDataList;
                 StaticConfigInfo = ConfigInfo;
-                
+
+                //字典 Code List
+                List<string> CodeList = CPQuery.From("SELECT TypeCode FROM dbo.KH_DataDictionaryType").FillScalarList<string>();
+
+                #region  · 获取 PKList
+
                 List<Table> PKList = new List<Table>();
                 if (StaticDataList != null && StaticDataList.Count > 0)
                 {
                     PKList = GetPKList(ConfigInfo.TableName);
                 }
+
+                #endregion
+
                 for (int i = 0; i < StaticDataList.Count; i++)
                 {
+                    //处理 注释 Simple
                     StaticDataList[i].CommentSimple = PublicHelper.SplitComment(StaticDataList[i].Comment);
+                    //查找 主键
                     StaticDataList[i].IsPK = PKList.Where(t => t.ColumnName == StaticDataList[i].ColumnName).Count() > 0;
                     if (StaticDataList[i].IsPK.Value && StaticConfigInfo.PKName == null) //保存 主键 名称
                     {
                         StaticConfigInfo.PKName = StaticDataList[i].ColumnName;
                     }
+                    //转成 Csharp 数据类型
                     StaticDataList[i].CsharpType = PublicHelper.MapCsharpType(StaticDataList[i].TypeName, StaticDataList[i].NotNUll);
+                    //是否 字典表 字段
+                    string Code = PublicHelper.IsCode(StaticDataList[i].ColumnName, CodeList);
+                    StaticDataList[i].IsCodeField = Code.Length > 0;
+                    if (!StaticConfigInfo.IsViewData && Code.Length > 0)
+                    {
+                        StaticConfigInfo.IsViewData = true;
+                    }
                 }
+
                 if (StaticConfigInfo.EventName != "CreateTable" && StaticConfigInfo.PKName.Length < 0)
                 {
                     return "未获取到主键！";
@@ -56,7 +78,7 @@ namespace Howfar.BuildCode.Controllers
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return "Exception:" + ex.Message;
             }
         }
 
@@ -104,10 +126,29 @@ namespace Howfar.BuildCode.Controllers
             //排除主键
             List<Table> List = StaticDataList.Where(t => t.ColumnName != StaticConfigInfo.PKName).ToList();
             int Count = List.Count;
+
+            #region · 判断 实体 渲染方式（默认、ViewData）
+
+            //[默认值] 赋值来源
+            string strModel = "Model";
+            //[默认值] 引用 命名空间
+            string strEditModePath = $"@model PDRZ.Integration.Entity.School.{StaticConfigInfo.ModelFolderName}.{StaticConfigInfo.EntityName}";
+            /*
+              在本页面中是否 有 字典，有 则 需要使用 ViewData 渲染
+            */
+            if (StaticConfigInfo.IsViewData)
+            {
+                strEditModePath = $"@model PDRZ.Integration.Entity.TransferData.School.{StaticConfigInfo.ModelFolderName}.{StaticConfigInfo.EntityName}ViewData";
+                strModel = "Model.Entity";
+            }
+            ViewBag.strEditModePath = strEditModePath;
+
+            #endregion
+
             foreach (var item in List)
             {
                 //扩展字段跳过
-                if (item.ParentName.Length > 0) { continue; }
+                if (item.ParentName?.Length > 0) { continue; }
                 //日期样式
                 string DateClass = item.TypeName.ToLower().Contains("date") ? @"class=""dateShow chooseDate""" : string.Empty;
                 //是否必填
@@ -115,23 +156,38 @@ namespace Howfar.BuildCode.Controllers
                 //最大长度
                 var strLength = item.MaxLength > 0 ? $@"maxlength=""{item.MaxLength}""" : "";
                 //Value
-                string strValue = $"@Model.{ item.ColumnName}";
+                string strValue = $"@{strModel}.{ item.ColumnName}";
                 if (DateClass.Length > 0)
-                {
-                    strValue = $"@(Model.{item.ColumnName}.HasValue?Model.{item.ColumnName}.Value.ToString(\"yyyy-MM-dd\"):\"\")";
+                {  //日期 字段 赋值
+                    strValue = $"@({strModel}.{item.ColumnName}.HasValue?{strModel}.{item.ColumnName}.Value.ToString(\"yyyy-MM-dd\"):\"\")";
                 }
+
                 if (Index % 2 == 0) { sb.Add("<div class=\"form-group maginWidth\">"); }
                 sb.Add($"    <label class=\"col-xs-2 control-label form-left\">{IsValidate}{item.CommentSimple}</label>");
                 sb.Add("    <div class=\"col-xs-3 form-center\">");
-                var Kz = List.Where(t => t.ParentName == item.ColumnName);
-                if (Kz.Count() > 0)
-                {//*****扩展字段*****
-                    sb.Add($"        <input type=\"text\" id=\"{Kz.FirstOrDefault().ColumnName}\" name=\"{Kz.FirstOrDefault().ColumnName}\" value=\"@Model.{Kz.FirstOrDefault().ColumnName}\" {strLength}/>");
-                    sb.Add($"        <input type=\"hidden\" id=\"{item.ColumnName}\" name=\"{item.ColumnName}\" value=\"@Model.{item.ColumnName}\" />");
+
+                if (item.IsCodeField)//是否字典 字段
+                {
+                    sb.Add($@"        <select name=""{item.ColumnName}"" class=""selectpicker show-tick"">");
+                    sb.Add(@"            <option value="""">请选择</option>");
+                    sb.Add($"            @foreach (var item in Model.{item.ColumnName}List)");
+                    sb.Add("             {");
+                    sb.Add($@"              <option value=""@item.DictionaryCode"" @(Model.Entity.{item.ColumnName} == item.DictionaryCode ? ""selected"" : """") > @item.DictionaryName </option > ");
+                    sb.Add("             }");
+                    sb.Add("         </select>");
                 }
                 else
                 {
-                    sb.Add($"        <input type=\"text\" {DateClass} id=\"{item.ColumnName}\" name=\"{item.ColumnName}\" value=\"{strValue}\" {strLength}/>");
+                    var Kz = List.Where(t => t.ParentName == item.ColumnName);
+                    if (Kz.Count() > 0)
+                    {//*****扩展字段*****
+                        sb.Add($"        <input type=\"text\" id=\"{Kz.FirstOrDefault().ColumnName}\" name=\"{Kz.FirstOrDefault().ColumnName}\" value=\"@{strModel}.{Kz.FirstOrDefault().ColumnName}\" {strLength}/>");
+                        sb.Add($"        <input type=\"hidden\" id=\"{item.ColumnName}\" name=\"{item.ColumnName}\" value=\"@{strModel}.{item.ColumnName}\" />");
+                    }
+                    else
+                    {
+                        sb.Add($"        <input type=\"text\" {DateClass} id=\"{item.ColumnName}\" name=\"{item.ColumnName}\" value=\"{strValue}\" {strLength}/>");
+                    }
                 }
                 sb.Add("    </div>");
                 sb.Add("    <div class=\"col-xs-1 form-right\"></div>");
@@ -198,12 +254,6 @@ namespace Howfar.BuildCode.Controllers
         }
         #endregion
 
-        //public ActionResult test(List<Table> DataList)
-        //{
-        //    StaticDataList = DataList != null ? DataList : StaticDataList;
-        //    ViewBag.Content = BuildEditHtml(StaticDataList);
-        //    return View();
-        //}
 
         #region · BuildEntity
         public ActionResult BuildEntity()
@@ -262,7 +312,6 @@ namespace Howfar.BuildCode.Controllers
         #endregion
 
 
-
         #region  · Build Dal
         public ActionResult BuildDal()
         {
@@ -294,6 +343,7 @@ namespace Howfar.BuildCode.Controllers
         }
         #endregion
 
+        #region · BuildBLL
 
         public ActionResult BuildBLL()
         {
@@ -302,12 +352,35 @@ namespace Howfar.BuildCode.Controllers
             return View(Entity);
         }
 
+        #endregion
+
+        #region · BuildController
+
         public ActionResult BuildController()
         {
             Table Entity = new Table();
             Entity.ConfigInfo = StaticConfigInfo;
+            ViewBag.strControllerCode = strControllerCode();
             return View(Entity);
         }
+
+        public string strControllerCode()
+        {
+            List<Table> List = StaticDataList.Where(t => t.IsCodeField == true).ToList();
+            List<string> sb = new List<string>();
+            foreach (var item in List)
+            {
+                var code = item.ColumnName.Substring(0, item.ColumnName.Length - 4);
+                sb.Add($@"            vd.{code}CodeList = dyBLL.GetListByType(""{code}"", this.SchoolID);");
+            }
+            return string.Join("\r\n", sb);
+        }
+
+        #endregion
+
+
+        #region · BuildListHtml
+
 
         public ActionResult BuildListHtml()
         {
@@ -316,6 +389,11 @@ namespace Howfar.BuildCode.Controllers
             Entity.EntityList = StaticDataList.Where(t => t.IsCondition == true).ToList();
             return View(Entity);
         }
+
+        #endregion
+
+        #region · BuildEditJS
+
         public ActionResult BuildEditJS()
         {
             Table Entity = new Table();
@@ -333,6 +411,9 @@ namespace Howfar.BuildCode.Controllers
             }
             return string.Join(",\r\n", sb);
         }
+
+        #endregion
+
         #region · CreateTable
         public ActionResult CreateTable()
         {
@@ -340,5 +421,29 @@ namespace Howfar.BuildCode.Controllers
             return View();
         }
         #endregion
+
+        #region · BuildEntityViewData
+
+        public ActionResult BuildEntityViewData()
+        {
+            Table Entity = new Table();
+            ViewBag.strEntityViewData = strEntityViewData();
+            Entity.ConfigInfo = StaticConfigInfo;
+            return View(Entity);
+        }
+        public string strEntityViewData()
+        {
+
+            List<string> sb = new List<string>();
+            List<Table> List = StaticDataList.Where(t => t.IsCodeField == true).ToList();
+            foreach (var item in List)
+            {
+                var code = item.ColumnName.Substring(0, item.ColumnName.Length - 4);
+                sb.Add($"        public List<DataDictionary> {code}CodeList {{ get; set; }}");
+            }
+            return string.Join("\r\n", sb);
+        }
+        #endregion
+
     }
 }

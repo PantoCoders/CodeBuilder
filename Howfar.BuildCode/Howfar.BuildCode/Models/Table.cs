@@ -62,6 +62,10 @@ namespace Howfar.BuildCode.Models
         #region 配置字段
 
         /// <summary>
+        /// 是否 字典表 字段
+        /// </summary>
+        public bool IsCodeField { get; set; }
+        /// <summary>
         /// 是否验证字段
         /// </summary>
         public bool IsValidate { get; set; }

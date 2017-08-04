@@ -608,6 +608,7 @@
     <Content Include="Views\Home\BuildDal.cshtml" />
     <Content Include="Views\Home\BuildListHtml.cshtml" />
     <Content Include="Views\Home\BuildEditJS.cshtml" />
+    <Content Include="Views\Home\BuildEntityViewData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

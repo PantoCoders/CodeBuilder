@@ -74,7 +74,7 @@ namespace PDRZ.Integration.Dal.School.@Model.ConfigInfo.ModelFolderName
             string sql = @@" SELECT a.*,b.Name EmployeeName,c.OrgName OrgName FROM @Model.ConfigInfo.TableName a
                             LEFT JOIN dbo.KH_Employee b ON a.EmployeeID=b.EmployeeID
                             LEFT JOIN dbo.KH_Organization c ON b.DefaultOrgID=c.OrgID
-                            Where a.@@Model.ConfigInfo.PKName=@@Model.ConfigInfo.PKName
+                            Where a.@Model.ConfigInfo.PKName=@("@")@Model.ConfigInfo.PKName
                           ";
             return CPQuery.From(sql, new { @Model.ConfigInfo.PKName = @Model.ConfigInfo.PKName }).ToSingle<@Model.ConfigInfo.EntityName>();
         }

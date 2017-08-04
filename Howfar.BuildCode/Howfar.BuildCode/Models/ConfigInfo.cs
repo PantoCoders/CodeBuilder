@@ -18,6 +18,10 @@ namespace Howfar.BuildCode.Models
         public string EventName { get; set; }
 
         /// <summary>
+        /// 字典 表字段
+        /// </summary>
+        public bool IsViewData { get; set; }
+        /// <summary>
         /// 主键名称
         /// </summary>
         public string PKName { get; set; }

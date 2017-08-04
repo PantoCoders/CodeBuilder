@@ -23,6 +23,23 @@ namespace Howfar.BuildCode.App_Code
             }
             return v;
         }
+
+        public static string IsCode(string Name, List<string> CodeList)
+        {
+            int index = Name.Length - 4;
+            int num = 0;
+            string Code = string.Empty;
+            if (index > 0 && Name.Substring(index).Contains("Code"))
+            {
+                Code = Name.Substring(0, index);
+                num = CodeList.FindAll(t => t == Code).Count();
+            }
+            if (num > 0)
+            {
+                return Code;
+            }
+            else { return string.Empty; }
+        }
         public static string MapCsharpType(string dbtype, bool NotNull)
         {
             string strNull = NotNull ? "" : "?";
