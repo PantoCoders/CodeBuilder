@@ -154,7 +154,9 @@ namespace Howfar.BuildCode.Controllers
                 //是否必填
                 var IsValidate = item.IsValidate ? @"<span style=""color: red; "">*</span>" : "";
                 //最大长度
-                var strLength = item.MaxLength > 0 ? $@"maxlength=""{item.MaxLength}""" : "";
+                int MaxLength = 0;
+                int.TryParse(item.MaxLength, out MaxLength);
+                var strLength = MaxLength > 0 ? $@"maxlength=""{item.MaxLength}""" : "";
                 //Value
                 string strValue = $"@{strModel}.{ item.ColumnName}";
                 if (DateClass.Length > 0)
@@ -224,8 +226,20 @@ namespace Howfar.BuildCode.Controllers
                 sb.Add($"               name: '{item.Comment}',");
                 sb.Add($"               width: '150px',");
                 sb.Add($"               sortable: 'true',");
-                //sb.Add($"             type: 'link',");
-                sb.Add(string.Format("               align: '{0}',", item.TypeName.Contains("int") ? "right" : "left"));
+                if (Index == 0)
+                {
+                    sb.Add($"               type: 'link',");
+                }
+                string align = "left";
+                if (item.TypeName.Contains("int"))
+                {
+                    align = "right";
+                }
+                else if (item.TypeName.ToLower().Contains("date"))
+                {
+                    align = "center";
+                }
+                sb.Add(string.Format("               align: '{0}',", align));
                 if (item.TypeName.ToLower().Contains("date"))
                 {
                     sb.Add("            fn: function (e) {");

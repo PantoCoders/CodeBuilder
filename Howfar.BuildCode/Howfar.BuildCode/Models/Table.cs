@@ -24,6 +24,8 @@ namespace Howfar.BuildCode.Models
         public int ColumsID { get; set; }
         public string DefaultValue { get; set; }
 
+        public int? Precision { get; set; }
+        public int? Scale { get; set; }
         /// <summary>
         /// 父级名称 扩展字段 主表字段的名称
         /// </summary>
@@ -45,7 +47,7 @@ namespace Howfar.BuildCode.Models
         /// <summary>
         /// 字段长度
         /// </summary>
-        public int MaxLength { get; set; }
+        public string MaxLength { get; set; }
         /// <summary>
         /// 是否为空
         /// </summary>

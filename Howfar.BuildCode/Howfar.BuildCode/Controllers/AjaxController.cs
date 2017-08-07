@@ -63,6 +63,8 @@ namespace Howfar.BuildCode.Controllers
                                         c.column_id  AS ColumsID,
                                         t.name AS TypeName ,
                                         c.max_length AS MaxLength ,
+                                        c.precision AS Precision,
+                                        c.scale AS Scale,
                                         c.collation_name ,
                                         c.is_xml_document ,
                                         CAST(CASE WHEN ( do.parent_object_id = 0 ) THEN 1
@@ -97,7 +99,23 @@ namespace Howfar.BuildCode.Controllers
                                         AND o.name = N'{TableName}' 
                                         AND c.name Not IN('{ string.Join("','", strExclude)}')
                                         ORDER BY c.column_id;";
-            return Json(CPQuery.From(strSQL).ToList<Table>(), JsonRequestBehavior.AllowGet);
+            List<Table> List = CPQuery.From(strSQL).ToList<Table>();
+            foreach (var item in List)
+            {
+                switch (item.TypeName)
+                {
+                    case "nvarchar":
+                        item.MaxLength = (int.Parse(item.MaxLength) / 2).ToString();
+                        break;
+                    case "decimal":
+                        item.MaxLength = $"({item.Precision},{item.Scale})";
+                        break;
+                    default:
+                        item.MaxLength = string.Empty;
+                        break;
+                }
+            }
+            return Json(List, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
