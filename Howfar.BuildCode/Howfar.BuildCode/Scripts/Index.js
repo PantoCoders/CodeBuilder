@@ -168,6 +168,10 @@ function setData(name) {
         storage["ModelFolderName"] = ConfigInfo.ModelFolderName;
         storage["FolderPath"] = ConfigInfo.FolderPath;
     }
+    if (ConfigInfo.PageName.length <= 0) {
+        toastr['error']("PageName 为空")
+        flag = false;
+    }
     if (!flag) { return; }
     storage[ConfigInfo.TableName] = JSON.stringify(applist.computerArr);
     var data = applist.computerArr;

@@ -122,7 +122,7 @@ $(function () {
 
     //删除
     ns.delete = function () {
-        var ids = @OName@(".getSelectIDs();")
+        var ids = ns.getSelectIDs();
 
         if (ids == "") {
             window.Pantosoft.IT.Utility.alertDelete();
@@ -133,7 +133,7 @@ $(function () {
             url: "/@Model.ConfigInfo.ModelFolderName/@Model.ConfigInfo.ControllerName/Delete",
                 param: { ids: ids },
                 success: function (data) {
-                @OName@(".refreshTable();")
+                ns.refreshTable();
             }
         });
     }
@@ -157,13 +157,13 @@ $(function () {
                     $('#EmployeeID').val(listEmployee[0].EmployeeID);
                 }
                 top.layer.close(index);
-                @OName@("").searchTable();
+                ns.searchTable();
             },
             btn2: function (index, layero) {
                 $('#EmployeeName').val('');
                 $('#EmployeeID').val('');
                 top.layer.close(index);
-                @OName@("").searchTable();
+                ns.searchTable();
             }
         });
     }
