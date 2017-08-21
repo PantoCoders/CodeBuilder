@@ -22,6 +22,11 @@ var storage;
             return false;
         }).keyup(function () {
             $(this).change();
+            }).on('paste', function () {
+                setTimeout(function () {
+                    var name = $('#txtSearch').val();
+                    $("a[tablename='" + name + "']")[0].click();
+                }, 100);
         });
         $('#txtSearch').val(storage["SearchText"]);
         $('#txtSearch').change();

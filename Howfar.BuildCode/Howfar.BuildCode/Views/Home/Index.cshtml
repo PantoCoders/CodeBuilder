@@ -176,7 +176,7 @@
                                         <div class="clear"></div>
                                     </div>
                                     <div class="list-group" style="height:calc(100% - 35px);overflow-x:hidden;margin-bottom: 0px;">
-                                        <a class="list-group-item" :TableName="data.TableName" v-on:click="getTableInfo(data.TableName,data.Comment,this)" v-for="data in tableList">
+                                        <a class="list-group-item" :TableName="data.TableName" v-on:click="getTableInfo(data.TableName,data.Comment,$event)" v-for="data in tableList">
                                             <h4 class="list-group-item-heading">{{data.TableName}}</h4>
                                             <span class="badge">{{data.FieldCount}}</span>
                                             <p class="list-group-item-text">{{data.Comment}}</p>
