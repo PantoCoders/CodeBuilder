@@ -115,7 +115,7 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
             int iResult = 0;
             if (isInsert.Contains("新增"))
             {
-                Entity.@Model.ConfigInfo.PKName = Guid.NewGuid();
+                Entity.@Model.ConfigInfo.PKName = GuidHelper.GenerateComb();
                 Entity.CreateUser = UserInfo.UserID.ToString();
                 iResult = BLL.Insert(Entity);
             }
