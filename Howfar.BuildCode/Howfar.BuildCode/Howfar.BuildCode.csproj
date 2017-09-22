@@ -576,6 +576,7 @@
     <Content Include="fonts\glyphicons-halflings-regulard41d.eot" />
     <Content Include="Scripts\ace\css\ace-clouds" />
     <Content Include="Scripts\ace\css\ace-tm" />
+    <Content Include="db.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\highlight.min.js" />
     <Content Include="Scripts\Index.js" />

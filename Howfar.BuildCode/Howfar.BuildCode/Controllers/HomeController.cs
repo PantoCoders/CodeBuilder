@@ -25,11 +25,12 @@ namespace Howfar.BuildCode.Controllers
 
         public void SetCon(string strcon)
         {
-            ConfigurationManager.ConnectionStrings["PDRZ_Integration"].ConnectionString = strcon;
-            Configuration cfa = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            cfa.AppSettings.Settings["PDRZ_Integration"].Value = "name";
-            cfa.Save();
-            ConfigurationManager.RefreshSection("connectionStrings");
+            //ConfigurationManager.ConnectionStrings["PDRZ_Integration"].ConnectionString = strcon;
+            //Configuration cfa = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            //cfa.AppSettings.Settings["con"].Value = "name";
+            //cfa.Save();
+            //ConfigurationManager.RefreshSection("appSettings");
+            ConfigurationManager.AppSettings["con"] = "2222";
         }
 
         public string SetData(List<Table> DataList, ConfigInfo ConfigInfo)
@@ -48,7 +49,15 @@ namespace Howfar.BuildCode.Controllers
                 StaticConfigInfo = ConfigInfo;
 
                 //字典 Code List
-                List<string> CodeList = CPQuery.From("SELECT TypeCode FROM dbo.KH_DataDictionaryType").FillScalarList<string>();
+                List<string> CodeList = new List<string>();
+                try
+                {
+                    CodeList = CPQuery.From("SELECT TypeCode FROM dbo.KH_DataDictionaryType").FillScalarList<string>();
+                }
+                catch (Exception)
+                {
+                }
+
 
                 #region  · 获取 PKList
 
