@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Configuration;
 
 namespace Howfar.BuildCode.Controllers
 {
@@ -18,7 +19,17 @@ namespace Howfar.BuildCode.Controllers
         static ConfigInfo StaticConfigInfo = new ConfigInfo();
         public ActionResult Index()
         {
+            ViewBag.strCon = ConfigurationManager.ConnectionStrings["PDRZ_Integration"];
             return View();
+        }
+
+        public void SetCon(string strcon)
+        {
+            ConfigurationManager.ConnectionStrings["PDRZ_Integration"].ConnectionString = strcon;
+            Configuration cfa = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            cfa.AppSettings.Settings["PDRZ_Integration"].Value = "name";
+            cfa.Save();
+            ConfigurationManager.RefreshSection("connectionStrings");
         }
 
         public string SetData(List<Table> DataList, ConfigInfo ConfigInfo)
@@ -459,5 +470,28 @@ namespace Howfar.BuildCode.Controllers
         }
         #endregion
 
+        #region · BuildMenuSql
+        public ActionResult BuildMenuSql(string id)
+        {
+            List<string> List = new List<string>();
+            DataTable dtMenu = CPQuery.From("SELECT * FROM dbo.PDRZ_Menu WHERE MenuID =@MenuID", new { MenuID = id }).FillDataTable();
+            DataTable dtFunction = CPQuery.From("SELECT * FROM dbo.PDRZ_MenuFunction WHERE MenuID = @MenuID", new { MenuID = id }).FillDataTable();
+
+            foreach (DataRow dr in dtMenu.Rows)
+            {
+                List.Add($"-- 菜单 {dr[1]}");
+                List.Add($"DELETE FROM dbo.PDRZ_Menu WHERE MenuID ='{dr[0]}'");
+                List.Add($"INSERT INTO PDRZ_Menu SELECT '{dr[0]}', '{dr[1]}', '{dr[2]}', '{dr[3]}', '{dr[4]}', '{dr[5]}', {dr[6]}, '{dr[7]}', GETDATE(), '', ''");
+            }
+            foreach (DataRow dr in dtFunction.Rows)
+            {
+                List.Add($"-- {dr[1]}");
+                List.Add($"DELETE  FROM PDRZ_MenuFunction WHERE FunctionID = '{dr[0]}';");
+                List.Add($"INSERT INTO PDRZ_MenuFunction SELECT '{dr[0]}', '{dr[1]}', '{dr[2]}', {dr[3]}, '{dr[4]}', '{dr[5]}', GETDATE(), '', '', '{dr[9]}'");
+            }
+            ViewBag.SQLContent = string.Join("\r\n", List);
+            return View();
+        }
+        #endregion
     }
 }

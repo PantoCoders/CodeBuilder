@@ -70,9 +70,11 @@
     .w30 {
         width: 30px;
     }
+
     .w40 {
         width: 40px;
     }
+
     .w50 {
         width: 50px;
     }
@@ -110,7 +112,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td> <input type="text" id="txtTableName" ondblclick="getDB();";></td>
+                    <td> <input type="text" id="txtTableName" ondblclick="getDB();" ;></td>
                     <td> <input type="text" id="txtTableComment"></td>
                     <td> <input type="text" id="txtEntityName" /></td>
                     <td> <input type="text" id="txtPageName"></td>
@@ -119,11 +121,14 @@
                 </tr>
             </tbody>
         </table>
-        <span>字典表字段规则：ZZLXCode，首先数据库得有这个字典！</span>
+        <span style="color:red;">字典表字段规则：ZZLXCode，首先数据库得有这个字典！</span>
     </div>
     <div class="tabs-container" style="height:calc(100% - 65px);">
 
         <ul class="nav nav-tabs">
+            <li class="">
+                <a data-toggle="tab" href="#tab-0" aria-expanded="false">Config</a>
+            </li>
             <li class="active">
                 <a data-toggle="tab" href="#tab-1" aria-expanded="true"> Main</a>
             </li>
@@ -157,8 +162,18 @@
             <li class="">
                 <a data-toggle="tab" href="#tab-11" aria-expanded="false">ViewData Entity</a>
             </li>
+            <li class="">
+                <a data-toggle="tab" href="#tab-12" aria-expanded="false">Build Menu SQl</a>
+            </li>
         </ul>
         <div class="tab-content" id="list" style="height: calc(100% - 35px);">
+            <div id="tab-0" class="tab-pane " style="height:100%;">
+                <br />
+                <input type="text" name="name" style="width:50%;" value="@ViewBag.strCon" /><input type="button" id="btnConfig" name="name" onclick="setCon();" value="切换" /><br/><br />
+                <input type="text" name="name" style="width:50%;" value="server=192.168.0.201,56566;database=PDRZ_Integration;uid=sa;pwd=1qaz@WSX" /><br /><br />
+                <input type="text" name="name" style="width:50%;" value="server=192.168.0.201;database=PDRZ_IntegrationTest;uid=sa;pwd=1qaz@WSX" /><br /><br />
+                <input type="text" name="name" style="width:50%;" value="server=127.0.0.1;database=PantoOA;uid=sa;pwd=123456" /><br /><br />
+            </div>
             <div id="tab-1" class="tab-pane active" style="height:100%;">
                 <div class="panel-body" style="height:100%;">
                     <div class="row" style="height:100%;">
@@ -324,6 +339,13 @@
                 <div class="panel-body" style="height:100%;">
                     <button class="btn-success" onclick="setData('BuildEntityViewData');">Build Code</button>
                     <iframe id="iframeBuildEntityViewData" style="width:100%;height:100%;border:none;"></iframe>
+                </div>
+            </div>
+            <div id="tab-12" class="tab-pane" style="height:100%;">
+                <div class="panel-body" style="height:100%;">
+                    MenuID:<input id="txtMenuID" style="width:270px;" />
+                    <button class="btn-success" onclick="iframeBuildMenuSQl();">Build Code</button>
+                    <iframe id="iframeBuildMenuSQl" style="width:100%;height:100%;border:none;"></iframe>
                 </div>
             </div>
         </div>

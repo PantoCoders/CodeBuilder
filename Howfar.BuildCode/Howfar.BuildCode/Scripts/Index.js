@@ -22,11 +22,11 @@ var storage;
             return false;
         }).keyup(function () {
             $(this).change();
-            }).on('paste', function () {
-                setTimeout(function () {
-                    var name = $('#txtSearch').val();
-                    $("a[tablename='" + name + "']")[0].click();
-                }, 100);
+        }).on('paste', function () {
+            setTimeout(function () {
+                var name = $('#txtSearch').val();
+                $("a[tablename='" + name + "']")[0].click();
+            }, 100);
         });
         $('#txtSearch').val(storage["SearchText"]);
         $('#txtSearch').change();
@@ -216,5 +216,19 @@ function refreshList() {
         applist.tableList = data;
         $('#txtSearch').change();
         toastr['success']("列表已刷新！");
+    })
+}
+
+
+function iframeBuildMenuSQl() {
+    var menuid = $('#txtMenuID').val();
+    if (menuid.length > 0) {
+        document.getElementById('iframeBuildMenuSQl').src = '/Home/BuildMenuSql?id=' + menuid;
+    }
+}
+
+function setCon() {
+    $.post('/home/SetCon', { strcon: $('#defaultCon').val() }, function () {
+        location.href = location.href;
     })
 }
