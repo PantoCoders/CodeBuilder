@@ -23,12 +23,12 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
             return View("~/@Model.ConfigInfo.FolderPath/@Model.ConfigInfo.PageName@("List.cshtml")");
         }
 
-        /// &ltsummary>
+        /// <summary>
         /// 获取列表信息
-        /// &lt/summary>
-        /// &ltparam name="combinSearchText">&lt/param>
-        /// &ltparam name="pageNo">&lt/param>
-        /// &ltparam name="pageSize">&lt/param>
+        /// </summary>
+        /// <param name="combinSearchText">&lt/param>
+        /// <param name="pageNo">&lt/param>
+        /// <param name="pageSize">&lt/param>
         /// <returns></returns>
         public JsonResult GetPageList(string combinSearchText, int pageNo, int pageSize, string orderSeq)
         {
@@ -56,9 +56,9 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
             };
         }
 
-        /// &ltsummary>
+        /// <summary>
         /// 编辑 页面
-        /// &lt/summary>
+        /// </summary>
         /// <returns></returns>
         [ActionPermission]
         public ActionResult Edit(@Model.ConfigInfo.EntityName Entity)
@@ -69,9 +69,9 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
             return View("~/@Model.ConfigInfo.FolderPath/@Model.ConfigInfo.PageName@("Edit.cshtml")", @(Model.ConfigInfo.IsViewData ? "vd" : "Entity"));
         }
 
-        /// &ltsummary>
+        /// <summary>
         /// 新增/更新  信息
-        /// &lt/summary>
+        /// </summary>
         /// <returns></returns>
         [ValidateAntiForgeryToken]
         public JsonResult EditInfo(@Model.ConfigInfo.EntityName Entity)
@@ -106,10 +106,10 @@ namespace PDRZ.IntegrationController.School.@Model.ConfigInfo.ModelFolderName
             return Json(Result);
         }
 
-        /// &ltsummary>
+        /// <summary>
         /// 批量删除
-        /// &lt/summary>
-        /// &ltparam name="Entity">&lt/param>
+        /// </summary>
+        /// <param name="Entity">&lt/param>
         /// <returns></returns>
         [ActionPermission]
         public JsonResult Delete(string Ids)
