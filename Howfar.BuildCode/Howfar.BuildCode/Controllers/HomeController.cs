@@ -10,6 +10,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
+using System.Xml;
 
 namespace Howfar.BuildCode.Controllers
 {
@@ -23,14 +24,55 @@ namespace Howfar.BuildCode.Controllers
             return View();
         }
 
-        public void SetCon(string strcon)
+        public string SetCon(string strcon)
         {
-            //ConfigurationManager.ConnectionStrings["PDRZ_Integration"].ConnectionString = strcon;
-            //Configuration cfa = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            //cfa.AppSettings.Settings["con"].Value = "name";
-            //cfa.Save();
-            //ConfigurationManager.RefreshSection("appSettings");
-            ConfigurationManager.AppSettings["con"] = "2222";
+            if (string.IsNullOrEmpty(strcon))
+            {
+                return "值不可为空！";
+            }
+            string key = "PDRZ_Integration";
+            string value = strcon;
+            try
+            {
+                SqlConnection con = new SqlConnection(value);
+                con.Open();
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+
+
+                    //ConfigurationManager.ConnectionStrings["PDRZ_Integration"].ConnectionString = strcon;
+                    //Configuration cfa = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                    //cfa.AppSettings.Settings["con"].Value = "name";
+                    //cfa.Save();
+                    //ConfigurationManager.RefreshSection("appSettings");
+                    System.Xml.XmlDocument xDoc = new System.Xml.XmlDocument();
+                    xDoc.Load(HttpContext.Server.MapPath("~/db.config"));
+                    XmlNode xNode;
+                    XmlElement xElem1;
+                    XmlElement xElem2;
+                    xNode = xDoc.SelectSingleNode("//connectionStrings");
+                    xElem1 = (System.Xml.XmlElement)xNode.SelectSingleNode("//add[@name='" + key + "']");
+                    if (xElem1 != null) xElem1.SetAttribute("connectionString", value);
+                    else
+                    {
+                        xElem2 = xDoc.CreateElement("add");
+                        xElem2.SetAttribute("key", key);
+                        xElem2.SetAttribute("value", value);
+                        xNode.AppendChild(xElem2);
+                    }
+                    xDoc.Save(HttpContext.Server.MapPath("~/db.config"));
+                    return "设置成功！";
+                }
+                else
+                {
+                    return "设置失败！";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public string SetData(List<Table> DataList, ConfigInfo ConfigInfo)

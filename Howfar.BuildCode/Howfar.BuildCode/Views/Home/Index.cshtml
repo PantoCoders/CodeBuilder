@@ -96,8 +96,12 @@
         1.【ModelFolderName】 必须统一，也就是 BLL/Dal/Controller 在同一名称的 Model 下面 否则 应用路径不对。
     </span><br />
 </div>
-<div class="container-fluid" id="container" style="font-size:9px;height:calc(100% - 10px));">
-    <h2>Code</h2>
+<div class="container-fluid" id="container" style="font-size:9px;height:calc(100% - 10px);">
+    <div>
+        <h2>Code<span id="showCon" style="color:red;font-size:15px;"></span></h2>
+        
+    </div>
+
     <div style="position:absolute;right:0px;top:0px;">
         <table id="tbInfo">
             <thead>
@@ -121,7 +125,7 @@
                 </tr>
             </tbody>
         </table>
-        <span style="color:red;">字典表字段规则：ZZLXCode，首先数据库得有这个字典！</span>
+        <span style="color:red;">字典表字段规则：ZZLXCode，首先数据库得有这个字典！双击TableName文本框，可以从浏览器缓存获取还原。</span>
     </div>
     <div class="tabs-container" style="height:calc(100% - 65px);">
 
@@ -169,7 +173,8 @@
         <div class="tab-content" id="list" style="height: calc(100% - 35px);">
             <div id="tab-0" class="tab-pane " style="height:100%;">
                 <br />
-                <input type="text" name="name" style="width:50%;" value="@ViewBag.strCon" /><input type="button" id="btnConfig" name="name" onclick="setCon();" value="切换" /><br/><br />
+                <input type="text" name="name" style="width:50%;" value="@ViewBag.strCon" id="defaultCon" />
+                <input type="button" id="btnConfig" name="name" onclick="setCon();" value="切换" /><br /><br />
                 <input type="text" name="name" style="width:50%;" value="server=192.168.0.201,56566;database=PDRZ_Integration;uid=sa;pwd=1qaz@WSX" /><br /><br />
                 <input type="text" name="name" style="width:50%;" value="server=192.168.0.201;database=PDRZ_IntegrationTest;uid=sa;pwd=1qaz@WSX" /><br /><br />
                 <input type="text" name="name" style="width:50%;" value="server=127.0.0.1;database=PantoOA;uid=sa;pwd=123456" /><br /><br />
@@ -372,6 +377,18 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
+        var v = $('#defaultCon').val();
+        var reg1 = /(25[0-5]|2[0-4]\d|[0-1]\d{1,2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{1,2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{1,2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{1,2}|[1-9]?\d{0,1}),?\d+/g;
+        var reg2 = /base=([^;]+)/;
+        var ip = v.match(reg1);
+        var name = v.match(reg2);
+        if (ip) {
+            $("#showCon").append(`【${ip}】`);
+        }
+        if (name) {
+            $("#showCon").append(`【${name[1]}】`);
+        }
+
     });
 
     window.onresize = function () {

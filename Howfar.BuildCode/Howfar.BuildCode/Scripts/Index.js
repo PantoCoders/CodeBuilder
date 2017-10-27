@@ -207,7 +207,7 @@ function setData(name) {
 //单击 表名 文本框 从缓存 获取数据
 function getDB() {
     applist.fieldList = JSON.parse(storage[$('#txtTableName').val()]);
-    toastr['warning']("单击清除缓存", tableName + " 表已加载缓存数据!");
+    toastr['warning']("单击清除缓存", $('#txtTableName').val() + " 表已加载缓存数据!");
 };
 
 //刷新 表 列表数据
@@ -228,7 +228,8 @@ function iframeBuildMenuSQl() {
 }
 
 function setCon() {
-    $.post('/home/SetCon', { strcon: $('#defaultCon').val() }, function () {
+    $.post('/home/SetCon', { strcon: $('#defaultCon').val() }, function (data) {
+        alert(data);
         location.href = location.href;
     })
 }
