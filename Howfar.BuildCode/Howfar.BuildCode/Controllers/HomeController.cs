@@ -63,7 +63,7 @@ namespace Howfar.BuildCode.Controllers
                         xNode.AppendChild(xElem2);
                     }
                     xDoc.Save(HttpContext.Server.MapPath("~/db.config"));
-                    return "设置成功！";
+                    return "设置成功！"; 
                 }
                 else
                 {
